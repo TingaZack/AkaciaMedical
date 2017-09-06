@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "138278247819",
+    "firebase_url": "https://msq-health.firebaseio.com",
+    "project_id": "msq-health",
+    "storage_bucket": "msq-health.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:138278247819:android:bfb2f09c88bf66a1",
+        "android_client_info": {
+          "package_name": "com.android.msqhealthpoc1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "138278247819-mgm5as93m5ka3had0h06h19ttibaeg80.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.android.msqhealthpoc1",
+            "certificate_hash": "1a8e4b3fe7666a93b9993b20bb936c0be2dd9873"
+          }
+        },
+        {
+          "client_id": "138278247819-t3lsd6hkse7tn13ob2jhllnmdd2bjfvn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAP2FuRBJMmskDKPXlvU-iEbe4oyVB9kmU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "138278247819-t3lsd6hkse7tn13ob2jhllnmdd2bjfvn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
