@@ -53,6 +53,10 @@
             android:label="@string/title_activity_listing_details"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".activities.PaymentGatewayWebView"
+            android:label="@string/title_activity_listing_details"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".activities.FeaturedItemDetails"
             android:label="@string/title_activity_featured_item_details"
             android:theme="@style/AppTheme.NoActionBar"></activity>

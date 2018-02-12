@@ -87,7 +87,6 @@ public class ProductFragment extends Fragment {
                     System.out.println(databaseError.getMessage());
                 }
             });
-
         }
         return view;
     }

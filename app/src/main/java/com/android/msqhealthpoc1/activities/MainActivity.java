@@ -18,11 +18,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.android.msqhealthpoc1.R;
+import com.android.msqhealthpoc1.dialogs.CartDialogs;
 import com.android.msqhealthpoc1.dialogs.ProfileDialog;
 import com.android.msqhealthpoc1.fragments.FeaturedFragment;
 import com.android.msqhealthpoc1.fragments.ProductFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
+    private FirebaseUser user;
+    List<Map<String, Object>> items = new ArrayList<>();
+
     /**
      * The {@link ViewPager} that will host the section contents.
      */
@@ -45,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) {
             finish();
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
@@ -93,8 +101,15 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_sign_out) {
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
             return true;
+        } else if (id == R.id.action_cart) {
+            CartDialogs dialog = new CartDialogs();
+            dialog.show(getSupportFragmentManager(), "Checkout");
         }
 
         return super.onOptionsItemSelected(item);
@@ -154,8 +169,6 @@ public class MainActivity extends AppCompatActivity {
                     return new ProductFragment();
                 case 1:
                     return new FeaturedFragment();
-                case 2:
-                    return PlaceholderFragment.newInstance(position + 1);
                 default:
                     return PlaceholderFragment.newInstance(position + 1);
             }
@@ -165,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return 2;
         }
 
         @Override
@@ -175,8 +188,6 @@ public class MainActivity extends AppCompatActivity {
                     return "Browse";
                 case 1:
                     return "Featured";
-                case 2:
-                    return "A - Z";
             }
             return null;
         }

@@ -18,6 +18,7 @@ public class Product {
     public double price;
     public String unit_of_messuremeant;
     public String trueImageUrl;
+    public String imageUrl;
     public Map<String, Boolean> stars = new HashMap<>();
 
     public Product() {
@@ -31,6 +32,70 @@ public class Product {
         this.price = price;
         this.unit_of_messuremeant = unit_of_messuremeant;
         this.trueImageUrl = trueImageUrl;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getConsumables() {
+        return consumables;
+    }
+
+    public void setConsumables(String consumables) {
+        this.consumables = consumables;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public String getUnit_of_messuremeant() {
+        return unit_of_messuremeant;
+    }
+
+    public void setUnit_of_messuremeant(String unit_of_messuremeant) {
+        this.unit_of_messuremeant = unit_of_messuremeant;
+    }
+
+    public String getTrueImageUrl() {
+        return trueImageUrl;
+    }
+
+    public void setTrueImageUrl(String trueImageUrl) {
+        this.trueImageUrl = trueImageUrl;
+    }
+
+    public Map<String, Boolean> getStars() {
+        return stars;
+    }
+
+    public void setStars(Map<String, Boolean> stars) {
+        this.stars = stars;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     @Exclude

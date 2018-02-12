@@ -51,9 +51,9 @@ public class ViewProfileActivity extends Activity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             // Name, email address, and profile photo Url
-            mUsername.setText("Sihle Mabaleka");
+            mUsername.setText(user.getDisplayName());
             mEmail.setText(user.getEmail());
-            Glide.with(this).load("https://firebasestorage.googleapis.com/v0/b/msq-health.appspot.com/o/images%2Fcropped652655456.jpg?alt=media&token=8197e4e7-cb2d-4767-a581-5497a6ab1a3c").into(mDisplayPicture);
+            Glide.with(this).load(user.getPhotoUrl()).into(mDisplayPicture);
             // Check if user's email is verified
             if (!user.isEmailVerified()) {
                 mEmail.setError("Email not verified");

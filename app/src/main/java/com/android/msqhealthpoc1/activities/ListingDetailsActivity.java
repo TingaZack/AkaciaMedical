@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.android.msqhealthpoc1.R;
 import com.android.msqhealthpoc1.adapters.MyListingDetailsAdapter;
@@ -65,6 +66,7 @@ public class ListingDetailsActivity extends AppCompatActivity {
 
         title = intent.getStringExtra("title");
 
+        Toast.makeText(getApplicationContext(), title, Toast.LENGTH_LONG).show();
 
         collapsingToolbarLayout.setTitle(title);
         collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.white));
@@ -87,8 +89,8 @@ public class ListingDetailsActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot snapshot) {
                 productList.clear();
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                    if (postSnapshot.child("CONSUMABLES").getValue().equals(title)) {
-                        Product products = new Product(((String) postSnapshot.child("CODE").getValue()), (String) postSnapshot.child("CONSUMABLES").getValue(), (String) postSnapshot.child("DESCRIPTION").getValue(), (double) postSnapshot.child("PRICING").getValue(), postSnapshot.child("PRICING UNIT").getValue().toString(), (String) postSnapshot.child("True Image").getValue());
+                    if (postSnapshot.child("CONSUMABLES").getValue().toString().equals(title)) {
+                        Product products = new Product(((String) postSnapshot.child("CODE").getValue()), (String) postSnapshot.child("CONSUMABLES").getValue(), (String) postSnapshot.child("DESCRIPTION").getValue(), Double.parseDouble(postSnapshot.child("PRICING").getValue().toString()), postSnapshot.child("PRICING_UNIT").getValue().toString(), (String) postSnapshot.child("True Image").getValue());
                         productList.add(products);
                     }
                     if (productList.size() > 0)

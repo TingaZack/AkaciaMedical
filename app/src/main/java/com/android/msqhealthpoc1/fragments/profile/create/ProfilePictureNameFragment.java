@@ -16,7 +16,6 @@ import android.widget.EditText;
 
 import com.android.msqhealthpoc1.R;
 import com.android.msqhealthpoc1.activities.WelcomeActivity;
-import com.android.msqhealthpoc1.model.UserInformation;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -24,7 +23,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -128,41 +126,27 @@ public class ProfilePictureNameFragment extends Fragment {
                             @Override
                             public void onFailure(@NonNull Exception exception) {
                                 // Handle unsuccessful uploads
-
+                                exception.printStackTrace();
                             }
                         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                             @Override
-                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            public void onSuccess(final UploadTask.TaskSnapshot taskSnapshot) {
                                 // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-
                                 final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                        .setDisplayName(mUsername.getText().toString())
-                                        .setPhotoUri(taskSnapshot.getMetadata().getDownloadUrl())
-                                        .build();
-
-                                user.updateProfile(profileUpdates)
-                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                if (task.isSuccessful()) {
-                                                    UserInformation userInfo = new UserInformation(mOccupation.getText().toString().trim(), mUsername.getText().toString());
-                                                    mDatabase.child("users").child(user.getUid()).child("name").setValue(mUsername.getText().toString());
-                                                    mDatabase.child("users").child(user.getUid()).setValue(userInfo).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                            if (task.isSuccessful()) {
-                                                                progressDialog.dismiss();
-
-                                                                ((WelcomeActivity) getActivity()).moveToNext();
-                                                            }
-                                                        }
-                                                    });
-                                                }
-                                            }
-                                        });
-
+                                mDatabase.child("users").child(user.getUid()).child("name").setValue(mUsername.getText().toString());
+                                mDatabase.child("users").child(user.getUid()).child("display_picture").setValue(taskSnapshot.getMetadata().getDownloadUrl().toString());
+                                mDatabase.child("users").child(user.getUid()).child("occupation").setValue(mOccupation.getText().toString().trim()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            progressDialog.dismiss();
+                                            ((WelcomeActivity) getActivity()).moveToNext();
+                                        } else {
+                                            task.getException().printStackTrace();
+                                        }
+                                    }
+                                });
                             }
                         });
 

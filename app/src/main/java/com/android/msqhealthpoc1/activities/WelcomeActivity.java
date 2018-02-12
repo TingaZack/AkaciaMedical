@@ -9,6 +9,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 import com.android.msqhealthpoc1.R;
 import com.android.msqhealthpoc1.fragments.ProductFragment;
 import com.android.msqhealthpoc1.fragments.profile.create.LocationFragment;
+import com.android.msqhealthpoc1.fragments.profile.create.PracticeConfirmation;
 import com.android.msqhealthpoc1.fragments.profile.create.ProfileCompleteFragment;
 import com.android.msqhealthpoc1.fragments.profile.create.ProfileOnboardingExplainerFragment;
 import com.android.msqhealthpoc1.fragments.profile.create.ProfilePictureNameFragment;
@@ -40,7 +43,7 @@ public class WelcomeActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_welcome);
 
-        layouts = new int[]{0, 1, 2, 3};
+        layouts = new int[]{0, 1, 2, 3, 4};
 
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         dotsLayout = (LinearLayout) findViewById(R.id.layoutDots);
@@ -55,10 +58,17 @@ public class WelcomeActivity extends AppCompatActivity {
         myViewPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(myViewPagerAdapter);
 
+        viewPager.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                return true;
+            }
+        });
+
     }
 
     private void addBottomDots(int currentPage) {
-        dots = new TextView[4];
+        dots = new TextView[5];
 
         int[] colorsActive = getResources().getIntArray(R.array.array_dot_active);
         int[] colorsInactive = getResources().getIntArray(R.array.array_dot_inactive);
@@ -114,6 +124,8 @@ public class WelcomeActivity extends AppCompatActivity {
                 case 2:
                     return new LocationFragment();
                 case 3:
+                    return new PracticeConfirmation();
+                case 4:
                     return new ProfileCompleteFragment();
                 default:
                     return new ProductFragment();
@@ -123,8 +135,8 @@ public class WelcomeActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 4;
+            // Show 5 total pages.
+            return 5;
         }
 
     }
@@ -134,7 +146,7 @@ public class WelcomeActivity extends AppCompatActivity {
         if (current < layouts.length) {
             // move to next screen
             viewPager.setCurrentItem(current);
-            ((TextView) findViewById(R.id.screen_count)).setText((current + 1) + " of 4");
+            ((TextView) findViewById(R.id.screen_count)).setText((current + 1) + " of 5");
             addBottomDots(current);
         }
     }

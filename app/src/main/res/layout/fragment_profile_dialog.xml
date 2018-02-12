@@ -6,10 +6,10 @@
     android:background="@color/white"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:paddingTop="16dp"
     android:paddingBottom="8dp"
     android:paddingLeft="4dp"
     android:paddingRight="4dp"
+    android:paddingTop="16dp"
     tools:context="com.android.msqhealthpoc1.dialogs.ProfileDialog">
 
 
@@ -19,7 +19,6 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/display_picture"
-            id="@+id/view"
             android:layout_width="125dp"
             android:layout_height="125dp" />
 
@@ -27,9 +26,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:padding="2dp"
+            android:layout_marginLeft="90dp"
             android:background="@drawable/round_blue_background"
-            android:layout_marginLeft="90dp">
+            android:padding="2dp">
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/edit_profile"
@@ -51,7 +50,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:fontFamily="sans-serif"
-        android:text="Sihle Mabaleka"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="22sp"
         android:textStyle="bold" />
@@ -59,8 +57,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginTop="16dp"
+        android:orientation="horizontal"
         android:weightSum="2">
 
         <LinearLayout
@@ -69,10 +67,9 @@
             android:layout_margin="4dp"
             android:layout_weight="1"
             android:background="@drawable/black_border"
-            android:gravity="center"
+            android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:padding="8dp"
-            >
+            android:padding="8dp">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -84,9 +81,9 @@
                 android:id="@+id/occupation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="4dp"
-                android:fontFamily="sans-serif-smallcaps"
-                android:text="Doctor"
+                android:fontFamily="sans-serif-condensed"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -98,7 +95,7 @@
             android:layout_margin="4dp"
             android:layout_weight="1"
             android:background="@drawable/black_border"
-            android:gravity="center"
+            android:gravity="center_horizontal"
             android:orientation="vertical"
             android:padding="8dp">
 
@@ -110,11 +107,11 @@
 
             <TextView
                 android:id="@+id/location"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="4dp"
-                android:fontFamily="sans-serif-smallcaps"
-                android:text="Diepkloof"
+                android:fontFamily="sans-serif-condensed"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="16sp"
                 android:textStyle="bold" />

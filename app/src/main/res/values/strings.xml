@@ -115,4 +115,9 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="title_activity_featured_item_details">FeaturedItemDetails</string>
+
+    <string-array name="hasPractice">
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
 </resources>

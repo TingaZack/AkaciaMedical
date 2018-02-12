@@ -78,11 +78,11 @@ public class EditProfileActivity extends AppCompatActivity {
                     mOccupation.setText(dataSnapshot.child("occupation").getValue().toString());
                     mEmail.setText(dataSnapshot.child("location").getValue().toString());
                     // Name, email address, and profile photo Url
-                    mUsername.setText(user.getDisplayName());
-                    //Glide.with(this).load("https://firebasestorage.googleapis.com/v0/b/msq-health.appspot.com/o/images%2Fcropped652655456.jpg?alt=media&token=8197e4e7-cb2d-4767-a581-5497a6ab1a3c").into(mDisplayPicture);
+                    mUsername.setText(dataSnapshot.child("name").getValue().toString());
+                    Glide.with(getApplicationContext()).load(dataSnapshot.child("display_picture").getValue().toString()).into(mDisplayPicture);
                     // Check if user's email is verified
                     if (!user.isEmailVerified()) {
-                        mEmail.setError("Email not verified");
+
                     }
 
                     // The user's ID, unique to the Firebase project. Do NOT use this value to
