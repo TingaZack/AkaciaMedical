@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.android.msqhealthpoc1.R;
 import com.android.msqhealthpoc1.activities.WelcomeActivity;
+import com.android.msqhealthpoc1.helpers.PrefManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -37,6 +38,8 @@ public class SignUpFragment extends Fragment {
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+
+    PrefManager prefManager;
 
     public SignUpFragment() {
         // Required empty public constructor
@@ -63,6 +66,8 @@ public class SignUpFragment extends Fragment {
                 // ...
             }
         };
+
+        prefManager = new PrefManager(getActivity());
 
 
     }
@@ -109,6 +114,7 @@ public class SignUpFragment extends Fragment {
                                     Toast.makeText(getActivity(), task.getException().getMessage(),
                                             Toast.LENGTH_SHORT).show();
                                 } else {
+                                    prefManager.setFirstTimeSignUp(false);
                                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                                     user.sendEmailVerification()
                                             .addOnCompleteListener(new OnCompleteListener<Void>() {

@@ -43,6 +43,7 @@ public class WelcomeActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_welcome);
 
+
         layouts = new int[]{0, 1, 2, 3, 4};
 
         viewPager = (ViewPager) findViewById(R.id.view_pager);

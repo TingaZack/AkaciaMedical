@@ -78,6 +78,13 @@ public class ProfileDialog extends DialogFragment {
                         mUsername.setText(dataSnapshot.child("name").getValue().toString());
                         Glide.with(getActivity()).load(dataSnapshot.child("display_picture").getValue().toString()).into(mDisplayPicture);
 
+                        btnFabEdit.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                getActivity().startActivity(new Intent(getActivity(), EditProfileActivity.class));
+                            }
+                        });
+
                     } catch (Exception e){
                         e.printStackTrace();
                     }
@@ -89,12 +96,7 @@ public class ProfileDialog extends DialogFragment {
                 }
             });
 
-            btnFabEdit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    getActivity().startActivity(new Intent(getActivity(), EditProfileActivity.class));
-                }
-            });
+
         }
 
 

@@ -1,148 +1,140 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:weightSum="4"
-    tools:context="com.android.msqhealthpoc1.fragments.profile.create.ProfilePictureNameFragment">
-
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1.5"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:fontFamily="sans-serif"
-            android:text="Practice Details"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/practice_question"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="8dp"
-            android:layout_marginLeft="64dp"
-            android:layout_marginRight="64dp"
-            android:fontFamily="sans-serif"
-            android:gravity="center"
-            android:text="Is your practice registered in the app?"
-            android:textSize="13sp" />
-
-        <Spinner
-            android:id="@+id/hasPractice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/practice_question"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="16dp"
-            android:background="@drawable/round_blue_button"
-            android:entries="@array/hasPractice"
-            android:paddingLeft="32dp"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp"
-            android:paddingRight="32dp"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textStyle="bold" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1.5"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingLeft="32dp"
-        android:paddingRight="32dp">
+        android:padding="16dp">
 
         <LinearLayout
-            android:id="@+id/practice_number_insert"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="visible">
+            android:gravity="center"
+            android:orientation="vertical">
 
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Please enter practice number">
+                android:layout_margin="8dp"
+                android:fontFamily="sans-serif"
+                android:text="Practice Details"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/practice_number"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </android.support.design.widget.TextInputLayout>
+            <TextView
+                android:id="@+id/practice_question"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="8dp"
+                android:layout_marginLeft="64dp"
+                android:layout_marginRight="64dp"
+                android:fontFamily="sans-serif"
+                android:gravity="center"
+                android:text="Is your practice registered in the app?"
+                android:textSize="13sp" />
+
+            <Spinner
+                android:id="@+id/hasPractice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/practice_question"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="16dp"
+                android:entries="@array/hasPractice"
+                android:paddingBottom="16dp"
+                android:paddingLeft="32dp"
+                android:paddingRight="32dp"
+                android:paddingTop="16dp"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/practice_number_registration"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:paddingLeft="32dp"
+            android:paddingRight="32dp">
 
-            <android.support.design.widget.TextInputLayout
+            <LinearLayout
+                android:id="@+id/practice_number_insert"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Please enter practice name">
+                android:orientation="vertical"
+                android:visibility="visible">
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/register_practice_name"
+
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_height="wrap_content"
+                    android:hint="Please enter practice number">
 
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/practice_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <LinearLayout
+                android:id="@+id/practice_number_registration"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Please enter practice number">
+                android:orientation="vertical"
+                android:visibility="gone">
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/register_practice_number"
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_height="wrap_content"
+                    android:hint="Please enter practice name">
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Please enter practitioner ID Number">
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/register_practice_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </android.support.design.widget.TextInputLayout>
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/register_practitioner_id_number"
+
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_height="wrap_content"
+                    android:hint="Please enter practice number">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/register_practice_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Please enter practitioner ID Number">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/register_practitioner_id_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical">
-
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
             android:paddingLeft="64dp"
-            android:paddingRight="64dp">
+            android:paddingRight="64dp"
+            android:paddingTop="64dp">
+
 
             <Button
                 android:id="@+id/save"
@@ -159,6 +151,5 @@
                 android:textColor="#fff"
                 android:textStyle="bold" />
         </LinearLayout>
-
     </LinearLayout>
-</LinearLayout>
+</ScrollView>

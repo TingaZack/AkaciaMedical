@@ -16,13 +16,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.msqhealthpoc1.activities.MainActivity;
 import com.android.msqhealthpoc1.R;
+import com.android.msqhealthpoc1.activities.MainActivity;
+import com.android.msqhealthpoc1.activities.WelcomeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginFragment extends Fragment {
 
@@ -33,6 +39,8 @@ public class LoginFragment extends Fragment {
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+
+    private DatabaseReference mDatabase;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -55,7 +63,6 @@ public class LoginFragment extends Fragment {
                     // User is signed out
                     Log.d("Authentication", "onAuthStateChanged:signed_out");
                 }
-                // ...
             }
         };
     }
@@ -68,10 +75,11 @@ public class LoginFragment extends Fragment {
         mUserEmail = (EditText) view.findViewById(R.id.email);
         mUserPassword = (EditText) view.findViewById(R.id.password);
 
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         pDialog = new ProgressDialog(getActivity());
         pDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        pDialog.setMessage("Signing in");
+        pDialog.setMessage("Signing in...");
         pDialog.setCancelable(false);
 
 
@@ -85,7 +93,6 @@ public class LoginFragment extends Fragment {
         view.findViewById(R.id.reset_password).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 getFragmentManager().beginTransaction().replace(R.id.container, new ForgotPasswordFragment()).addToBackStack("forgot password").commit();
             }
         });
@@ -100,13 +107,33 @@ public class LoginFragment extends Fragment {
                         .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                pDialog.dismiss();
                                 if (!task.isSuccessful()) {
+                                    pDialog.dismiss();
                                     Toast.makeText(getActivity(), "Authentication failed. Please check your login credentials",
                                             Toast.LENGTH_SHORT).show();
                                 } else {
-                                    getActivity().finish();
-                                    getActivity().startActivity(new Intent(getActivity(), MainActivity.class));
+                                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                    if (user != null) {
+                                        String uid = user.getUid();
+                                        mDatabase.child("users").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                pDialog.dismiss();
+                                                if (dataSnapshot.getValue() != null) {
+                                                    getActivity().finish();
+                                                    getActivity().startActivity(new Intent(getActivity(), MainActivity.class));
+                                                } else {
+                                                    getActivity().finish();
+                                                    getActivity().startActivity(new Intent(getActivity(), WelcomeActivity.class));
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+
+                                            }
+                                        });
+                                    }
                                 }
                             }
                         });

@@ -10,12 +10,14 @@ import android.view.ViewGroup;
 
 import com.android.msqhealthpoc1.R;
 import com.android.msqhealthpoc1.activities.MainActivity;
+import com.android.msqhealthpoc1.helpers.PrefManager;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ProfileCompleteFragment extends Fragment {
 
+    PrefManager prefManager;
 
     public ProfileCompleteFragment() {
         // Required empty public constructor
@@ -27,6 +29,8 @@ public class ProfileCompleteFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile_complete, container, false);
+
+        prefManager = new PrefManager(getActivity());
 
         view.findViewById(R.id.proceed).setOnClickListener(new View.OnClickListener() {
             @Override

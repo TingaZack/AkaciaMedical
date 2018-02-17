@@ -22,8 +22,14 @@ import com.android.msqhealthpoc1.dialogs.CartDialogs;
 import com.android.msqhealthpoc1.dialogs.ProfileDialog;
 import com.android.msqhealthpoc1.fragments.FeaturedFragment;
 import com.android.msqhealthpoc1.fragments.ProductFragment;
+import com.android.msqhealthpoc1.helpers.PrefManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +55,9 @@ public class MainActivity extends AppCompatActivity {
      */
     private ViewPager mViewPager;
 
+    private PrefManager prefManager;
+    private DatabaseReference mDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +66,33 @@ public class MainActivity extends AppCompatActivity {
         if (user == null) {
             finish();
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
+        }
+
+        prefManager = new PrefManager(this);
+        if (!prefManager.isFirstTimeSignup()) {
+            launchOnboardingScreen();
+            finish();
+        }
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            String uid = user.getUid();
+            mDatabase.child("users").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.getValue() == null) {
+                        finish();
+                        startActivity(new Intent(MainActivity.this, WelcomeActivity.class));
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
         }
 
         setContentView(R.layout.activity_main);
@@ -191,5 +227,10 @@ public class MainActivity extends AppCompatActivity {
             }
             return null;
         }
+    }
+
+    private void launchOnboardingScreen() {
+        startActivity(new Intent(MainActivity.this, WelcomeActivity.class));
+        finish();
     }
 }

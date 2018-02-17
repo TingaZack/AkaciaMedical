@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.android.msqhealthpoc1.R;
 import com.android.msqhealthpoc1.activities.WelcomeActivity;
+import com.android.msqhealthpoc1.helpers.PrefManager;
 import com.android.msqhealthpoc1.model.Practice;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -51,6 +52,8 @@ public class PracticeConfirmation extends Fragment {
 
     ProgressDialog progressDialog;
 
+    PrefManager prefManager;
+
 
     public PracticeConfirmation() {
         // Required empty public constructor
@@ -66,16 +69,18 @@ public class PracticeConfirmation extends Fragment {
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        hasPracticeSpinner = (Spinner) view.findViewById(R.id.hasPractice);
-        mInsertPractice = (LinearLayout) view.findViewById(R.id.practice_number_insert);
-        mRegisterPractice = (LinearLayout) view.findViewById(R.id.practice_number_registration);
+        hasPracticeSpinner = view.findViewById(R.id.hasPractice);
+        mInsertPractice = view.findViewById(R.id.practice_number_insert);
+        mRegisterPractice = view.findViewById(R.id.practice_number_registration);
 
-        ePracticeName = (TextInputEditText) view.findViewById(R.id.register_practice_name);
-        ePracticeNumber = (TextInputEditText) view.findViewById(R.id.register_practice_number);
-        ePractitionerIDNumber = (TextInputEditText) view.findViewById(R.id.register_practitioner_id_number);
-        eSearchPractice = (TextInputEditText) view.findViewById(R.id.practice_number);
+        ePracticeName = view.findViewById(R.id.register_practice_name);
+        ePracticeNumber = view.findViewById(R.id.register_practice_number);
+        ePractitionerIDNumber = view.findViewById(R.id.register_practitioner_id_number);
+        eSearchPractice = view.findViewById(R.id.practice_number);
 
-        btnSave = (Button) view.findViewById(R.id.save);
+        prefManager = new PrefManager(getActivity());
+
+        btnSave = view.findViewById(R.id.save);
 
         // Spinner Drop down elements
         List<String> categories = new ArrayList<>();
@@ -179,19 +184,10 @@ public class PracticeConfirmation extends Fragment {
                                 if (task.isSuccessful()) {
                                     progressDialog.dismiss();
                                     ((WelcomeActivity) getActivity()).moveToNext();
+                                    prefManager.setFirstTimeSignUp(true);
                                 } else {
                                     task.getException().printStackTrace();
                                     Toast.makeText(getActivity(), "Practice Creation Failed", Toast.LENGTH_LONG).show();
-                                }
-                            }
-                        });
-
-                        mDatabase.child("users").child(user.getUid()).child("practice").setValue(practice.toMap()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    progressDialog.dismiss();
-                                    ((WelcomeActivity) getActivity()).moveToNext();
                                 }
                             }
                         });
