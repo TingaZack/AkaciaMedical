@@ -7,6 +7,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,19 +35,38 @@ import com.google.firebase.auth.FirebaseUser;
 public class SignUpFragment extends Fragment {
 
 
+    PrefManager prefManager;
     private EditText mUserEmail, mUserPassword;
     private Button btnSignUp;
     private ProgressDialog pDialog;
-
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private TextWatcher mTextWatcher = new TextWatcher() {
 
-    PrefManager prefManager;
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before,
+                                  int count) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count,
+                                      int after) {
+            // TODO Auto-generated method stub
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            // TODO Auto-generated method stub
+            checkFieldsForEmptyValues();
+        }
+    };
+
 
     public SignUpFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,7 +94,6 @@ public class SignUpFragment extends Fragment {
 
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -80,8 +101,8 @@ public class SignUpFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_sign_up, container, false);
 
 
-        mUserEmail = (EditText) view.findViewById(R.id.email);
-        mUserPassword = (EditText) view.findViewById(R.id.password);
+        mUserEmail = view.findViewById(R.id.email);
+        mUserPassword = view.findViewById(R.id.password);
 
         pDialog = new ProgressDialog(getActivity());
         pDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -97,7 +118,12 @@ public class SignUpFragment extends Fragment {
         });
 
 
-        btnSignUp = (Button) view.findViewById(R.id.sign_up);
+        btnSignUp = view.findViewById(R.id.sign_up);
+
+        btnSignUp.setEnabled(false);
+        mUserEmail.addTextChangedListener(mTextWatcher);
+        mUserPassword.addTextChangedListener(mTextWatcher);
+
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,7 +159,23 @@ public class SignUpFragment extends Fragment {
             }
         });
 
+        checkFieldsForEmptyValues();
+
         return view;
+    }
+
+    protected void checkFieldsForEmptyValues() {
+        // TODO Auto-generated method stub
+        String text1 = mUserEmail.getText().toString().trim();
+        String text2 = mUserPassword.getText().toString().trim();
+
+        if ((TextUtils.isEmpty(text1)) || (TextUtils.isEmpty(text2))) {
+            btnSignUp.setEnabled(false);
+        } else if ((TextUtils.getTrimmedLength(text2) < 6)) {
+            btnSignUp.setEnabled(false);
+        } else {
+            btnSignUp.setEnabled(true);
+        }
     }
 
 }

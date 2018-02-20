@@ -64,11 +64,22 @@ public class MyListingDetailsAdapter extends RecyclerView.Adapter<MyListingDetai
                     holder.btnAddToCart.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            if (holder.mQuantity.getText().toString() == "") {
+                                holder.mQuantity.setError("Please add quantity...");
+                                return;
+                            }
+
                             CartItem item = dataSnapshot.getValue(CartItem.class);
-                            if (holder.mQuantity.getText() != null) {
-                                item.setQuantity(item.getQuantity() + Integer.parseInt(holder.mQuantity.getText().toString()));
-                            } else {
-                                item.setQuantity(item.getQuantity() + 1);
+                            try {
+                                if (holder.mQuantity.getText() != null) {
+                                    item.setQuantity(item.getQuantity() + Integer.parseInt(holder.mQuantity.getText().toString()));
+                                } else {
+                                    item.setQuantity(item.getQuantity() + 1);
+                                    return;
+                                }
+                            } catch (Exception ex) {
+                                holder.mQuantity.setError("Please add a quantity");
+                                return;
                             }
                             Map<String, Object> postValues = item.toMap();
 
@@ -90,14 +101,23 @@ public class MyListingDetailsAdapter extends RecyclerView.Adapter<MyListingDetai
                     holder.btnAddToCart.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            if (holder.mQuantity.getText().toString() == "") {
+                                holder.mQuantity.setError("Please add quantity...");
+                                return;
+                            }
                             CartItem cartItem = new CartItem();
                             cartItem.setOwner_id(user.getUid());
                             cartItem.setProduct(holder.mItem);
                             cartItem.setQuantity(1);
-                            if (holder.mQuantity.getText() != null) {
-                                cartItem.setQuantity(Integer.parseInt(holder.mQuantity.getText().toString()));
-                            } else {
-                                cartItem.setQuantity(1);
+                            try {
+                                if (holder.mQuantity.getText() != null) {
+                                    cartItem.setQuantity(Integer.parseInt(holder.mQuantity.getText().toString()));
+                                } else {
+                                    cartItem.setQuantity(1);
+                                }
+                            } catch (Exception ex) {
+                                holder.mQuantity.setError("Please add a quantity");
+                                return;
                             }
 
                             Map<String, Object> postValues = cartItem.toMap();
@@ -151,11 +171,11 @@ public class MyListingDetailsAdapter extends RecyclerView.Adapter<MyListingDetai
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mDescriptionView = (TextView) view.findViewById(R.id.info_description);
-            mPricingUnitView = (TextView) view.findViewById(R.id.info_unit);
-            mPricingView = (TextView) view.findViewById(R.id.info_price);
-            btnAddToCart = (Button) view.findViewById(R.id.addToCart);
-            mQuantity = (TextInputEditText) view.findViewById(R.id.cart_item_quantity);
+            mDescriptionView = view.findViewById(R.id.info_description);
+            mPricingUnitView = view.findViewById(R.id.info_unit);
+            mPricingView = view.findViewById(R.id.info_price);
+            btnAddToCart = view.findViewById(R.id.addToCart);
+            mQuantity = view.findViewById(R.id.cart_item_quantity);
         }
 
         @Override

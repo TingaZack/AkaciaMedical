@@ -12,8 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
-import com.android.msqhealthpoc1.adapters.MyFeaturedRecyclerViewAdapter;
 import com.android.msqhealthpoc1.R;
+import com.android.msqhealthpoc1.adapters.MyFeaturedRecyclerViewAdapter;
 import com.android.msqhealthpoc1.model.FeaturedItem;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,14 +28,12 @@ public class FeaturedFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
-
-    private DatabaseReference mDatabase;
     List<FeaturedItem> featuredItemsList;
     List<String> places;
-
     ProgressDialog pDialog;
+    // TODO: Customize parameters
+    private int mColumnCount = 1;
+    private DatabaseReference mDatabase;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -91,22 +89,15 @@ public class FeaturedFragment extends Fragment {
             }
 
 
-
-            mDatabase.child("featured").addValueEventListener(new ValueEventListener() {
+            mDatabase.child("promotional content").addValueEventListener(new ValueEventListener() {
                 public void onDataChange(DataSnapshot snapshot) {
                     featuredItemsList.clear();
                     for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                        FeaturedItem featuredItem = new FeaturedItem(((String) postSnapshot.child("Title").getValue()), ((String) postSnapshot.child("image").getValue()));
+                        FeaturedItem featuredItem = new FeaturedItem(((String) postSnapshot.child("TITLE").getValue()), ((String) postSnapshot.child("IMAGE").getValue()));
                         featuredItemsList.add(featuredItem);
+                        places.add(postSnapshot.child("DESCRIPTION").getValue().toString());
                     }
                     pDialog.dismiss();
-
-                    places.add("Johannesburg");
-                    places.add("Durban");
-                    places.add("Port Elizabeth");
-                    places.add("Cape Town");
-                    places.add("Polokwane");
-                    places.add("Kimberly");
 
                     recyclerView.setAdapter(new MyFeaturedRecyclerViewAdapter(featuredItemsList, getActivity(), places));
 

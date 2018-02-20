@@ -38,14 +38,11 @@ import java.util.Map;
 
 public class PaymentGatewayWebView extends AppCompatActivity {
 
+    List<Map<String, Object>> items = new ArrayList<>();
     private WebView webView;
-
     private Intent intent;
     private ProgressDialog pDialog;
-
-
     private FirebaseUser user;
-    List<Map<String, Object>> items = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,9 +55,8 @@ public class PaymentGatewayWebView extends AppCompatActivity {
         pDialog = new ProgressDialog(PaymentGatewayWebView.this);
         pDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         pDialog.setMessage("Preparing Cart");
-        pDialog.show();
 
-        webView = (WebView) findViewById(R.id.webview);
+        webView = findViewById(R.id.webview);
 
         webView.getSettings().setLoadsImagesAutomatically(true);
         webView.getSettings().setJavaScriptEnabled(true);
@@ -94,47 +90,30 @@ public class PaymentGatewayWebView extends AppCompatActivity {
 
                 final double amount = _amount;
 
-                String key = FirebaseDatabase.getInstance().getReference().child("carts").push().getKey();
+                StringBuilder builder = null;
+                try {
+                    String postParams = "Mode=0&" +
+                            "MerchantID=F5785ECF-1EAE-40A0-9D37-93E2E8A4BAB3&" +
+                            "ApplicationID=C572C9CC-F2C8-4DC8-AC5E-48784B83AB35&" +
+                            "MerchantReference=" + user.getUid() + "1&" +
+                            "Amount=" + amount + "&" +
+                            "RedirectSuccessfulURL=http://akacia.co.za" + "&" +
+                            "RedirectFailedURL=https://virtual.mygateglobal.com/success_failure.php&" +
+                            "txtCurrencyCode=ZAR&";
+                    builder = new StringBuilder(postParams);
+                    builder.deleteCharAt(builder.length() - 1);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
 
-                final Cart cart = new Cart();
-                cart.setItems(items);
-                cart.setSubtotal(amount);
-                cart.setUserID(user.getUid());
+                pDialog.dismiss();
 
-                Map<String, Object> postValues = cart.toMap();
+                if (builder != null) {
+                    webView.postUrl("https://virtual.mygateglobal.com/PaymentPage.cfm", EncodingUtils.getBytes(builder.toString(), "BASE64"));
+                } else {
+                    System.out.println("String builder is null");
+                }
 
-                Map<String, Object> childUpdates = new HashMap<>();
-                childUpdates.put("/carts/checked-out/" + user.getUid() + "/" + key, postValues);
-                childUpdates.put("/users/" + user.getUid() + "/carts/checked-out/" + key, postValues);
-
-                FirebaseDatabase.getInstance().getReference().updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            StringBuilder builder = null;
-                            String postParams = "Mode=0&" +
-                                    "MerchantID=F5785ECF-1EAE-40A0-9D37-93E2E8A4BAB3&" +
-                                    "ApplicationID=C572C9CC-F2C8-4DC8-AC5E-48784B83AB35&" +
-                                    "MerchantReference=" + user.getUid() + "1&" +
-                                    "Amount=" + amount + "&" +
-                                    "RedirectSuccessfulURL=http://akacia.co.za" + "&" +
-                                    "RedirectFailedURL=https://virtual.mygateglobal.com/success_failure.php&" +
-                                    "txtCurrencyCode=ZAR&";
-                            builder = new StringBuilder(postParams);
-                            builder.deleteCharAt(builder.length() - 1);
-
-                            if (builder != null) {
-                                webView.postUrl("https://virtual.mygateglobal.com/PaymentPage.cfm", EncodingUtils.getBytes(builder.toString(), "BASE64"));
-                            } else {
-                                System.out.println("String builder is null");
-                            }
-
-
-                        } else {
-                            task.getException().printStackTrace();
-                        }
-                    }
-                });
             }
 
             @Override
@@ -155,7 +134,48 @@ public class PaymentGatewayWebView extends AppCompatActivity {
                     @Override
                     public void onDataChange(final DataSnapshot dataSnapshot) {
                         if (dataSnapshot != null) {
-                            dataSnapshot.getRef().removeValue();
+
+                            double _amount = 0;
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                CartItem cartItem = new CartItem();
+                                cartItem.setQuantity(Integer.parseInt(snapshot.child("quantity").getValue().toString()));
+                                _amount = _amount + ((Double.parseDouble(String.valueOf(snapshot.child("product").child("price").getValue()))) * (Integer.parseInt(snapshot.child("quantity").getValue().toString())));
+                                Product product = new Product();
+                                product.setCode(snapshot.child("product").child("code").getValue().toString());
+                                product.setConsumables(snapshot.child("product").child("consumables").getValue().toString());
+                                product.setDescription(snapshot.child("product").child("description").getValue().toString());
+                                product.setPrice(Double.parseDouble(snapshot.child("product").child("price").getValue().toString()));
+                                product.setTrueImageUrl(snapshot.child("product").child("trueImageUrl").getValue().toString());
+                                product.setUnit_of_messuremeant(snapshot.child("product").child("unit_of_messuremeant").getValue().toString());
+                                cartItem.setProduct(product);
+                                items.add(cartItem.toMap());
+                                System.out.println("Amount is " + _amount);
+                            }
+
+                            final double amount = _amount;
+
+                            String key = FirebaseDatabase.getInstance().getReference().child("carts").push().getKey();
+
+                            final Cart cart = new Cart();
+                            cart.setItems(items);
+                            cart.setSubtotal(amount);
+                            cart.setUserID(user.getUid());
+
+                            Map<String, Object> postValues = cart.toMap();
+
+                            Map<String, Object> childUpdates = new HashMap<>();
+                            childUpdates.put("/carts/checked-out/" + user.getUid() + "/" + key, postValues);
+                            childUpdates.put("/users/" + user.getUid() + "/carts/checked-out/" + key, postValues);
+
+                            FirebaseDatabase.getInstance().getReference().updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        dataSnapshot.getRef().removeValue();
+
+                                    }
+                                }
+                            });
                         }
                     }
 

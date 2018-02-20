@@ -4,13 +4,18 @@
     tools:context="com.android.msqhealthpoc1.activities.MainActivity">
     <item
         android:id="@+id/action_cart"
+        android:icon="@drawable/ic_shopping_cart_white"
         android:orderInCategory="100"
         android:title="Cart"
-        android:icon="@drawable/ic_shopping_cart_white"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/action_message"
+        android:orderInCategory="100"
+        android:title="Write Message"
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_sign_out"
         android:orderInCategory="100"
-        android:title="SIgn out"
+        android:title="Sign out"
         app:showAsAction="never" />
 </menu>

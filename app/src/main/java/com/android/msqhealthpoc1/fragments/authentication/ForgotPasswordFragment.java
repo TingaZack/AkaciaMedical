@@ -6,6 +6,9 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +38,31 @@ public class ForgotPasswordFragment extends Fragment {
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private TextWatcher mTextWatcher = new TextWatcher() {
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before,
+                                  int count) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count,
+                                      int after) {
+            // TODO Auto-generated method stub
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            // TODO Auto-generated method stub
+            checkFieldsForEmptyValues();
+        }
+    };
+
+    public ForgotPasswordFragment() {
+        // Required empty public constructor
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,17 +86,13 @@ public class ForgotPasswordFragment extends Fragment {
         };
     }
 
-    public ForgotPasswordFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_forgot_password, container, false);
 
-        mUserEmail = (EditText) view.findViewById(R.id.email);
+        mUserEmail = view.findViewById(R.id.email);
 
 
         pDialog = new ProgressDialog(getActivity());
@@ -83,7 +107,10 @@ public class ForgotPasswordFragment extends Fragment {
             }
         });
 
-        btnResetPassword = (Button) view.findViewById(R.id.reset_password);
+        btnResetPassword = view.findViewById(R.id.reset_password);
+
+        mUserEmail.addTextChangedListener(mTextWatcher);
+
         btnResetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,7 +132,21 @@ public class ForgotPasswordFragment extends Fragment {
             }
         });
 
+        checkFieldsForEmptyValues();
+
         return view;
     }
+
+    protected void checkFieldsForEmptyValues() {
+        // TODO Auto-generated method stub
+        String text1 = mUserEmail.getText().toString().trim();
+
+        if (TextUtils.isEmpty(text1)) {
+            btnResetPassword.setEnabled(false);
+        } else {
+            btnResetPassword.setEnabled(true);
+        }
+    }
+
 
 }
