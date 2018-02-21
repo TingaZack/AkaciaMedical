@@ -7,6 +7,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,16 +44,37 @@ import static android.app.Activity.RESULT_OK;
 public class ProfilePictureNameFragment extends Fragment {
 
     CircleImageView mDisplayPictures;
+    ProgressDialog progressDialog;
+    Uri pictureUri;
     private Button btnSelectImage, btnSaveImage;
     private EditText mUsername, mOccupation;
     private DatabaseReference mDatabase;
+    private TextWatcher mTextWatcher = new TextWatcher() {
 
-    ProgressDialog progressDialog;
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before,
+                                  int count) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count,
+                                      int after) {
+            // TODO Auto-generated method stub
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            // TODO Auto-generated method stub
+            checkFieldsForEmptyValues();
+        }
+    };
+
 
     public ProfilePictureNameFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,11 +84,11 @@ public class ProfilePictureNameFragment extends Fragment {
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        mDisplayPictures = (CircleImageView) view.findViewById(R.id.display_picture);
-        btnSelectImage = (Button) view.findViewById(R.id.select_image);
-        mUsername = (EditText) view.findViewById(R.id.name);
-        mOccupation = (EditText) view.findViewById(R.id.occupation);
-        btnSaveImage = (Button) view.findViewById(R.id.save);
+        mDisplayPictures = view.findViewById(R.id.display_picture);
+        btnSelectImage = view.findViewById(R.id.select_image);
+        mUsername = view.findViewById(R.id.name);
+        mOccupation = view.findViewById(R.id.occupation);
+        btnSaveImage = view.findViewById(R.id.save);
 
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -78,9 +102,86 @@ public class ProfilePictureNameFragment extends Fragment {
             }
         });
 
+        btnSaveImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mUsername.getText().toString().trim() == "") {
+                    mUsername.setError("Required");
+                    return;
+                }
+                if (mOccupation.getText().toString().trim() == "") {
+                    mOccupation.setError("Required");
+                    return;
+                }
+
+                progressDialog.show();
+
+                final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                if (pictureUri != null) {
+
+                    FirebaseStorage storage = FirebaseStorage.getInstance();
+
+                    // Create a storage reference from our app
+                    StorageReference storageRef = storage.getReference();
+
+
+                    StorageReference riversRef = storageRef.child("images/" + pictureUri.getLastPathSegment());
+                    UploadTask uploadTask = riversRef.putFile(pictureUri);
+
+                    // Register observers to listen for when the download is done or if it fails
+                    uploadTask.addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Handle unsuccessful uploads
+                            exception.printStackTrace();
+                        }
+                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(final UploadTask.TaskSnapshot taskSnapshot) {
+                            // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+
+
+                            mDatabase.child("users").child(user.getUid()).child("name").setValue(mUsername.getText().toString());
+                            mDatabase.child("users").child(user.getUid()).child("display_picture").setValue(taskSnapshot.getMetadata().getDownloadUrl().toString());
+                            mDatabase.child("users").child(user.getUid()).child("occupation").setValue(mOccupation.getText().toString().trim()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        progressDialog.dismiss();
+                                        ((WelcomeActivity) getActivity()).moveToNext();
+                                    } else {
+                                        task.getException().printStackTrace();
+                                    }
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    mDatabase.child("users").child(user.getUid()).child("name").setValue(mUsername.getText().toString());
+                    mDatabase.child("users").child(user.getUid()).child("occupation").setValue(mOccupation.getText().toString().trim()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                progressDialog.dismiss();
+                                ((WelcomeActivity) getActivity()).moveToNext();
+                            } else {
+                                task.getException().printStackTrace();
+                            }
+                        }
+                    });
+                }
+
+            }
+        });
+
+        mUsername.addTextChangedListener(mTextWatcher);
+        mOccupation.addTextChangedListener(mTextWatcher);
+
+        checkFieldsForEmptyValues();
+
         return view;
     }
-
 
     public void selectImage() {
         CropImage.activity()
@@ -98,64 +199,26 @@ public class ProfilePictureNameFragment extends Fragment {
             if (resultCode == RESULT_OK) {
                 final Uri resultUri = result.getUri();
                 Glide.with(getActivity()).load(resultUri).into(mDisplayPictures);
-                btnSaveImage.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (mUsername.getText().toString().trim() == "") {
-                            mUsername.setError("Required");
-                            return;
-                        }
-                        if (mOccupation.getText().toString().trim() == "") {
-                            mOccupation.setError("Required");
-                            return;
-                        }
+                pictureUri = resultUri;
 
-                        progressDialog.show();
-
-                        FirebaseStorage storage = FirebaseStorage.getInstance();
-
-                        // Create a storage reference from our app
-                        StorageReference storageRef = storage.getReference();
-
-
-                        StorageReference riversRef = storageRef.child("images/" + resultUri.getLastPathSegment());
-                        UploadTask uploadTask = riversRef.putFile(resultUri);
-
-                        // Register observers to listen for when the download is done or if it fails
-                        uploadTask.addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception exception) {
-                                // Handle unsuccessful uploads
-                                exception.printStackTrace();
-                            }
-                        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(final UploadTask.TaskSnapshot taskSnapshot) {
-                                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-                                final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-                                mDatabase.child("users").child(user.getUid()).child("name").setValue(mUsername.getText().toString());
-                                mDatabase.child("users").child(user.getUid()).child("display_picture").setValue(taskSnapshot.getMetadata().getDownloadUrl().toString());
-                                mDatabase.child("users").child(user.getUid()).child("occupation").setValue(mOccupation.getText().toString().trim()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            progressDialog.dismiss();
-                                            ((WelcomeActivity) getActivity()).moveToNext();
-                                        } else {
-                                            task.getException().printStackTrace();
-                                        }
-                                    }
-                                });
-                            }
-                        });
-
-                    }
-                });
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
                 error.printStackTrace();
             }
+        }
+    }
+
+    protected void checkFieldsForEmptyValues() {
+        // TODO Auto-generated method stub
+        String text1 = mUsername.getText().toString().trim();
+        String text2 = mOccupation.getText().toString().trim();
+
+        if ((TextUtils.isEmpty(text1)) || (TextUtils.isEmpty(text2))) {
+            btnSaveImage.setEnabled(false);
+        } else if ((TextUtils.getTrimmedLength(text2) < 6)) {
+            btnSaveImage.setEnabled(false);
+        } else {
+            btnSaveImage.setEnabled(true);
         }
     }
 
