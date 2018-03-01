@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#1A6B9F</color>
     <color name="colorPrimaryDark">#1A6B9F</color>
-    <color name="colorAccent">#02b29d</color>
+    <color name="colorAccent">#e08708</color>
     <color name="white">#fff</color>
 
     <!-- Screens background color-->
@@ -17,6 +17,16 @@
     <color name="dot_dark_screen3">#2278d4</color>
     <color name="dot_dark_screen4">#a854d4</color>
     <color name="dot_dark_screen5">#ff9900</color>
+
+    <!--ContactUs Button-->
+    <color name="send_message_button">#e08708</color>
+
+    View Colour for PromotionalContent
+    <color name="view_grey_colour">#dfdedc</color>
+
+    <color name="negro_label">#e7ffffff</color>
+
+        android:backgroundTint="@color/negro_label"
 
     <!-- dots active colors -->
     <color name="dot_light_screen1">#f98da5</color>

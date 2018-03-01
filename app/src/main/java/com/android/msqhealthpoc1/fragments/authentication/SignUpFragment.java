@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.android.msqhealthpoc1.R;
 import com.android.msqhealthpoc1.activities.WelcomeActivity;
+import com.android.msqhealthpoc1.activities.WelcomeSetupActivity;
 import com.android.msqhealthpoc1.helpers.PrefManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -151,7 +152,7 @@ public class SignUpFragment extends Fragment {
                                                     }
                                                 }
                                             });
-                                    getActivity().startActivity(new Intent(getActivity(), WelcomeActivity.class));
+                                    getActivity().startActivity(new Intent(getActivity(), WelcomeSetupActivity.class));
                                     getActivity().finish();
                                 }
                             }

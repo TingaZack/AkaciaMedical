@@ -22,6 +22,7 @@ import com.android.msqhealthpoc1.dialogs.CartDialogs;
 import com.android.msqhealthpoc1.dialogs.ProfileDialog;
 import com.android.msqhealthpoc1.fragments.FeaturedFragment;
 import com.android.msqhealthpoc1.fragments.ProductFragment;
+import com.android.msqhealthpoc1.fragments.PromotionalContentFragment;
 import com.android.msqhealthpoc1.helpers.PrefManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -56,11 +57,14 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mViewPager;
 
     private PrefManager prefManager;
-    private DatabaseReference mDatabase;
+    private DatabaseReference mDatabase, mDatabaseUsers;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mAuth = FirebaseAuth.getInstance();
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) {
@@ -68,13 +72,14 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
         }
 
-        prefManager = new PrefManager(this);
-        if (!prefManager.isFirstTimeSignup()) {
-            launchOnboardingScreen();
-            finish();
-        }
+//        prefManager = new PrefManager(this);
+//        if (prefManager.isFirstTimeSignup()) {
+//            launchOnboardingScreen();
+//            finish();
+//        }
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child("users");
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -87,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(new Intent(MainActivity.this, WelcomeActivity.class));
                     }
                 }
-
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
 
@@ -119,6 +123,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        checkIfUserExist();
+
     }
 
 
@@ -142,6 +148,15 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
+            return true;
+        } if (id == R.id.action_profile) {
+            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        if (id == R.id.action_message) {
+            Intent intent = new Intent(MainActivity.this, ContactUsActivity.class);
+            startActivity(intent);
             return true;
         } else if (id == R.id.action_cart) {
             CartDialogs dialog = new CartDialogs();
@@ -205,6 +220,8 @@ public class MainActivity extends AppCompatActivity {
                     return new ProductFragment();
                 case 1:
                     return new FeaturedFragment();
+                case 2:
+                    return new PromotionalContentFragment();
                 default:
                     return PlaceholderFragment.newInstance(position + 1);
             }
@@ -214,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 2;
+            return 3;
         }
 
         @Override
@@ -223,7 +240,9 @@ public class MainActivity extends AppCompatActivity {
                 case 0:
                     return "Browse";
                 case 1:
-                    return "Featured";
+                    return "Publications";
+                case 2:
+                    return "Promotions";
             }
             return null;
         }
@@ -233,4 +252,36 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(MainActivity.this, WelcomeActivity.class));
         finish();
     }
+
+    private void checkIfUserExist() {
+
+        if (mAuth.getCurrentUser() != null) {
+
+            final String user_uid = mAuth.getCurrentUser().getUid();
+            //Check if the value a user entered exists on the database or not
+            mDatabaseUsers.addValueEventListener(new ValueEventListener() {
+                //@param dataSnapshot returns the results
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    //Chech if the result has a child on the database
+
+                    if (!dataSnapshot.child(user_uid).hasChild("Practice_Number")) {
+
+                        Intent setupIntent = new Intent(MainActivity.this, WelcomeSetupActivity.class);
+                        setupIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(setupIntent);
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+        }
+    }
+
+
 }

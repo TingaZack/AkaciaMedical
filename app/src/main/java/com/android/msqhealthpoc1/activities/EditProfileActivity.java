@@ -52,7 +52,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
         mUsername = (EditText) findViewById(R.id.name);
         mOccupation = (EditText) findViewById(R.id.occupation);
-        mEmail = (EditText) findViewById(R.id.email);
+        mEmail = (EditText) findViewById(R.id.et_location);
 
         btnSelectImage = (Button) findViewById(R.id.select_image);
 

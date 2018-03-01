@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.android.msqhealthpoc1.R;
 import com.android.msqhealthpoc1.fragments.ProductFragment;
 import com.android.msqhealthpoc1.fragments.profile.create.LocationFragment;
+import com.android.msqhealthpoc1.fragments.profile.create.LocationFragmentUpdated;
 import com.android.msqhealthpoc1.fragments.profile.create.PracticeConfirmation;
 import com.android.msqhealthpoc1.fragments.profile.create.ProfileCompleteFragment;
 import com.android.msqhealthpoc1.fragments.profile.create.ProfileOnboardingExplainerFragment;
@@ -123,7 +124,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 case 1:
                     return new ProfilePictureNameFragment();
                 case 2:
-                    return new LocationFragment();
+                    return new LocationFragmentUpdated();
                 case 3:
                     return new PracticeConfirmation();
                 case 4:

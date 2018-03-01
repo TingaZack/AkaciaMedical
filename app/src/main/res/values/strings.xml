@@ -114,9 +114,17 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
+
     <string name="title_activity_featured_item_details">FeaturedItemDetails</string>
 
+    <string name="message_sent_message">Thank You for contacting us.
+        Our team will get back to you shortly.</string>
+
+    <string name="msq_slogan">"Want to learn more about our services?
+Please get in touch, we'd love to hear from you!"</string>
+
     <string-array name="hasPractice">
+        <item>---Select---</item>
         <item>Yes</item>
         <item>No</item>
     </string-array>

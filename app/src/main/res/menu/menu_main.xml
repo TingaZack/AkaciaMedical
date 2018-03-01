@@ -11,11 +11,17 @@
     <item
         android:id="@+id/action_message"
         android:orderInCategory="100"
-        android:title="Write Message"
+        android:title="Contact Us"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_sign_out"
         android:orderInCategory="100"
         android:title="Sign out"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_profile"
+        android:orderInCategory="100"
+        android:title="Profile"
         app:showAsAction="never" />
 </menu>

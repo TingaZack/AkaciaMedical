@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.android.msqhealthpoc1.R;
 import com.android.msqhealthpoc1.activities.EditProfileActivity;
+import com.android.msqhealthpoc1.activities.EditProfileActivityUpdated;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -62,6 +63,12 @@ public class ProfileDialog extends DialogFragment {
         mLocation = (TextView) view.findViewById(R.id.location);
 
         btnFabEdit = (FloatingActionButton) view.findViewById(R.id.edit_profile);
+        btnFabEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().startActivity(new Intent(getActivity(), EditProfileActivityUpdated.class));
+            }
+        });
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -72,7 +79,7 @@ public class ProfileDialog extends DialogFragment {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     try {
                         mOccupation.setText(dataSnapshot.child("occupation").getValue().toString());
-                        mLocation.setText(dataSnapshot.child("location").getValue().toString());
+                        mLocation.setText(dataSnapshot.child("location_address").getValue().toString());
 
                         // Name, email address, and profile photo Url
                         mUsername.setText(dataSnapshot.child("name").getValue().toString());
@@ -81,7 +88,7 @@ public class ProfileDialog extends DialogFragment {
                         btnFabEdit.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                getActivity().startActivity(new Intent(getActivity(), EditProfileActivity.class));
+                                getActivity().startActivity(new Intent(getActivity(), EditProfileActivityUpdated.class));
                             }
                         });
 

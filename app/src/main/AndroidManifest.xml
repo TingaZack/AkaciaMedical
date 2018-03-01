@@ -59,7 +59,14 @@
         <activity
             android:name=".activities.FeaturedItemDetails"
             android:label="@string/title_activity_featured_item_details"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.ContactUsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activities.EditProfileActivityUpdated" />
+        <activity android:name=".activities.ConfirmCheckoutActivity" />
+        <activity android:name=".activities.WelcomeSetupActivity" />
+        <activity android:name=".activities.ProfileActivity"></activity>
     </application>
 
 </manifest>

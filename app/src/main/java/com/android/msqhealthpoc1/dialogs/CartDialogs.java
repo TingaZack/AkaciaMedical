@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -15,6 +16,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.msqhealthpoc1.R;
+import com.android.msqhealthpoc1.activities.ConfirmCheckoutActivity;
+import com.android.msqhealthpoc1.activities.ContactUsActivity;
+import com.android.msqhealthpoc1.activities.MainActivity;
 import com.android.msqhealthpoc1.activities.PaymentGatewayWebView;
 import com.android.msqhealthpoc1.adapters.CartDialogListAdapter;
 import com.android.msqhealthpoc1.model.CartItem;
@@ -108,7 +112,10 @@ public class CartDialogs extends DialogFragment {
                                 @Override
                                 public void onClick(View v) {
                                     dismiss();
-                                    startActivity(new Intent(getActivity(), PaymentGatewayWebView.class));
+
+
+
+                                    startActivity(new Intent(getActivity(), ConfirmCheckoutActivity.class));
                                 }
                             });
 

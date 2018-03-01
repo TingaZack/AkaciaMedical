@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.android.msqhealthpoc1.R;
 import com.android.msqhealthpoc1.activities.MainActivity;
 import com.android.msqhealthpoc1.activities.WelcomeActivity;
+import com.android.msqhealthpoc1.activities.WelcomeSetupActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -154,7 +155,7 @@ public class LoginFragment extends Fragment {
                                                     getActivity().startActivity(new Intent(getActivity(), MainActivity.class));
                                                 } else {
                                                     getActivity().finish();
-                                                    getActivity().startActivity(new Intent(getActivity(), WelcomeActivity.class));
+                                                    getActivity().startActivity(new Intent(getActivity(), WelcomeSetupActivity.class));
                                                 }
                                             }
 

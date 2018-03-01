@@ -17,8 +17,10 @@ public class Product {
     public String description;
     public double price;
     public String unit_of_messuremeant;
+    public String percentage;
     public String trueImageUrl;
     public String imageUrl;
+    public boolean promotion = false;
     public Map<String, Boolean> stars = new HashMap<>();
 
     public Product() {
@@ -33,6 +35,49 @@ public class Product {
         this.unit_of_messuremeant = unit_of_messuremeant;
         this.trueImageUrl = trueImageUrl;
     }
+
+    public Product(String code, String consumables, String description, double price, String unit_of_messuremeant, String trueImageUrl, boolean promotion) {
+        this.code = code;
+        this.consumables = consumables;
+        this.description = description;
+        this.price = price;
+        this.unit_of_messuremeant = unit_of_messuremeant;
+        this.trueImageUrl = trueImageUrl;
+        this.promotion = promotion;
+    }
+
+    public Product(String code, String consumables, String description, double price, String unit_of_messuremeant, String percentage, String trueImageUrl, boolean promotion) {
+        this.code = code;
+        this.consumables = consumables;
+        this.description = description;
+        this.price = price;
+        this.unit_of_messuremeant = unit_of_messuremeant;
+        this.percentage = percentage;
+        this.trueImageUrl = trueImageUrl;
+        this.promotion = promotion;
+    }
+
+    public Product(String consumables, String imageUrl) {
+        this.consumables = consumables;
+        this.imageUrl = imageUrl;
+    }
+
+    public Product(String consumables, String description, double price, String imageUrl) {
+        this.consumables = consumables;
+        this.description = description;
+        this.price = price;
+        this.imageUrl = imageUrl;
+    }
+
+    public Product(String code, String consumables, String description, double price, String trueImageUrl) {
+        this.code = code;
+        this.consumables = consumables;
+        this.description = description;
+        this.price = price;
+        this.trueImageUrl = trueImageUrl;
+    }
+
+
 
     public String getCode() {
         return code;
@@ -96,6 +141,14 @@ public class Product {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public boolean isPromotion() {
+        return promotion;
+    }
+
+    public void setPromotion(boolean promotion) {
+        this.promotion = promotion;
     }
 
     @Exclude

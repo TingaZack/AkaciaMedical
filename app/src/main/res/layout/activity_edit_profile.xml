@@ -62,7 +62,7 @@
             android:textColorHint="@color/colorPrimaryDark">
 
             <EditText
-                android:id="@+id/email"
+                android:id="@+id/et_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"

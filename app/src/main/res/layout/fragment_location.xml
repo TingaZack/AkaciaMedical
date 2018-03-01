@@ -31,8 +31,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="0.5"
-                        map:cameraTargetLat="-26.3191519"
-                        map:cameraTargetLng="28.1640819"
+                        map:cameraTargetLat="-26.152868"
+                        map:cameraTargetLng="28.057818"
                         map:cameraZoom="15" />
 
                 </LinearLayout>
