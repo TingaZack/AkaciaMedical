@@ -3,6 +3,7 @@
     package="com.android.msqhealthpoc1">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name=".app.AppController"
@@ -25,9 +26,6 @@
         </activity>
         <activity
             android:name=".activities.SplashScreen"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activities.WelcomeActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.LoginActivity"
@@ -66,7 +64,10 @@
         <activity android:name=".activities.EditProfileActivityUpdated" />
         <activity android:name=".activities.ConfirmCheckoutActivity" />
         <activity android:name=".activities.WelcomeSetupActivity" />
-        <activity android:name=".activities.ProfileActivity"></activity>
+        <activity
+            android:name=".activities.ProfileActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activities.CartActvity"></activity>
     </application>
 
 </manifest>

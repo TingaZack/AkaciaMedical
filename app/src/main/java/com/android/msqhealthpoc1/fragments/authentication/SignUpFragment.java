@@ -3,8 +3,10 @@ package com.android.msqhealthpoc1.fragments.authentication;
 
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -17,11 +19,11 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.msqhealthpoc1.R;
-import com.android.msqhealthpoc1.activities.WelcomeActivity;
-import com.android.msqhealthpoc1.activities.WelcomeSetupActivity;
+import com.android.msqhealthpoc1.activities.LoginActivity;
 import com.android.msqhealthpoc1.helpers.PrefManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -152,7 +154,8 @@ public class SignUpFragment extends Fragment {
                                                     }
                                                 }
                                             });
-                                    getActivity().startActivity(new Intent(getActivity(), WelcomeSetupActivity.class));
+                                    getActivity().startActivity(new Intent(getActivity(), LoginActivity.class));
+                                    Toast.makeText(getActivity(), "Email verification link sent. Please confirm to login.", Toast.LENGTH_SHORT).show();
                                     getActivity().finish();
                                 }
                             }

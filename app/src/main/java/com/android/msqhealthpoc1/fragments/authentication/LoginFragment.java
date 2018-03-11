@@ -21,7 +21,6 @@ import android.widget.Toast;
 
 import com.android.msqhealthpoc1.R;
 import com.android.msqhealthpoc1.activities.MainActivity;
-import com.android.msqhealthpoc1.activities.WelcomeActivity;
 import com.android.msqhealthpoc1.activities.WelcomeSetupActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -128,7 +127,6 @@ public class LoginFragment extends Fragment {
         btnSignIn.setEnabled(false);
         mUserEmail.addTextChangedListener(mTextWatcher);
         mUserPassword.addTextChangedListener(mTextWatcher);
-
 
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override

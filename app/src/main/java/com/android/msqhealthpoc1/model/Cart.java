@@ -1,6 +1,7 @@
 package com.android.msqhealthpoc1.model;
 
 import com.google.firebase.database.Exclude;
+import com.google.firebase.database.ServerValue;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,10 +16,18 @@ public class Cart {
     List<Map<String, Object>> items;
     String userID;
     double subtotal;
+    long timeStamp;
 
     public Cart() {
     }
 
+    public long getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(long timeStamp) {
+        this.timeStamp = timeStamp;
+    }
 
     public List<Map<String, Object>> getItems() {
         return items;
@@ -51,6 +60,7 @@ public class Cart {
         result.put("userID", userID);
         result.put("cart-items", items);
         result.put("subtotal", subtotal);
+        result.put("timeStamp", ServerValue.TIMESTAMP);
 
         return result;
     }

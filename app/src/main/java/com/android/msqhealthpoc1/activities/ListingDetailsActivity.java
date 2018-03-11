@@ -1,14 +1,22 @@
 package com.android.msqhealthpoc1.activities;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
+import android.view.View;
 import android.view.Window;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -49,6 +57,8 @@ public class ListingDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listing_details);
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -73,9 +83,6 @@ public class ListingDetailsActivity extends AppCompatActivity {
         collapsingToolbarLayout.setCollapsedTitleTextColor(getResources().getColor(android.R.color.white));
         collapsingToolbarLayout.setScrimsShown(true);
 
-
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-
         productList = new ArrayList<>();
 
         adapter = new MyListingDetailsAdapter(productList, this);
@@ -84,29 +91,30 @@ public class ListingDetailsActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setAdapter(adapter);
 
+            mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        mDatabase.child("products").addValueEventListener(new ValueEventListener() {
-            public void onDataChange(DataSnapshot snapshot) {
-                productList.clear();
-                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                    if (postSnapshot.child("CONSUMABLES").getValue().toString().equals(title)) {
-                        Product products = new Product(((String) postSnapshot.child("CODE").getValue()), (String) postSnapshot.child("CONSUMABLES").getValue(), (String) postSnapshot.child("DESCRIPTION").getValue(), Double.parseDouble(postSnapshot.child("PRICING").getValue().toString()), postSnapshot.child("PRICING_UNIT").getValue().toString(), (String) postSnapshot.child("True Image").getValue());
-                        productList.add(products);
+
+            mDatabase.child("products").addValueEventListener(new ValueEventListener() {
+                public void onDataChange(DataSnapshot snapshot) {
+                    productList.clear();
+                    for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                        if (postSnapshot.child("CONSUMABLES").getValue().toString().equals(title)) {
+                            Product products = new Product(((String) postSnapshot.child("CODE").getValue()), (String) postSnapshot.child("CONSUMABLES").getValue(), (String) postSnapshot.child("DESCRIPTION").getValue(), Double.parseDouble(postSnapshot.child("PRICING").getValue().toString()), postSnapshot.child("PRICING_UNIT").getValue().toString(), (String) postSnapshot.child("True Image").getValue());
+                            productList.add(products);
+                        }
+                        if (productList.size() > 0)
+                            Glide.with(ListingDetailsActivity.this).load(productList.get(0).trueImageUrl).into(((ImageView) findViewById(R.id.image)));
                     }
-                    if (productList.size() > 0)
-                        Glide.with(ListingDetailsActivity.this).load(productList.get(0).trueImageUrl).into(((ImageView) findViewById(R.id.image)));
+                    pDialog.dismiss();
+                    adapter.notifyDataSetChanged();
+                    System.out.println(adapter.getItemCount() + " in adapter");
                 }
-                pDialog.dismiss();
-                adapter.notifyDataSetChanged();
-                System.out.println(adapter.getItemCount() + " in adapter");
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                System.out.println(databaseError.getMessage());
-            }
-        });
-
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    System.out.println(databaseError.getMessage());
+                }
+            });
     }
 
 }

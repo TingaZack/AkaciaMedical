@@ -3,6 +3,8 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:id="@+id/linear"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="#f5f5f5"
     android:orientation="vertical"
     android:paddingLeft="16dp"
@@ -25,6 +27,7 @@
             android:orientation="vertical">
 
             <TextView
+                tools:text="Description"
                 android:id="@+id/info_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -39,6 +42,7 @@
                 android:weightSum="2">
 
                 <TextView
+                    tools:text="Unit"
                     android:id="@+id/info_unit"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -46,7 +50,8 @@
                     android:textSize="13sp" />
 
                 <TextView
-                    android:id="@+id/info_price"
+                    tools:text="Nappi Code"
+                    android:id="@+id/nappi_code"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -58,40 +63,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center"
-                android:weightSum="5"
-                >
+                android:gravity="center">
 
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/info_price"
+                    tools:text="R0.00"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3.5"
-                    >
-                    <android.support.design.widget.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/cart_item_quantity"
-                        android:fontFamily="sans-serif"
-                        android:hint="Quantity"
-                         />
-                </android.support.design.widget.TextInputLayout>
+                    android:layout_weight="1"
+                    android:layout_marginLeft="8dp"
+                    android:fontFamily="sans-serif"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:textAppearanceMedium"/>
 
                 <Button
                     android:id="@+id/addToCart"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:textColorHint="@color/colorPrimary"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1"
                     android:layout_margin="8dp"
                     android:textColor="#fff"
                     android:background="@drawable/square_blue_button"
                     android:fontFamily="sans-serif"
                     android:layout_height="wrap_content"
-                    android:text="Add"
-                    />
+                    android:text="Add to Cart" />
 
             </LinearLayout>
-
-
 
         </LinearLayout>
 

@@ -1,10 +1,16 @@
 package com.android.msqhealthpoc1.dialogs;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -12,6 +18,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +40,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.apache.http.util.EncodingUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,9 +61,11 @@ public class CartDialogs extends DialogFragment {
 
     CartDialogListAdapter adapter;
 
+    ProgressDialog mProgressDialog;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Dialog view = super.onCreateDialog(savedInstanceState);
+        final Dialog view = super.onCreateDialog(savedInstanceState);
         view.requestWindowFeature(Window.FEATURE_NO_TITLE);
         view.setContentView(R.layout.cart_layout);
 
@@ -64,6 +75,8 @@ public class CartDialogs extends DialogFragment {
         dlp.gravity = Gravity.TOP;
         window.setAttributes(dlp);
 
+        mProgressDialog = new ProgressDialog(getContext());
+
         btnCheckOut = (Button) view.findViewById(R.id.checkout);
         btnClearAll = (Button) view.findViewById(R.id.clearAll);
 
@@ -72,11 +85,36 @@ public class CartDialogs extends DialogFragment {
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             final String uid = user.getUid();
 
-            mDatabase.child("users").child(user.getUid()).child("cart").child("cart-items").addListenerForSingleValueEvent(new ValueEventListener() {
+            FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("cart").child("cart-items").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(final DataSnapshot dataSnapshot) {
+                    double _amount = 0;
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        CartItem cartItem = new CartItem();
+                        cartItem.setQuantity(Integer.parseInt(snapshot.child("quantity").getValue().toString()));
+                        _amount = _amount + ((Double.parseDouble(String.valueOf(snapshot.child("product").child("price").getValue()))) * (Integer.parseInt(snapshot.child("quantity").getValue().toString())));
+
+                        System.out.println("Amount is " + _amount);
+                    }
+
+                    final double amount = _amount;
+                    double valueRounded = Math.round(amount * 100D) / 100D;
+                    mCartItemCount.setText(String.valueOf("Total R" + valueRounded));
+                    System.out.println("FINAL Amount is: " + valueRounded);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+            mDatabase.child("users").child(user.getUid()).child("cart").child("cart-items").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(final DataSnapshot dataSnapshot) {
                     if (dataSnapshot.getValue() != null) {
@@ -108,31 +146,66 @@ public class CartDialogs extends DialogFragment {
                             adapter = new CartDialogListAdapter(items, getActivity(), dataSnapshot);
                             mList.setAdapter(adapter);
 
-                            btnCheckOut.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    dismiss();
+                            final DatabaseReference mCheckDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("cart").child("cart-items");
+                                btnCheckOut.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        if (isNetworkAvailable()) {
+                                            mCheckDatabase.addValueEventListener(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                                    try {
+                                                        if (dataSnapshot.exists()) {
+                                                            startActivity(new Intent(getActivity(), ConfirmCheckoutActivity.class));
+                                                            dismiss();
+                                                        } else {
+                                                            Toast.makeText(getContext(), "You can't checkout an empty cart", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    } catch (Exception e){
+                                                        System.out.println("ERROR: " + e.getMessage());
+                                                    }
+                                                }
 
+                                                @Override
+                                                public void onCancelled(DatabaseError databaseError) {
 
+                                                }
+                                            });
 
-                                    startActivity(new Intent(getActivity(), ConfirmCheckoutActivity.class));
-                                }
-                            });
+                                        } else if (!isNetworkAvailable()) {
+
+                                            Snackbar snack = Snackbar.make(view.findViewById(R.id.relative_layout), "No Connection Available, please check your internet settings and try again.",
+                                                    Snackbar.LENGTH_INDEFINITE).setDuration(1000);
+                                            snack.getView().setBackgroundColor(ContextCompat.getColor(getActivity(), android.R.color.holo_red_dark));
+                                            View view = snack.getView();
+                                            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
+                                            params.gravity = Gravity.TOP;
+                                            view.setLayoutParams(params);
+                                            snack.show();
+                                        }
+                                    }
+                                });
 
                             btnClearAll.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
+                                    mProgressDialog.setMessage("Clearing Cart ...");
+                                    mProgressDialog.show();
                                     dataSnapshot.getRef().removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isComplete()) {
                                                 if (task.isSuccessful()) {
-                                                    Toast.makeText(getActivity(), "Cart cleared successfully", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(getContext(), "Cart cleared successfully", Toast.LENGTH_SHORT).show();
+                                                    mProgressDialog.dismiss();
+                                                    dismiss();
                                                 } else {
-                                                    Toast.makeText(getActivity(), "Cart clearing failed", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(getContext(), "Cart clearing failed", Toast.LENGTH_SHORT).show();
+                                                    mProgressDialog.dismiss();
                                                 }
                                             } else {
-                                                Toast.makeText(getActivity(), "Connection Error. Please check internet connection", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(getContext(), "Connection Error. Please check internet connection", Toast.LENGTH_SHORT).show();
+                                                mProgressDialog.dismiss();
                                             }
                                         }
                                     });
@@ -153,5 +226,13 @@ public class CartDialogs extends DialogFragment {
         return view;
 
     }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
 
 }

@@ -1,14 +1,21 @@
 package com.android.msqhealthpoc1.activities;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 
 import com.android.msqhealthpoc1.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -29,7 +36,7 @@ public class ConfirmCheckoutActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
 
-    private String user_id, address, name;
+    private String user_id, address, name, telephone;
     private ProgressDialog mProgressDialog;
 
     @Override
@@ -37,76 +44,117 @@ public class ConfirmCheckoutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_checkout);
 
-        mFullNamesEditText = findViewById(R.id.et_name);
-        mBillingAddressEditText = findViewById(R.id.et_billing_address);
-        mPhoneNumberEditText = findViewById(R.id.et_cell);
-        mConfirm = findViewById(R.id.save);
+        if (isNetworkAvailable()) {
 
-        mProgressDialog = new ProgressDialog(this);
-        mAuth = FirebaseAuth.getInstance();
+            mFullNamesEditText = findViewById(R.id.et_name);
+            mBillingAddressEditText = findViewById(R.id.et_billing_address);
+            mPhoneNumberEditText = findViewById(R.id.et_cell);
+            mConfirm = findViewById(R.id.save);
+
+            mProgressDialog = new ProgressDialog(this);
+            mAuth = FirebaseAuth.getInstance();
 
 //        mUser = mAuth.getCurrentUser();
-        user_id = mAuth.getCurrentUser().getUid();
+            user_id = mAuth.getCurrentUser().getUid();
 
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user_id);
+            mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user_id);
+            mDatabase.keepSynced(true);
 
-        mDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                address = (String) dataSnapshot.child("location_address").getValue();
-                name = (String) dataSnapshot.child("name").getValue();
+            //if the billing information exists, the user will go straight to the payment gateway.
+            mDatabase.child("billing_infomation").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        startActivity(new Intent(getApplicationContext(), PaymentGatewayWebView.class));
+                        finish();
+                    }
+                }
 
-                System.out.println("Name : " + name);
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-                mFullNamesEditText.setText(name);
-                mBillingAddressEditText.setText(address);
-            }
+                }
+            });
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+            mDatabase.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    address = (String) dataSnapshot.child("Suburb").getValue();
+                    name = (String) dataSnapshot.child("Name").getValue();
+                    telephone = (String) dataSnapshot.child("Telephone").getValue();
 
-            }
-        });
+                    System.out.println("Name : " + name);
 
-        mConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+                    mFullNamesEditText.setText(name);
+                    mBillingAddressEditText.setText(address);
+                    mPhoneNumberEditText.setText(telephone);
+                }
 
-                String full_names = mFullNamesEditText.getText().toString().trim();
-                String billing_address = mBillingAddressEditText.getText().toString().trim();
-                String cell_number = mPhoneNumberEditText.getText().toString().trim();
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-                if (!TextUtils.isEmpty(full_names))  {
+                }
+            });
 
-                    if (!TextUtils.isEmpty(billing_address) ) {
+            mConfirm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
-                        if (!TextUtils.isEmpty(cell_number)) {
+                    String full_names = mFullNamesEditText.getText().toString().trim();
+                    String billing_address = mBillingAddressEditText.getText().toString().trim();
+                    String cell_number = mPhoneNumberEditText.getText().toString().trim();
 
-                            mProgressDialog.setMessage("Updating Billing Information ...");
-                            mProgressDialog.show();
+                    if (!TextUtils.isEmpty(full_names)) {
 
-                            mDatabase.child("billing_infomation").child("billing_address").setValue(billing_address);
-                            mDatabase.child("billing_infomation").child("phone_number").setValue(cell_number).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        mProgressDialog.dismiss();
-                                        startActivity(new Intent(getApplicationContext(), PaymentGatewayWebView.class));
-                                        finish();
+                        if (!TextUtils.isEmpty(billing_address)) {
+
+                            if (!TextUtils.isEmpty(cell_number)) {
+
+                                mProgressDialog.setMessage("Updating Billing Information ...");
+                                mProgressDialog.show();
+
+                                mDatabase.child("billing_infomation").child("full_names").setValue(full_names);
+                                mDatabase.child("billing_infomation").child("delivery_address").setValue(billing_address);
+                                mDatabase.child("billing_infomation").child("phone_number").setValue(cell_number).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            mProgressDialog.dismiss();
+                                            startActivity(new Intent(getApplicationContext(), PaymentGatewayWebView.class));
+                                            finish();
+                                        }
                                     }
-                                }
-                            });
+                                });
+                            } else {
+                                mPhoneNumberEditText.setError("Field empty");
+                            }
                         } else {
-                            mPhoneNumberEditText.setError("Field empty");
+                            mBillingAddressEditText.setError("Field empty");
                         }
                     } else {
-                        mBillingAddressEditText.setError("Field empty");
+                        mFullNamesEditText.setError("Field empty");
                     }
-                } else {
-                    mFullNamesEditText.setError("Field empty");
                 }
+            });
+        }else if (!isNetworkAvailable()) {
+
+                Snackbar snack = Snackbar.make(findViewById(R.id.relative_layout), "No Connection Available, please check your internet settings and try again.", Snackbar.LENGTH_INDEFINITE).setDuration(10000);
+                snack.getView().setBackgroundColor(ContextCompat.getColor(getApplicationContext(), android.R.color.holo_red_dark));
+                View view = snack.getView();
+                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
+                params.gravity = Gravity.TOP;
+                view.setLayoutParams(params);
+                snack.show();
             }
-        });
 
     }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+
 }

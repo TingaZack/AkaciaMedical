@@ -1,21 +1,32 @@
 package com.android.msqhealthpoc1.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.msqhealthpoc1.R;
 import com.android.msqhealthpoc1.dialogs.CartDialogs;
@@ -48,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
-    private FirebaseUser user;
     List<Map<String, Object>> items = new ArrayList<>();
 
     /**
@@ -59,50 +69,31 @@ public class MainActivity extends AppCompatActivity {
     private PrefManager prefManager;
     private DatabaseReference mDatabase, mDatabaseUsers;
     private FirebaseAuth mAuth;
+    private int cart_count = 0;
+    private TextView mCartCountTextView;
+    private FirebaseUser user;
+
+    private RelativeLayout mCartRelativeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main_menu);
 
-        mAuth = FirebaseAuth.getInstance();
-
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user == null) {
-            finish();
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
-        }
-
-//        prefManager = new PrefManager(this);
-//        if (prefManager.isFirstTimeSignup()) {
-//            launchOnboardingScreen();
-//            finish();
-//        }
-
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child("users");
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            String uid = user.getUid();
-            mDatabase.child("users").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.getValue() == null) {
-                        finish();
-                        startActivity(new Intent(MainActivity.this, WelcomeActivity.class));
-                    }
-                }
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-        }
-
-        setContentView(R.layout.activity_main);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //Initialising and setting my toolBar
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar_main);
+        myToolbar.setTitle("MSQ Health");
+        setSupportActionBar(myToolbar);
+        //Setting up the back button click listener
+        myToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        //Setting up the icon for the drop down menu, which is called options menu.
+        Drawable drawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_more_vert_black_24dp);
+        myToolbar.setOverflowIcon(drawable);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -114,16 +105,85 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ProfileDialog dialog = new ProfileDialog();
-                dialog.show(getSupportFragmentManager(), "Profile");
-            }
-        });
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child("users");
 
-        checkIfUserExist();
+        mCartCountTextView = findViewById(R.id.actionbar_notifcation_textview);
+        mCartRelativeLayout = findViewById(R.id.cart_layout);
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        mAuth = FirebaseAuth.getInstance();
+
+        if (user !=  null) {
+
+            mDatabaseUsers.child(user.getUid()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        cart_count = (int) dataSnapshot.child("cart").child("cart-items").getChildrenCount();
+                        if (cart_count == 0) {
+                            mCartCountTextView.setVisibility(View.GONE);
+                        } else {
+                            mCartCountTextView.setVisibility(View.VISIBLE);
+                            mCartCountTextView.setText(String.valueOf(cart_count));
+                            mCartRelativeLayout.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    CartDialogs dialog = new CartDialogs();
+                                    dialog.show(getSupportFragmentManager(), "Checkout");
+                                }
+                            });
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+        if (isNetworkAvailable()) {
+
+            if (user == null) {
+                finish();
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            }
+
+            if (user != null) {
+                System.out.println("EMAIL VERIFIED: " + user.isEmailVerified());
+                String uid = user.getUid();
+                mDatabase.child("users").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.getValue() == null) {
+                            finish();
+                            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+                checkIfUserExist();
+                checkEmailVerification();
+        }
+
+
+        } else if (!isNetworkAvailable()) {
+
+            Snackbar snack = Snackbar.make(findViewById(R.id.linear), "No Connection Available, please check your internet settings and try again.",
+                    Snackbar.LENGTH_INDEFINITE).setDuration(5000);
+            snack.getView().setBackgroundColor(ContextCompat.getColor(getApplicationContext(), android.R.color.holo_red_dark));
+            View view = snack.getView();
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
+            params.gravity = Gravity.TOP;
+            view.setLayoutParams(params);
+            snack.show();
+        }
 
     }
 
@@ -132,6 +192,23 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+//        MenuItem item = menu.findItem(R.id.action_cart);
+//        MenuItemCompat.setActionView(item, R.layout.badge_layout);
+//        RelativeLayout notifCount = (RelativeLayout)   MenuItemCompat.getActionView(item);
+//
+//        tv = (TextView) notifCount.findViewById(R.id.actionbar_notifcation_textview);
+//        tv.setText(String.valueOf()cart_count);
+//
+//        tv.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                Toast.makeText(MainActivity.this, "Hello Cart", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+
+
         return true;
     }
 
@@ -142,14 +219,7 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_sign_out) {
-            FirebaseAuth.getInstance().signOut();
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-            return true;
-        } if (id == R.id.action_profile) {
+        if (id == R.id.action_profile) {
             Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
             startActivity(intent);
             return true;
@@ -158,10 +228,11 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, ContactUsActivity.class);
             startActivity(intent);
             return true;
-        } else if (id == R.id.action_cart) {
-            CartDialogs dialog = new CartDialogs();
-            dialog.show(getSupportFragmentManager(), "Checkout");
         }
+//        else if (id == R.id.action_cart) {
+//            CartDialogs dialog = new CartDialogs();
+//            dialog.show(getSupportFragmentManager(), "Checkout");
+//        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -249,7 +320,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void launchOnboardingScreen() {
-        startActivity(new Intent(MainActivity.this, WelcomeActivity.class));
+        startActivity(new Intent(MainActivity.this, WelcomeSetupActivity.class));
         finish();
     }
 
@@ -263,14 +334,11 @@ public class MainActivity extends AppCompatActivity {
                 //@param dataSnapshot returns the results
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    //Chech if the result has a child on the database
-
+                    //Check if the result has a child on the database
                     if (!dataSnapshot.child(user_uid).hasChild("Practice_Number")) {
-
                         Intent setupIntent = new Intent(MainActivity.this, WelcomeSetupActivity.class);
                         setupIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(setupIntent);
-
                     }
                 }
 
@@ -283,5 +351,19 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void checkEmailVerification() {
+        if (!user.isEmailVerified()) {
+            Intent setupIntent = new Intent(getApplicationContext(), LoginActivity.class);
+            setupIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(setupIntent);
+            Toast.makeText(this, "Please verify the email", Toast.LENGTH_SHORT).show();
+        }
+    }
 
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 }
