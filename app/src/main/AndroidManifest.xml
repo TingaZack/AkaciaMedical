@@ -67,7 +67,6 @@
         <activity
             android:name=".activities.ProfileActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.CartActvity"></activity>
     </application>
 
 </manifest>

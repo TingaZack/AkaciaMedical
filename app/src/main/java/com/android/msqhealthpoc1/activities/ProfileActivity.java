@@ -1,0 +1,255 @@
+package com.android.msqhealthpoc1.activities;
+
+import android.content.Context;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.Gravity;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.android.msqhealthpoc1.R;
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
+
+public class ProfileActivity extends AppCompatActivity {
+
+    private static final int GALLERY_REQUEST_CODE = 1;
+    private EditText mNameEditText, mSpecialityEditText, mSuburbEditText, mTelephoneEditText;
+    private ImageButton mNameButtonEdit, mSpecialityButtonEdit, mSuburbButtonEdit, mTelephoneButtonEdit;
+    private Button mLogoutButton;
+    private TextView mEmailTextView, mPracticeNumberTextView;
+    private FloatingActionButton mFab;
+    private ImageView mUserImageView;
+
+    private Uri mImageUri;
+
+    private DatabaseReference mDatabaseUsers;
+    private StorageReference mStorage;
+    private FirebaseAuth mAuth;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_profile);
+
+            mNameEditText = findViewById(R.id.profile_name);
+            mNameButtonEdit = findViewById(R.id.name_edit);
+            mSpecialityEditText = findViewById(R.id.profile_speciality);
+            mSpecialityButtonEdit = findViewById(R.id.speciality_edit);
+            mSuburbEditText = findViewById(R.id.profile_suburb);
+            mSuburbButtonEdit = findViewById(R.id.suburb_edit);
+            mTelephoneEditText = findViewById(R.id.profile_telephone);
+            mTelephoneButtonEdit = findViewById(R.id.telephone_edit);
+            mLogoutButton = findViewById(R.id.profile_logout);
+            mUserImageView = findViewById(R.id.user_img);
+
+            mFab = findViewById(R.id.profile_pic_edit);
+
+            mEmailTextView = findViewById(R.id.profile_email);
+            mPracticeNumberTextView = findViewById(R.id.profile_practice_number);
+
+            mNameButtonEdit.setBackgroundResource(R.drawable.ic_mode_edit_black);
+            mSuburbButtonEdit.setBackgroundResource(R.drawable.ic_mode_edit_black);
+            mSpecialityButtonEdit.setBackgroundResource(R.drawable.ic_mode_edit_black);
+            mTelephoneButtonEdit.setBackgroundResource(R.drawable.ic_mode_edit_black);
+
+            mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child("users");
+            mDatabaseUsers.keepSynced(true);
+            mStorage = FirebaseStorage.getInstance().getReference();
+
+            mNameEditText.setEnabled(false);
+            mSuburbEditText.setEnabled(false);
+            mSpecialityEditText.setEnabled(false);
+            mTelephoneEditText.setEnabled(false);
+
+            mDatabaseUsers.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    mNameEditText.setText((String) dataSnapshot.child("Name").getValue());
+                    mSpecialityEditText.setText((String) dataSnapshot.child("Speciality").getValue());
+                    mSuburbEditText.setText((String) dataSnapshot.child("Suburb").getValue());
+                    mTelephoneEditText.setText((String) dataSnapshot.child("Telephone").getValue());
+                    mEmailTextView.setText((String) dataSnapshot.child("Email").getValue());
+                    mPracticeNumberTextView.setText((String) dataSnapshot.child("Practice_Number").getValue());
+                    Glide.with(getApplicationContext()).load(dataSnapshot.child("Display_Image").getValue()).into(mUserImageView);
+
+                    System.out.println("IMAGEVIEW: " + dataSnapshot.child("Display_Image").getValue());
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+        if (isNetworkAvailable()) {
+
+            mNameButtonEdit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mNameEditText.isEnabled()) {
+                        mNameEditText.setEnabled(false);
+                        mNameButtonEdit.setBackgroundResource(R.drawable.ic_mode_edit_black);
+                    } else {
+                        mNameEditText.setEnabled(true);
+                        mNameButtonEdit.setBackgroundResource(R.drawable.ic_save_black_24dp);
+                        mDatabaseUsers.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").setValue(mNameEditText.getText().toString());
+                    }
+                }
+            });
+
+            mSpecialityButtonEdit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mSpecialityEditText.isEnabled()) {
+                        mSpecialityEditText.setEnabled(false);
+                        mSpecialityButtonEdit.setBackgroundResource(R.drawable.ic_mode_edit_black);
+                    } else {
+                        mSpecialityEditText.setEnabled(true);
+                        mSpecialityButtonEdit.setBackgroundResource(R.drawable.ic_save_black_24dp);
+                        mDatabaseUsers.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Speciality").setValue(mSpecialityEditText.getText().toString());
+                    }
+                }
+            });
+
+            mSuburbButtonEdit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mSuburbEditText.isEnabled()) {
+                        mSuburbEditText.setEnabled(false);
+                        mSuburbButtonEdit.setBackgroundResource(R.drawable.ic_mode_edit_black);
+                    } else {
+                        mSuburbEditText.setEnabled(true);
+                        mSuburbButtonEdit.setBackgroundResource(R.drawable.ic_save_black_24dp);
+                        mDatabaseUsers.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Suburb").setValue(mSuburbEditText.getText().toString());
+                    }
+                }
+            });
+
+            mTelephoneButtonEdit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mTelephoneEditText.isEnabled()) {
+                        mTelephoneEditText.setEnabled(false);
+                        mTelephoneButtonEdit.setBackgroundResource(R.drawable.ic_mode_edit_black);
+                    } else {
+                        mTelephoneEditText.setEnabled(true);
+                        mTelephoneButtonEdit.setBackgroundResource(R.drawable.ic_save_black_24dp);
+                        mDatabaseUsers.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Telephone").setValue(mTelephoneEditText.getText().toString());
+                    }
+                }
+            });
+
+            logoutButton();
+            editPhoto();
+
+        } else if (!isNetworkAvailable()) {
+
+            Snackbar snack = Snackbar.make(findViewById(R.id.relative_layout), "No Connection Available, please check your internet settings and try again.", Snackbar.LENGTH_INDEFINITE).setDuration(10000);
+            snack.getView().setBackgroundColor(ContextCompat.getColor(getApplicationContext(), android.R.color.holo_red_dark));
+            View view = snack.getView();
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
+            params.gravity = Gravity.TOP;
+            view.setLayoutParams(params);
+            snack.show();
+        }
+
+    }
+
+    public void editPhoto() {
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                galleryIntent.setType("image/*");
+                startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE);
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == GALLERY_REQUEST_CODE && resultCode == RESULT_OK) {
+
+            Uri imageUri = data.getData();
+
+            CropImage.activity(imageUri)
+                    .setGuidelines(CropImageView.Guidelines.ON)
+                    .setCropShape(CropImageView.CropShape.OVAL)
+                    .setFixAspectRatio(true)
+                    .setAspectRatio(1, 1)
+                    .start(this);
+
+        }
+
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                mImageUri = result.getUri();
+
+                mUserImageView.setImageURI(mImageUri);
+
+                StorageReference filePath = mStorage.child("profile_pictures/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
+                filePath.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Uri downloadedUri = taskSnapshot.getDownloadUrl();
+                        mDatabaseUsers.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Display_Image").setValue(downloadedUri.toString());
+                    }
+                });
+
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+            }
+        }
+    }
+
+    //method for enable or disable edittext
+    private void logoutButton() {
+        mLogoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+
+}
