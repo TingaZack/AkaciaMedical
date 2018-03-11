@@ -106,7 +106,7 @@ public class PromotionalContentRecyclerViewAdapter extends RecyclerView.Adapter<
                             @Override
                             public void onClick(View v) {
 //
-//                                holder.mQuantity.setText(String.valueOf(1));
+                                holder.mQuantity.setText(String.valueOf(1));
 
                                 if (holder.mQuantity.getText().toString() == "") {
                                     holder.mQuantity.setError("Please add quantity...");
@@ -146,7 +146,7 @@ public class PromotionalContentRecyclerViewAdapter extends RecyclerView.Adapter<
                         holder.btnAddToCart.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-//                                holder.mQuantity.setText(String.valueOf(1));
+                                holder.mQuantity.setText(String.valueOf(1));
                                 if (holder.mQuantity.getText().toString() == "") {
                                     holder.mQuantity.setError("Please add quantity...");
                                     return;

@@ -19,7 +19,7 @@
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_alignParentRight="true"
-                android:src="@drawable/ribbon_special" />
+                android:src="@drawable/orange_ribbon_special" />
 
             <TextView
                 android:id="@+id/tv_percentage"
@@ -51,7 +51,8 @@
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:layout_gravity="center"
-                        android:src="@color/bg_screen1" />
+                        android:src="@color/bg_screen1"
+                        android:visibility="gone"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -94,15 +95,6 @@
                                 android:text="MSQ5544454"
                                 android:layout_weight="1"/>
 
-                            <TextView
-                                android:id="@+id/tv_price"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="R 3.62"
-                                android:textAppearance="?android:textAppearanceMedium"
-                                android:textStyle="bold"
-                                android:layout_weight="1"
-                                android:gravity="right"/>
 
                         </LinearLayout>
 
@@ -114,9 +106,8 @@
 
                             <TextView
                                 android:id="@+id/tv_start_date"
-                                android:layout_width="match_parent"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
                                 android:text="05 February 2018"
                                 android:textColor="@color/colorAccent"
                                 android:textSize="12sp" />
@@ -131,10 +122,8 @@
 
                             <TextView
                                 android:id="@+id/tv_end_date"
-                                android:layout_width="match_parent"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="right"
                                 android:text="07 February 2018"
                                 android:textColor="@color/colorAccent"
                                 android:textSize="12sp" />
@@ -162,7 +151,8 @@
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="3.5">
+                        android:layout_weight="3.5"
+                        android:visibility="gone">
 
                         <android.support.design.widget.TextInputEditText
                             android:id="@+id/cart_item_quantity"
@@ -175,14 +165,28 @@
 
                     </android.support.design.widget.TextInputLayout>
 
+                    <TextView
+                        android:id="@+id/tv_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="R 3.62"
+                        android:textAppearance="?android:textAppearanceMedium"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="16dp"
+                        android:layout_weight="1"/>
+
+
                     <Button
                         android:id="@+id/addToCart"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
+                        android:textColorHint="@color/colorPrimary"
+                        android:layout_weight="1"
+                        android:layout_margin="8dp"
+                        android:textColor="#fff"
+                        android:background="@drawable/square_blue_button"
+                        android:fontFamily="sans-serif"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:background="@drawable/button_round_orange"
-                        android:text="Add"
-                        android:textColor="@android:color/white" />
+                        android:text="Add to Cart" />
 
                 </LinearLayout>
 
