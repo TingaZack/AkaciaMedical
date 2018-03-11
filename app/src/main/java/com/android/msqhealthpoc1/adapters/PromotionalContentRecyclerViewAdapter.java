@@ -71,82 +71,64 @@ public class PromotionalContentRecyclerViewAdapter extends RecyclerView.Adapter<
         Glide.with(activity).load(mValues.get(position).trueImageUrl).into(holder.mProductImage);
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            DatabaseReference mCheckReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("cart");
+            mCheckReference.child("cart-items").child(mValues.get(position).getCode()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        for (DataSnapshot snapShot : dataSnapshot.getChildren()) {
+                            System.out.println("EXIST");
+                            holder.btnAddToCart.setAlpha(.5f);
+                            holder.btnAddToCart.setClickable(false);
+                            holder.btnAddToCart.setEnabled(false);
+                        }
+                    } else if (!dataSnapshot.exists()) {
+                        System.out.println("EXIST NOT");
+                        holder.btnAddToCart.setEnabled(true);
+                    }
+                }
 
-        DatabaseReference mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("cart").child("cart-items").child(mValues.get(position).code);
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-        mDatabaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(final DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() != null) {
-                    holder.btnAddToCart.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (holder.mQuantity.getText().toString() == "") {
-                                holder.mQuantity.setError("Please add quantity...");
-                                return;
-                            }
+                }
+            });
 
-                            CartItem item = dataSnapshot.getValue(CartItem.class);
-                            try {
-                                if (holder.mQuantity.getText() != null) {
-                                    item.setQuantity(item.getQuantity() + Integer.parseInt(holder.mQuantity.getText().toString()));
-                                } else {
-                                    item.setQuantity(item.getQuantity() + 1);
+
+            DatabaseReference mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("cart").child("cart-items").child(mValues.get(position).code);
+
+            mDatabaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(final DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.getValue() != null) {
+                        holder.btnAddToCart.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+//
+//                                holder.mQuantity.setText(String.valueOf(1));
+
+                                if (holder.mQuantity.getText().toString() == "") {
+                                    holder.mQuantity.setError("Please add quantity...");
                                     return;
                                 }
-                            } catch (Exception ex) {
-                                holder.mQuantity.setError("Please add a quantity");
-                                return;
-                            }
-                            Map<String, Object> postValues = item.toMap();
 
-                            Map<String, Object> childUpdates = new HashMap<>();
-                            childUpdates.put("/cart/cart-items/" + mValues.get(position).getCode(), postValues);
-                            FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        Toast.makeText(activity, "Item added to cart", Toast.LENGTH_SHORT).show();
+                                CartItem item = dataSnapshot.getValue(CartItem.class);
+                                try {
+                                    if (holder.mQuantity.getText() != null) {
+                                        item.setQuantity(item.getQuantity() + Integer.parseInt(holder.mQuantity.getText().toString()));
                                     } else {
-                                        task.getException().printStackTrace();
+                                        item.setQuantity(item.getQuantity() + 1);
+                                        return;
                                     }
+                                } catch (Exception ex) {
+                                    holder.mQuantity.setError("Please add a quantity");
+                                    return;
                                 }
-                            });
-                        }
-                    });
-                } else {
-                    holder.btnAddToCart.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (holder.mQuantity.getText().toString() == "") {
-                                holder.mQuantity.setError("Please add quantity...");
-                                return;
-                            }
-                            CartItem cartItem = new CartItem();
-                            cartItem.setOwner_id(user.getUid());
-                            cartItem.setProduct(holder.mItem);
-                            cartItem.setQuantity(1);
+                                Map<String, Object> postValues = item.toMap();
 
-                            try {
-                                if (holder.mQuantity.getText() != null) {
-                                    cartItem.setQuantity(Integer.parseInt(holder.mQuantity.getText().toString()));
-                                } else {
-                                    cartItem.setQuantity(1);
-                                }
-                            } catch (Exception ex) {
-                                holder.mQuantity.setError("Please add a quantity");
-                                return;
-                            }
-
-                            Map<String, Object> postValues = cartItem.toMap();
-
-                            String key = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("cart").push().getKey();
-
-
-                            if (isNetworkAvailable()) {
                                 Map<String, Object> childUpdates = new HashMap<>();
                                 childUpdates.put("/cart/cart-items/" + mValues.get(position).getCode(), postValues);
-
                                 FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
@@ -157,29 +139,79 @@ public class PromotionalContentRecyclerViewAdapter extends RecyclerView.Adapter<
                                         }
                                     }
                                 });
-                            } else if (!isNetworkAvailable()) {
-                                Snackbar snack = Snackbar.make(holder.mRelativeLayout, "No Connection Available, please check your internet settings and try again.",
-                                        Snackbar.LENGTH_INDEFINITE).setDuration(1000);
-                                snack.getView().setBackgroundColor(ContextCompat.getColor(activity, android.R.color.holo_red_dark));
-                                View view = snack.getView();
-                                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
-                                params.gravity = Gravity.TOP;
-                                view.setLayoutParams(params);
-                                snack.show();
+                                Toast.makeText(activity, "The First one", Toast.LENGTH_SHORT).show();
                             }
-                        }
-                    });
-                }
-            }
+                        });
+                    } else {
+                        holder.btnAddToCart.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+//                                holder.mQuantity.setText(String.valueOf(1));
+                                if (holder.mQuantity.getText().toString() == "") {
+                                    holder.mQuantity.setError("Please add quantity...");
+                                    return;
+                                }
+                                CartItem cartItem = new CartItem();
+                                cartItem.setOwner_id(user.getUid());
+                                cartItem.setProduct(holder.mItem);
+                                cartItem.setQuantity(1);
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                if (databaseError != null) {
-                    databaseError.toException().printStackTrace();
-                    Toast.makeText(activity, databaseError.getMessage(), Toast.LENGTH_LONG).show();
+                                try {
+                                    if (holder.mQuantity.getText() != null) {
+                                        cartItem.setQuantity(Integer.parseInt(holder.mQuantity.getText().toString()));
+                                    } else {
+                                        cartItem.setQuantity(1);
+                                    }
+                                } catch (Exception ex) {
+                                    holder.mQuantity.setError("Please add a quantity");
+                                    return;
+                                }
+
+                                Map<String, Object> postValues = cartItem.toMap();
+
+                                String key = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("cart").push().getKey();
+
+
+                                if (isNetworkAvailable()) {
+                                    Map<String, Object> childUpdates = new HashMap<>();
+                                    childUpdates.put("/cart/cart-items/" + mValues.get(position).getCode(), postValues);
+
+                                    FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Toast.makeText(activity, "Item added to cart", Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                task.getException().printStackTrace();
+                                            }
+                                        }
+                                    });
+                                    Toast.makeText(activity, "The Second one", Toast.LENGTH_SHORT).show();
+                                } else if (!isNetworkAvailable()) {
+                                    Snackbar snack = Snackbar.make(holder.mRelativeLayout, "No Connection Available, please check your internet settings and try again.",
+                                            Snackbar.LENGTH_INDEFINITE).setDuration(1000);
+                                    snack.getView().setBackgroundColor(ContextCompat.getColor(activity, android.R.color.holo_red_dark));
+                                    View view = snack.getView();
+                                    FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
+                                    params.gravity = Gravity.TOP;
+                                    view.setLayoutParams(params);
+                                    snack.show();
+                                }
+                            }
+                        });
+
+                    }
                 }
-            }
-        });
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    if (databaseError != null) {
+                        databaseError.toException().printStackTrace();
+                        Toast.makeText(activity, databaseError.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        }
 
     }
 

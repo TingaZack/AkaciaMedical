@@ -83,6 +83,18 @@ public class WelcomeSetupActivity extends AppCompatActivity {
                 mDatabasePractice = FirebaseDatabase.getInstance().getReference().child("doctors_practice_numbers");
                 mUsersDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getCurrentUser().getUid());
 
+                mUsersDatabase.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        dataSnapshot.child("Practice_Number").getValue();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
                 checkEmailVerification();
                 checkIfUserExist();
 
@@ -106,10 +118,24 @@ public class WelcomeSetupActivity extends AppCompatActivity {
                             progressDialog.setCancelable(false);
                             progressDialog.show();
 
+                            mUsersDatabase.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    dataSnapshot.child("Practice_Number").getValue();
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+
                             query.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     if (dataSnapshot.exists()) {
+
+
 
                                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                             name = (String) snapshot.child("NAME").getValue();
@@ -149,6 +175,7 @@ public class WelcomeSetupActivity extends AppCompatActivity {
                                                                             if (task.isSuccessful()) {
 //                                                                                progressDialog.dismiss();
                                                                                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                                                                finish();
                                                                             }
                                                                         }
                                                                     });

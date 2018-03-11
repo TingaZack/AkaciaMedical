@@ -95,11 +95,15 @@ public class CartDialogs extends DialogFragment {
                 public void onDataChange(final DataSnapshot dataSnapshot) {
                     double _amount = 0;
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        try{
                         CartItem cartItem = new CartItem();
                         cartItem.setQuantity(Integer.parseInt(snapshot.child("quantity").getValue().toString()));
                         _amount = _amount + ((Double.parseDouble(String.valueOf(snapshot.child("product").child("price").getValue()))) * (Integer.parseInt(snapshot.child("quantity").getValue().toString())));
 
                         System.out.println("Amount is " + _amount);
+                    } catch (Exception e){
+                            e.getMessage();
+                        }
                     }
 
                     final double amount = _amount;
@@ -122,24 +126,28 @@ public class CartDialogs extends DialogFragment {
                             items.clear();
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 //Create cart item and set initial values
-                                CartItem item = new CartItem();
-                                item.setQuantity(Integer.parseInt(String.valueOf((long) snapshot.child("quantity").getValue())));
-                                item.setOwner_id(uid);
+                                try {
+                                    CartItem item = new CartItem();
+                                    item.setQuantity(Integer.parseInt(String.valueOf((long) snapshot.child("quantity").getValue())));
+                                    item.setOwner_id(uid);
 
-                                //Create and set product object
-                                Product product = new Product();
-                                product.setCode(snapshot.child("product").child("code").getValue().toString());
-                                product.setConsumables(snapshot.child("product").child("consumables").getValue().toString());
-                                product.setDescription(snapshot.child("product").child("description").getValue().toString());
-                                product.setPrice(Double.parseDouble(snapshot.child("product").child("price").getValue().toString()));
-                                product.setTrueImageUrl(snapshot.child("product").child("trueImageUrl").getValue().toString());
-                                product.setUnit_of_messuremeant(snapshot.child("product").child("unit_of_messuremeant").getValue().toString());
-                                //Add product to cartItem
-                                item.setProduct(product);
-                                if (item != null) {
-                                    items.add(item);
-                                } else {
-                                    System.out.println("No Item found");
+                                    //Create and set product object
+                                    Product product = new Product();
+                                    product.setCode(snapshot.child("product").child("code").getValue().toString());
+                                    product.setConsumables(snapshot.child("product").child("consumables").getValue().toString());
+                                    product.setDescription(snapshot.child("product").child("description").getValue().toString());
+                                    product.setPrice(Double.parseDouble(snapshot.child("product").child("price").getValue().toString()));
+                                    product.setTrueImageUrl(snapshot.child("product").child("trueImageUrl").getValue().toString());
+                                    product.setUnit_of_messuremeant(snapshot.child("product").child("unit_of_messuremeant").getValue().toString());
+                                    //Add product to cartItem
+                                    item.setProduct(product);
+                                    if (item != null) {
+                                        items.add(item);
+                                    } else {
+                                        System.out.println("No Item found");
+                                    }
+                                }catch (Exception e){
+                                    e.getMessage();
                                 }
                             }
 
