@@ -82,11 +82,12 @@ public class WelcomeSetupActivity extends AppCompatActivity {
 
                 mDatabasePractice = FirebaseDatabase.getInstance().getReference().child("doctors_practice_numbers");
                 mUsersDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getCurrentUser().getUid());
+                DatabaseReference mUsersData = FirebaseDatabase.getInstance().getReference().child("users");
 
-                mUsersDatabase.addValueEventListener(new ValueEventListener() {
+                mUsersData.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        dataSnapshot.child("Practice_Number").getValue();
+                        System.out.println("PRACT AVA: " + dataSnapshot.child("Practice_Number").getValue());
                     }
 
                     @Override
@@ -121,7 +122,7 @@ public class WelcomeSetupActivity extends AppCompatActivity {
                             mUsersDatabase.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
-                                    dataSnapshot.child("Practice_Number").getValue();
+                                    System.out.println("PRACT AVA: " + dataSnapshot.child("Practice_Number").getValue());
                                 }
 
                                 @Override
