@@ -87,7 +87,9 @@ public class WelcomeSetupActivity extends AppCompatActivity {
                 mUsersData.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        System.out.println("PRACT AVA: " + dataSnapshot.child("Practice_Number").getValue());
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            System.out.println("PRACT AVAI: " + snapshot.child("Practice_Number").getValue());
+                        }
                     }
 
                     @Override
