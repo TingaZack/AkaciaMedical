@@ -1,7 +1,6 @@
 package com.android.msqhealthpoc1.activities;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -31,7 +30,6 @@ import com.google.firebase.database.ValueEventListener;
 import org.apache.http.util.EncodingUtils;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -45,7 +43,6 @@ public class PaymentGatewayWebView extends AppCompatActivity {
 
     List<Map<String, Object>> items = new ArrayList<>();
     private WebView webView;
-    private Intent intent;
     private ProgressDialog pDialog;
     private FirebaseUser user;
     CkXml sendXml;
@@ -110,7 +107,7 @@ public class PaymentGatewayWebView extends AppCompatActivity {
                     CartItem cartItem = new CartItem();
 
                     _amount = _amount + ((Double.parseDouble(String.valueOf(snapshot.child("product").child("price").getValue()))) * (Integer.parseInt(snapshot.child("quantity").getValue().toString())));
-                    total = total +_amount;
+                    total = total + _amount;
                     xml.put_Tag("Row");
                     xml.NewChild("Product|No", String.valueOf(i));
                     xml.NewChild("Product|Part Nr", snapshot.child("product").child("code").getValue().toString());
@@ -120,7 +117,7 @@ public class PaymentGatewayWebView extends AppCompatActivity {
                     xml.NewChild("Product|Total Rand Price", String.valueOf(_amount));
 
                     sendXml.AddChildTree(xml);
-                    System.out.println( sendXml.getXml()+"\n\n\n\n");
+                    System.out.println(sendXml.getXml() + "\n\n\n\n");
                     xml.Clear();
 
                     cartItem.setQuantity(Integer.parseInt(snapshot.child("quantity").getValue().toString()));
@@ -148,7 +145,7 @@ public class PaymentGatewayWebView extends AppCompatActivity {
                             "MerchantReference=" + user.getUid() + "1&" +
                             "Amount=" + total + "&" +
                             "RedirectSuccessfulURL=http://akacia.co.za" + "&" +
-                            "RedirectFailedURL=https://virtual.mygateglobal.com/success_failure.php&" +
+                            "RedirectFailedURL=http://failed.akacia.co.za" +
                             "txtCurrencyCode=ZAR&";
                     builder = new StringBuilder(postParams);
                     builder.deleteCharAt(builder.length() - 1);
@@ -252,8 +249,11 @@ public class PaymentGatewayWebView extends AppCompatActivity {
 
                     }
                 });
-
+            } else if (url.startsWith("http://failed.akacia.co.za")) {
+                Toast.makeText(getApplicationContext(), "Payment was not completed. Please checkout again", Toast.LENGTH_LONG).show();
+                finish();
             } else {
+                
             }
         }
 

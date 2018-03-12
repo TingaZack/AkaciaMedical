@@ -133,6 +133,8 @@ public class CartDialogListAdapter extends RecyclerView.Adapter<CartDialogListAd
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists()){
                                 dataSnapshot.getRef().setValue(null);
+                                mValues.remove(position);
+                                notifyDataSetChanged();
                                 showDialog();
                             }
                         }
