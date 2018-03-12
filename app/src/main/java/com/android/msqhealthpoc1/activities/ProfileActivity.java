@@ -124,10 +124,10 @@ public class ProfileActivity extends AppCompatActivity {
                     if (mNameEditText.isEnabled()) {
                         mNameEditText.setEnabled(false);
                         mNameButtonEdit.setBackgroundResource(R.drawable.ic_mode_edit_black);
+                        mDatabaseUsers.child(mAuth.getCurrentUser().getUid()).child("Name").setValue(mNameEditText.getText().toString());
                     } else {
                         mNameEditText.setEnabled(true);
                         mNameButtonEdit.setBackgroundResource(R.drawable.ic_save_black_24dp);
-                        mDatabaseUsers.child(mAuth.getCurrentUser().getUid()).child("Name").setValue(mNameEditText.getText().toString());
                     }
                 }
             });
@@ -138,10 +138,11 @@ public class ProfileActivity extends AppCompatActivity {
                     if (mSpecialityEditText.isEnabled()) {
                         mSpecialityEditText.setEnabled(false);
                         mSpecialityButtonEdit.setBackgroundResource(R.drawable.ic_mode_edit_black);
+                        mDatabaseUsers.child(mAuth.getCurrentUser().getUid()).child("Speciality").setValue(mSpecialityEditText.getText().toString());
                     } else {
                         mSpecialityEditText.setEnabled(true);
                         mSpecialityButtonEdit.setBackgroundResource(R.drawable.ic_save_black_24dp);
-                        mDatabaseUsers.child(mAuth.getCurrentUser().getUid()).child("Speciality").setValue(mSpecialityEditText.getText().toString());
+
                     }
                 }
             });
@@ -152,10 +153,10 @@ public class ProfileActivity extends AppCompatActivity {
                     if (mSuburbEditText.isEnabled()) {
                         mSuburbEditText.setEnabled(false);
                         mSuburbButtonEdit.setBackgroundResource(R.drawable.ic_mode_edit_black);
+                        mDatabaseUsers.child(mAuth.getCurrentUser().getUid()).child("Suburb").setValue(mSuburbEditText.getText().toString());
                     } else {
                         mSuburbEditText.setEnabled(true);
                         mSuburbButtonEdit.setBackgroundResource(R.drawable.ic_save_black_24dp);
-                        mDatabaseUsers.child(mAuth.getCurrentUser().getUid()).child("Suburb").setValue(mSuburbEditText.getText().toString());
                     }
                 }
             });
@@ -166,15 +167,11 @@ public class ProfileActivity extends AppCompatActivity {
                     if (mTelephoneEditText.isEnabled()) {
                         mTelephoneEditText.setEnabled(false);
                         mTelephoneButtonEdit.setBackgroundResource(R.drawable.ic_mode_edit_black);
+                        mDatabaseUsers.child(mAuth.getCurrentUser().getUid()).child("Telephone").setValue(mTelephoneEditText.getText().toString());
+
                     } else {
                         mTelephoneEditText.setEnabled(true);
                         mTelephoneButtonEdit.setBackgroundResource(R.drawable.ic_save_black_24dp);
-                        mDatabaseUsers.child(mAuth.getCurrentUser().getUid()).child("Telephone").setValue(mTelephoneEditText.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                Toast.makeText(ProfileActivity.this, "Saved", Toast.LENGTH_SHORT).show();
-                            }
-                        });
                     }
                 }
             });
