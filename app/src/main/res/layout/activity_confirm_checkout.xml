@@ -96,7 +96,6 @@
                 android:fontFamily="sans-serif"
                 android:hint="Phone Number(Contact Person)"
                 android:inputType="phone"
-                android:maxLength="10"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="15sp"
                 android:textStyle="bold" />

@@ -10,7 +10,9 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -57,37 +59,80 @@ public class ConfirmCheckoutActivity extends AppCompatActivity {
 //        mUser = mAuth.getCurrentUser();
             user_id = mAuth.getCurrentUser().getUid();
 
-            mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user_id);
-            mDatabase.keepSynced(true);
 
-            //if the billing information exists, the user will go straight to the payment gateway.
-//            mDatabase.child("billing_infomation").addValueEventListener(new ValueEventListener() {
+//            mPhoneNumberEditText.addTextChangedListener(new TextWatcher() {
+//                int prevL = 0;
+//
 //                @Override
-//                public void onDataChange(DataSnapshot dataSnapshot) {
-//                    if (dataSnapshot.exists()) {
-//                        startActivity(new Intent(getApplicationContext(), PaymentGatewayWebView.class));
-//                        finish();
-//                    }
+//                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//                    prevL = mPhoneNumberEditText.getText().toString().length();
+//
 //                }
 //
 //                @Override
-//                public void onCancelled(DatabaseError databaseError) {
+//                public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//                }
+//
+//                @Override
+//                public void afterTextChanged(Editable s) {
+//
+//                    int length = s.length();
+//                    if ((prevL < length) && (length == 4 || length == 9 || length == 14)) {
+//                        s.append("-");
+//                    }
 //
 //                }
 //            });
 
-            mDatabase.addValueEventListener(new ValueEventListener() {
+
+            mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user_id);
+            mDatabase.keepSynced(true);
+
+            mDatabase.child("billing_infomation").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    address = (String) dataSnapshot.child("Suburb").getValue();
-                    name = (String) dataSnapshot.child("Name").getValue();
-                    telephone = (String) dataSnapshot.child("Telephone").getValue();
+                    if (!dataSnapshot.exists()) {
+                        mDatabase.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                address = (String) dataSnapshot.child("Suburb").getValue();
+                                name = (String) dataSnapshot.child("Name").getValue();
+                                telephone = (String) dataSnapshot.child("Telephone").getValue();
 
-                    System.out.println("Name : " + name);
+                                System.out.println("Name : " + name);
 
-                    mFullNamesEditText.setText(name);
-                    mBillingAddressEditText.setText(address);
-                    mPhoneNumberEditText.setText(telephone);
+                                mFullNamesEditText.setText(name);
+                                mBillingAddressEditText.setText(address);
+                                mPhoneNumberEditText.setText(telephone);
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    } else {
+                        mDatabase.child("billing_infomation").addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                address = (String) dataSnapshot.child("delivery_address").getValue();
+                                name = (String) dataSnapshot.child("full_names").getValue();
+                                telephone = (String) dataSnapshot.child("phone_number").getValue();
+
+                                mFullNamesEditText.setText(name);
+                                mBillingAddressEditText.setText(address);
+                                mPhoneNumberEditText.setText(telephone);
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
                 }
 
                 @Override
