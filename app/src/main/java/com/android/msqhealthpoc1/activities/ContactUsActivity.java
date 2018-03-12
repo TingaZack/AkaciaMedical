@@ -40,7 +40,7 @@ public class ContactUsActivity extends AppCompatActivity {
 
     private DatabaseReference mUsersDatabaseReference, mMessagesDatabaseReference;
 
-    private String user_name, user_occupation, user_address;
+    private String user_name, user_occupation, user_address, telephone;
 
     private Button mSendMessageButton;
     private EditText mMessageEditText;
@@ -76,9 +76,10 @@ public class ContactUsActivity extends AppCompatActivity {
                 mUsersDatabaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        user_name = (String) dataSnapshot.child("name").getValue();
-                        user_occupation = (String) dataSnapshot.child("occupation").getValue();
-                        user_address = (String) dataSnapshot.child("location_address").getValue();
+                        user_name = (String) dataSnapshot.child("Name").getValue();
+                        user_occupation = (String) dataSnapshot.child("Speciality").getValue();
+                        user_address = (String) dataSnapshot.child("Suburb").getValue();
+                        telephone = (String) dataSnapshot.child("Telephone").getValue();
                     }
 
                     @Override
@@ -103,6 +104,7 @@ public class ContactUsActivity extends AppCompatActivity {
                             mReference.child("user_email").setValue(email);
                             mReference.child("user_location").setValue(user_address);
                             mReference.child("user_occupation").setValue(user_occupation);
+                            mReference.child("telephone").setValue(telephone);
                             mReference.child("timeStamp").setValue(getCurrentTimeStamp());
                             mReference.child("uid").setValue(uid);
                             mReference.child("message").setValue(message_edittext).addOnCompleteListener(new OnCompleteListener<Void>() {

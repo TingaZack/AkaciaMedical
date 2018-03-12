@@ -61,20 +61,20 @@ public class ConfirmCheckoutActivity extends AppCompatActivity {
             mDatabase.keepSynced(true);
 
             //if the billing information exists, the user will go straight to the payment gateway.
-            mDatabase.child("billing_infomation").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        startActivity(new Intent(getApplicationContext(), PaymentGatewayWebView.class));
-                        finish();
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
+//            mDatabase.child("billing_infomation").addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(DataSnapshot dataSnapshot) {
+//                    if (dataSnapshot.exists()) {
+//                        startActivity(new Intent(getApplicationContext(), PaymentGatewayWebView.class));
+//                        finish();
+//                    }
+//                }
+//
+//                @Override
+//                public void onCancelled(DatabaseError databaseError) {
+//
+//                }
+//            });
 
             mDatabase.addValueEventListener(new ValueEventListener() {
                 @Override
