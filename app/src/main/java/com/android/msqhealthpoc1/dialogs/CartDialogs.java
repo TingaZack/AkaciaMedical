@@ -13,7 +13,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -24,9 +23,6 @@ import android.widget.Toast;
 
 import com.android.msqhealthpoc1.R;
 import com.android.msqhealthpoc1.activities.ConfirmCheckoutActivity;
-import com.android.msqhealthpoc1.activities.ContactUsActivity;
-import com.android.msqhealthpoc1.activities.MainActivity;
-import com.android.msqhealthpoc1.activities.PaymentGatewayWebView;
 import com.android.msqhealthpoc1.adapters.CartDialogListAdapter;
 import com.android.msqhealthpoc1.model.CartItem;
 import com.android.msqhealthpoc1.model.Product;
@@ -39,8 +35,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import org.apache.http.util.EncodingUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,13 +89,13 @@ public class CartDialogs extends DialogFragment {
                 public void onDataChange(final DataSnapshot dataSnapshot) {
                     double _amount = 0;
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        try{
-                        CartItem cartItem = new CartItem();
-                        cartItem.setQuantity(Integer.parseInt(snapshot.child("quantity").getValue().toString()));
-                        _amount = _amount + ((Double.parseDouble(String.valueOf(snapshot.child("product").child("price").getValue()))) * (Integer.parseInt(snapshot.child("quantity").getValue().toString())));
+                        try {
+                            CartItem cartItem = new CartItem();
+                            cartItem.setQuantity(Integer.parseInt(snapshot.child("quantity").getValue().toString()));
+                            _amount = _amount + ((Double.parseDouble(String.valueOf(snapshot.child("product").child("price").getValue()))) * (Integer.parseInt(snapshot.child("quantity").getValue().toString())));
 
-                        System.out.println("Amount is " + _amount);
-                    } catch (Exception e){
+                            System.out.println("Amount is " + _amount);
+                        } catch (Exception e) {
                             e.getMessage();
                         }
                     }
@@ -146,7 +140,7 @@ public class CartDialogs extends DialogFragment {
                                     } else {
                                         System.out.println("No Item found");
                                     }
-                                }catch (Exception e){
+                                } catch (Exception e) {
                                     e.getMessage();
                                 }
                             }
@@ -155,44 +149,44 @@ public class CartDialogs extends DialogFragment {
                             mList.setAdapter(adapter);
 
                             final DatabaseReference mCheckDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("cart").child("cart-items");
-                                btnCheckOut.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        if (isNetworkAvailable()) {
-                                            mCheckDatabase.addValueEventListener(new ValueEventListener() {
-                                                @Override
-                                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                                    try {
-                                                        if (dataSnapshot.exists()) {
-                                                            startActivity(new Intent(getActivity(), ConfirmCheckoutActivity.class));
-                                                            dismiss();
-                                                        } else {
-                                                            Toast.makeText(getContext(), "You can't checkout an empty cart", Toast.LENGTH_SHORT).show();
-                                                        }
-                                                    } catch (Exception e){
-                                                        System.out.println("ERROR: " + e.getMessage());
+                            btnCheckOut.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if (isNetworkAvailable()) {
+                                        mCheckDatabase.addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                try {
+                                                    if (dataSnapshot.exists()) {
+                                                        startActivity(new Intent(getActivity(), ConfirmCheckoutActivity.class));
+                                                        dismiss();
+                                                    } else {
+                                                        Toast.makeText(getContext(), "You can't checkout an empty cart", Toast.LENGTH_SHORT).show();
                                                     }
+                                                } catch (Exception e) {
+                                                    System.out.println("ERROR: " + e.getMessage());
                                                 }
+                                            }
 
-                                                @Override
-                                                public void onCancelled(DatabaseError databaseError) {
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
 
-                                                }
-                                            });
+                                            }
+                                        });
 
-                                        } else if (!isNetworkAvailable()) {
+                                    } else if (!isNetworkAvailable()) {
 
-                                            Snackbar snack = Snackbar.make(view.findViewById(R.id.relative_layout), "No Connection Available, please check your internet settings and try again.",
-                                                    Snackbar.LENGTH_INDEFINITE).setDuration(1000);
-                                            snack.getView().setBackgroundColor(ContextCompat.getColor(getActivity(), android.R.color.holo_red_dark));
-                                            View view = snack.getView();
-                                            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
-                                            params.gravity = Gravity.TOP;
-                                            view.setLayoutParams(params);
-                                            snack.show();
-                                        }
+                                        Snackbar snack = Snackbar.make(view.findViewById(R.id.relative_layout), "No Connection Available, please check your internet settings and try again.",
+                                                Snackbar.LENGTH_INDEFINITE).setDuration(1000);
+                                        snack.getView().setBackgroundColor(ContextCompat.getColor(getActivity(), android.R.color.holo_red_dark));
+                                        View view = snack.getView();
+                                        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
+                                        params.gravity = Gravity.TOP;
+                                        view.setLayoutParams(params);
+                                        snack.show();
                                     }
-                                });
+                                }
+                            });
 
                             btnClearAll.setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -204,11 +198,9 @@ public class CartDialogs extends DialogFragment {
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isComplete()) {
                                                 if (task.isSuccessful()) {
-                                                    Toast.makeText(getContext(), "Cart cleared successfully", Toast.LENGTH_SHORT).show();
                                                     mProgressDialog.dismiss();
                                                     dismiss();
                                                 } else {
-                                                    Toast.makeText(getContext(), "Cart clearing failed", Toast.LENGTH_SHORT).show();
                                                     mProgressDialog.dismiss();
                                                 }
                                             } else {
