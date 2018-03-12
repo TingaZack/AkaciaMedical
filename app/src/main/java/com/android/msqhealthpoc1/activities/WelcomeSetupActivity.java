@@ -2,9 +2,11 @@ package com.android.msqhealthpoc1.activities;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
@@ -16,13 +18,16 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.msqhealthpoc1.R;
@@ -54,6 +59,7 @@ public class WelcomeSetupActivity extends AppCompatActivity {
     private String name, practice_number, suburb, telephone;
     private String email;
     private FirebaseUser mFirebaseUser;
+    private String pract_number = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,21 +88,7 @@ public class WelcomeSetupActivity extends AppCompatActivity {
 
                 mDatabasePractice = FirebaseDatabase.getInstance().getReference().child("doctors_practice_numbers");
                 mUsersDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getCurrentUser().getUid());
-                DatabaseReference mUsersData = FirebaseDatabase.getInstance().getReference().child("users");
-
-                mUsersData.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            System.out.println("PRACT AVAI: " + snapshot.child("Practice_Number").getValue());
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
+                final DatabaseReference mUsersData = FirebaseDatabase.getInstance().getReference().child("users");
 
                 checkEmailVerification();
                 checkIfUserExist();
@@ -110,96 +102,110 @@ public class WelcomeSetupActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onTextChanged(final CharSequence s, int start, int before, int count) {
+                    public void onTextChanged(final CharSequence s, final int start, int before, int count) {
                         System.out.println("CHAR COUNT: " + s.length());
 
                         if (s.length() == 15) {
-//                    Toast.makeText(WelcomeSetupActivity.this, "Done", Toast.LENGTH_SHORT).show();
-
                             final Query query = mDatabasePractice.orderByChild("PRACTICE_NUMBER").equalTo(eSearchPractice.getText().toString());
                             progressDialog.setMessage("Searching for practice. Please wait...");
                             progressDialog.setCancelable(false);
                             progressDialog.show();
 
-                            mUsersDatabase.addValueEventListener(new ValueEventListener() {
+                            final Query queryPracticeNumber = mUsersData.orderByChild("Practice_Number").equalTo(eSearchPractice.getText().toString());
+                            queryPracticeNumber.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
-                                    System.out.println("PRACT AVA: " + dataSnapshot.child("Practice_Number").getValue());
-                                }
-
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-
-                                }
-                            });
-
-                            query.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                        //Check first if the Practice Number already exist or not
                                     if (dataSnapshot.exists()) {
+                                        Toast.makeText(WelcomeSetupActivity.this, "Practice Number Already Exist.", Toast.LENGTH_SHORT).show();
+                                        progressDialog.dismiss();
+                                        //If the practice number already exist, it displays the button to navigate to login
+                                        btnSave.setVisibility(View.VISIBLE);
+                                        eSpeciality.setVisibility(View.GONE);
+                                        btnSave.setText("Login");
+                                        btnSave.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                                                finish();
+                                            }
+                                        });
+                                    } else {
+                                        query.addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                //Check if the practice number matches our practice numbers database
+                                                if (dataSnapshot.exists()) {
+                                                    btnSave.setText("Save");
+                                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                                        name = (String) snapshot.child("NAME").getValue();
+                                                        practice_number = (String) snapshot.child("PRACTICE_NUMBER").getValue();
+                                                        suburb = (String) snapshot.child("SUBURB").getValue();
+                                                        telephone = (String) snapshot.child("TELEPHONE").getValue();
 
+                                                        System.out.println("Doctor's Details: \nName" + name + " \n " + "Practice Number: " + practice_number + "  \n" +
+                                                                "\nSuburb: " + suburb + "\nTelephone: " + telephone);
 
+                                                        Toast.makeText(WelcomeSetupActivity.this, "Practice " + practice_number + " Found", Toast.LENGTH_SHORT).show();
+                                                        progressDialog.dismiss();
 
-                                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                            name = (String) snapshot.child("NAME").getValue();
-                                            practice_number = (String) snapshot.child("PRACTICE_NUMBER").getValue();
-                                            suburb = (String) snapshot.child("SUBURB").getValue();
-                                            telephone = (String) snapshot.child("TELEPHONE").getValue();
+                                                        eSpeciality.setVisibility(View.VISIBLE);
 
-                                            System.out.println("Doctor's Details: \nName" + name + " \n " + "Practice Number: " + practice_number + "  \n" +
-                                                    "\nSuburb: " + suburb + "\nTelephone: " + telephone);
-
-                                            Toast.makeText(WelcomeSetupActivity.this, "Practice " + practice_number + " Found", Toast.LENGTH_SHORT).show();
-                                            progressDialog.dismiss();
-
-                                            eSpeciality.setVisibility(View.VISIBLE);
-
-                                            btnSave.setOnClickListener(new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View view) {
-
-                                                    if (!TextUtils.isEmpty(eSpecialityName.getText().toString().trim()) && !TextUtils.isEmpty(eSearchPractice.getText().toString().trim())) {
-
-//                                                        progressDialog.setMessage("Saving Information ...");
-//                                                        progressDialog.show();
-                                                        query.addValueEventListener(new ValueEventListener() {
+                                                        btnSave.setOnClickListener(new View.OnClickListener() {
                                                             @Override
-                                                            public void onDataChange(DataSnapshot Snapshot) {
+                                                            public void onClick(View view) {
 
-                                                                if (Snapshot.exists()) {
-                                                                    mUsersDatabase.child("Name").setValue(name);
-                                                                    mUsersDatabase.child("Suburb").setValue(suburb);
-                                                                    mUsersDatabase.child("Telephone").setValue(telephone);
-                                                                    mUsersDatabase.child("Speciality").setValue(eSpecialityName.getText().toString());
-                                                                    mUsersDatabase.child("Email").setValue(email);
-                                                                    mUsersDatabase.child("Practice_Number").setValue(practice_number).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                if (!TextUtils.isEmpty(eSpecialityName.getText().toString().trim()) && !TextUtils.isEmpty(eSearchPractice.getText().toString().trim())) {
+
+                                                                    progressDialog.setMessage("Saving Information ...");
+                                                                    progressDialog.show();
+                                                                    query.addValueEventListener(new ValueEventListener() {
                                                                         @Override
-                                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                                            if (task.isSuccessful()) {
-//                                                                                progressDialog.dismiss();
-                                                                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                                                                                finish();
+                                                                        public void onDataChange(DataSnapshot Snapshot) {
+
+                                                                            if (Snapshot.exists()) {
+                                                                                mUsersDatabase.child("Name").setValue(name);
+                                                                                mUsersDatabase.child("Suburb").setValue(suburb);
+                                                                                mUsersDatabase.child("Telephone").setValue(telephone);
+                                                                                mUsersDatabase.child("Speciality").setValue(eSpecialityName.getText().toString());
+                                                                                mUsersDatabase.child("Email").setValue(email);
+                                                                                mUsersDatabase.child("Practice_Number").setValue(practice_number).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                    @Override
+                                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                                        if (task.isSuccessful()) {
+                                                                                            progressDialog.dismiss();
+                                                                                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                                                                            finish();
+                                                                                        }
+                                                                                    }
+                                                                                });
                                                                             }
                                                                         }
+
+                                                                        @Override
+                                                                        public void onCancelled(DatabaseError databaseError) {
+
+                                                                        }
                                                                     });
+
                                                                 }
                                                             }
-
-                                                            @Override
-                                                            public void onCancelled(DatabaseError databaseError) {
-
-                                                            }
                                                         });
-
                                                     }
+                                                } else {
+                                                    Toast.makeText(getApplicationContext(), "Your Practice Number could not be found. " +
+                                                            "Please contact MSQ if this might be a mistake.", Toast.LENGTH_SHORT).show();
+                                                    progressDialog.dismiss();
+                                                    eSpeciality.setVisibility(View.GONE);
                                                 }
-                                            });
-                                        }
-                                    } else {
-                                        Toast.makeText(getApplicationContext(), "Your Practice Number could not be found. " +
-                                                "Please contact MSQ if this might be a mistake.", Toast.LENGTH_SHORT).show();
-                                        progressDialog.dismiss();
-                                        eSpeciality.setVisibility(View.GONE);
+                                            }
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+
+                                            }
+                                        });
+
                                     }
                                 }
 
@@ -253,6 +259,40 @@ public class WelcomeSetupActivity extends AppCompatActivity {
         }
     }
 
+    private void showDialog() {
+        View mView = LayoutInflater.from(WelcomeSetupActivity.this).inflate(R.layout.deleted_custom_dialog, null);
+
+        TextView successView = mView.findViewById(R.id.tv_success);
+        ImageButton imageButton = mView.findViewById(R.id.dialogDone);
+        android.support.v7.app.AlertDialog.Builder aBuilder = new android.support.v7.app.AlertDialog.Builder(WelcomeSetupActivity.this, R.style.CustomDialog);
+        aBuilder.setView(mView);
+
+        successView.setText("Practice Number Already Exist");
+
+        final android.support.v7.app.AlertDialog alert = aBuilder.create();
+        alert.show();
+
+        // Hide after some seconds
+        final Handler handler  = new Handler();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                if (alert.isShowing()) {
+                    alert.dismiss();
+                }
+            }
+        };
+        alert.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                handler.removeCallbacks(runnable);
+            }
+        });
+
+        handler.postDelayed(runnable, 1000);
+
+    }
+
 
     public void checkEmailVerification() {
         if (!mFirebaseUser.isEmailVerified()) {
@@ -261,6 +301,7 @@ public class WelcomeSetupActivity extends AppCompatActivity {
             startActivity(setupIntent);
             Toast.makeText(this, "Please verify the email", Toast.LENGTH_SHORT).show();
         }
+
     }
 
     private boolean isNetworkAvailable() {

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -19,10 +20,13 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.msqhealthpoc1.R;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -72,6 +76,8 @@ public class ProfileActivity extends AppCompatActivity {
 
             mEmailTextView = findViewById(R.id.profile_email);
             mPracticeNumberTextView = findViewById(R.id.profile_practice_number);
+        
+        mAuth = FirebaseAuth.getInstance();
 
             mNameButtonEdit.setBackgroundResource(R.drawable.ic_mode_edit_black);
             mSuburbButtonEdit.setBackgroundResource(R.drawable.ic_mode_edit_black);
@@ -86,8 +92,10 @@ public class ProfileActivity extends AppCompatActivity {
             mSuburbEditText.setEnabled(false);
             mSpecialityEditText.setEnabled(false);
             mTelephoneEditText.setEnabled(false);
+        
+        if (mAuth.getCurrentUser() != null){
 
-            mDatabaseUsers.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+            mDatabaseUsers.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     mNameEditText.setText((String) dataSnapshot.child("Name").getValue());
@@ -119,7 +127,7 @@ public class ProfileActivity extends AppCompatActivity {
                     } else {
                         mNameEditText.setEnabled(true);
                         mNameButtonEdit.setBackgroundResource(R.drawable.ic_save_black_24dp);
-                        mDatabaseUsers.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").setValue(mNameEditText.getText().toString());
+                        mDatabaseUsers.child(mAuth.getCurrentUser().getUid()).child("Name").setValue(mNameEditText.getText().toString());
                     }
                 }
             });
@@ -133,7 +141,7 @@ public class ProfileActivity extends AppCompatActivity {
                     } else {
                         mSpecialityEditText.setEnabled(true);
                         mSpecialityButtonEdit.setBackgroundResource(R.drawable.ic_save_black_24dp);
-                        mDatabaseUsers.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Speciality").setValue(mSpecialityEditText.getText().toString());
+                        mDatabaseUsers.child(mAuth.getCurrentUser().getUid()).child("Speciality").setValue(mSpecialityEditText.getText().toString());
                     }
                 }
             });
@@ -147,7 +155,7 @@ public class ProfileActivity extends AppCompatActivity {
                     } else {
                         mSuburbEditText.setEnabled(true);
                         mSuburbButtonEdit.setBackgroundResource(R.drawable.ic_save_black_24dp);
-                        mDatabaseUsers.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Suburb").setValue(mSuburbEditText.getText().toString());
+                        mDatabaseUsers.child(mAuth.getCurrentUser().getUid()).child("Suburb").setValue(mSuburbEditText.getText().toString());
                     }
                 }
             });
@@ -161,13 +169,19 @@ public class ProfileActivity extends AppCompatActivity {
                     } else {
                         mTelephoneEditText.setEnabled(true);
                         mTelephoneButtonEdit.setBackgroundResource(R.drawable.ic_save_black_24dp);
-                        mDatabaseUsers.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Telephone").setValue(mTelephoneEditText.getText().toString());
+                        mDatabaseUsers.child(mAuth.getCurrentUser().getUid()).child("Telephone").setValue(mTelephoneEditText.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Toast.makeText(ProfileActivity.this, "Saved", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
                 }
             });
 
             logoutButton();
             editPhoto();
+        }
 
         } else if (!isNetworkAvailable()) {
 

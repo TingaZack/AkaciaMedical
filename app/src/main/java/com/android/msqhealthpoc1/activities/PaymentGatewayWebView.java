@@ -104,7 +104,7 @@ public class PaymentGatewayWebView extends AppCompatActivity {
             public void onDataChange(final DataSnapshot dataSnapshot) {
                 double total = 0;
                 int i = 1;
-                sendXml.put_Tag("Product");
+                sendXml.put_Tag("Invoice");
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     _amount = 0;
                     CartItem cartItem = new CartItem();
@@ -112,12 +112,12 @@ public class PaymentGatewayWebView extends AppCompatActivity {
                     _amount = _amount + ((Double.parseDouble(String.valueOf(snapshot.child("product").child("price").getValue()))) * (Integer.parseInt(snapshot.child("quantity").getValue().toString())));
                     total = total +_amount;
                     xml.put_Tag("Row");
-                    xml.NewChild("No", String.valueOf(i));
-                    xml.NewChild("Part Nr", snapshot.child("product").child("code").getValue().toString());
-                    xml.NewChild("Product Description", snapshot.child("product").child("description").getValue().toString());
-                    xml.NewChild("Qty", snapshot.child("quantity").getValue().toString());
-                    xml.NewChild("Unit Rand Price", snapshot.child("product").child("price").getValue().toString());
-                    xml.NewChild("Total Rand Price", String.valueOf(_amount));
+                    xml.NewChild("Product|No", String.valueOf(i));
+                    xml.NewChild("Product|Part Nr", snapshot.child("product").child("code").getValue().toString());
+                    xml.NewChild("Product|Description", snapshot.child("product").child("description").getValue().toString());
+                    xml.NewChild("Product|Qty", snapshot.child("quantity").getValue().toString());
+                    xml.NewChild("Product|Unit Rand Price", snapshot.child("product").child("price").getValue().toString());
+                    xml.NewChild("Product|Total Rand Price", String.valueOf(_amount));
 
                     sendXml.AddChildTree(xml);
                     System.out.println( sendXml.getXml()+"\n\n\n\n");

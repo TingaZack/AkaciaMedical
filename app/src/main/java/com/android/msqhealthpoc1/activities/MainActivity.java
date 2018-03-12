@@ -158,8 +158,8 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if (dataSnapshot.getValue() == null) {
-                            finish();
                             startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                            finish();
                         }
                     }
 
@@ -229,11 +229,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             return true;
         }
-//        else if (id == R.id.action_cart) {
-//            CartDialogs dialog = new CartDialogs();
-//            dialog.show(getSupportFragmentManager(), "Checkout");
-//        }
-
         return super.onOptionsItemSelected(item);
     }
 
