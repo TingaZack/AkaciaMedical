@@ -5,14 +5,12 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.support.annotation.NonNull;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,15 +18,11 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.msqhealthpoc1.R;
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -61,39 +55,39 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-            mNameEditText = findViewById(R.id.profile_name);
-            mNameButtonEdit = findViewById(R.id.name_edit);
-            mSpecialityEditText = findViewById(R.id.profile_speciality);
-            mSpecialityButtonEdit = findViewById(R.id.speciality_edit);
-            mSuburbEditText = findViewById(R.id.profile_suburb);
-            mSuburbButtonEdit = findViewById(R.id.suburb_edit);
-            mTelephoneEditText = findViewById(R.id.profile_telephone);
-            mTelephoneButtonEdit = findViewById(R.id.telephone_edit);
-            mLogoutButton = findViewById(R.id.profile_logout);
-            mUserImageView = findViewById(R.id.user_img);
+        mNameEditText = findViewById(R.id.profile_name);
+        mNameButtonEdit = findViewById(R.id.name_edit);
+        mSpecialityEditText = findViewById(R.id.profile_speciality);
+        mSpecialityButtonEdit = findViewById(R.id.speciality_edit);
+        mSuburbEditText = findViewById(R.id.profile_suburb);
+        mSuburbButtonEdit = findViewById(R.id.suburb_edit);
+        mTelephoneEditText = findViewById(R.id.profile_telephone);
+        mTelephoneButtonEdit = findViewById(R.id.telephone_edit);
+        mLogoutButton = findViewById(R.id.profile_logout);
+        mUserImageView = findViewById(R.id.user_img);
 
-            mFab = findViewById(R.id.profile_pic_edit);
+        mFab = findViewById(R.id.profile_pic_edit);
 
-            mEmailTextView = findViewById(R.id.profile_email);
-            mPracticeNumberTextView = findViewById(R.id.profile_practice_number);
-        
+        mEmailTextView = findViewById(R.id.profile_email);
+        mPracticeNumberTextView = findViewById(R.id.profile_practice_number);
+
         mAuth = FirebaseAuth.getInstance();
 
-            mNameButtonEdit.setBackgroundResource(R.drawable.ic_mode_edit_black);
-            mSuburbButtonEdit.setBackgroundResource(R.drawable.ic_mode_edit_black);
-            mSpecialityButtonEdit.setBackgroundResource(R.drawable.ic_mode_edit_black);
-            mTelephoneButtonEdit.setBackgroundResource(R.drawable.ic_mode_edit_black);
+        mNameButtonEdit.setBackgroundResource(R.drawable.ic_mode_edit_black);
+        mSuburbButtonEdit.setBackgroundResource(R.drawable.ic_mode_edit_black);
+        mSpecialityButtonEdit.setBackgroundResource(R.drawable.ic_mode_edit_black);
+        mTelephoneButtonEdit.setBackgroundResource(R.drawable.ic_mode_edit_black);
 
-            mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child("users");
-            mDatabaseUsers.keepSynced(true);
-            mStorage = FirebaseStorage.getInstance().getReference();
+        mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child("users");
+        mDatabaseUsers.keepSynced(true);
+        mStorage = FirebaseStorage.getInstance().getReference();
 
-            mNameEditText.setEnabled(false);
-            mSuburbEditText.setEnabled(false);
-            mSpecialityEditText.setEnabled(false);
-            mTelephoneEditText.setEnabled(false);
-        
-        if (mAuth.getCurrentUser() != null){
+        mNameEditText.setEnabled(false);
+        mSuburbEditText.setEnabled(false);
+        mSpecialityEditText.setEnabled(false);
+        mTelephoneEditText.setEnabled(false);
+
+        if (mAuth.getCurrentUser() != null) {
 
             mDatabaseUsers.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
                 @Override
@@ -116,69 +110,67 @@ public class ProfileActivity extends AppCompatActivity {
                 }
             });
 
-        if (isNetworkAvailable()) {
+            if (isNetworkAvailable()) {
 
-            mNameButtonEdit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (mNameEditText.isEnabled()) {
-                        mNameEditText.setEnabled(false);
-                        mNameButtonEdit.setBackgroundResource(R.drawable.ic_mode_edit_black);
-                        mDatabaseUsers.child(mAuth.getCurrentUser().getUid()).child("Name").setValue(mNameEditText.getText().toString());
-                    } else {
-                        mNameEditText.setEnabled(true);
-                        mNameButtonEdit.setBackgroundResource(R.drawable.ic_save_black_24dp);
+                mNameButtonEdit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (mNameEditText.isEnabled()) {
+                            mNameEditText.setEnabled(false);
+                            mNameButtonEdit.setBackgroundResource(R.drawable.ic_mode_edit_black);
+                            mDatabaseUsers.child(mAuth.getCurrentUser().getUid()).child("Name").setValue(mNameEditText.getText().toString());
+                        } else {
+                            mNameEditText.setEnabled(true);
+                            mNameButtonEdit.setBackgroundResource(R.drawable.ic_save_black_24dp);
+                        }
                     }
-                }
-            });
+                });
 
-            mSpecialityButtonEdit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (mSpecialityEditText.isEnabled()) {
-                        mSpecialityEditText.setEnabled(false);
-                        mSpecialityButtonEdit.setBackgroundResource(R.drawable.ic_mode_edit_black);
-                        mDatabaseUsers.child(mAuth.getCurrentUser().getUid()).child("Speciality").setValue(mSpecialityEditText.getText().toString());
-                    } else {
-                        mSpecialityEditText.setEnabled(true);
-                        mSpecialityButtonEdit.setBackgroundResource(R.drawable.ic_save_black_24dp);
+                mSpecialityButtonEdit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (mSpecialityEditText.isEnabled()) {
+                            mSpecialityEditText.setEnabled(false);
+                            mSpecialityButtonEdit.setBackgroundResource(R.drawable.ic_mode_edit_black);
+                            mDatabaseUsers.child(mAuth.getCurrentUser().getUid()).child("Speciality").setValue(mSpecialityEditText.getText().toString());
+                        } else {
+                            mSpecialityEditText.setEnabled(true);
+                            mSpecialityButtonEdit.setBackgroundResource(R.drawable.ic_save_black_24dp);
 
+                        }
                     }
-                }
-            });
+                });
 
-            mSuburbButtonEdit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (mSuburbEditText.isEnabled()) {
-                        mSuburbEditText.setEnabled(false);
-                        mSuburbButtonEdit.setBackgroundResource(R.drawable.ic_mode_edit_black);
-                        mDatabaseUsers.child(mAuth.getCurrentUser().getUid()).child("Suburb").setValue(mSuburbEditText.getText().toString());
-                    } else {
-                        mSuburbEditText.setEnabled(true);
-                        mSuburbButtonEdit.setBackgroundResource(R.drawable.ic_save_black_24dp);
+                mSuburbButtonEdit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (mSuburbEditText.isEnabled()) {
+                            mSuburbEditText.setEnabled(false);
+                            mSuburbButtonEdit.setBackgroundResource(R.drawable.ic_mode_edit_black);
+                            mDatabaseUsers.child(mAuth.getCurrentUser().getUid()).child("Suburb").setValue(mSuburbEditText.getText().toString());
+                        } else {
+                            mSuburbEditText.setEnabled(true);
+                            mSuburbButtonEdit.setBackgroundResource(R.drawable.ic_save_black_24dp);
+                        }
                     }
-                }
-            });
+                });
 
-            mTelephoneButtonEdit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (mTelephoneEditText.isEnabled()) {
-                        mTelephoneEditText.setEnabled(false);
-                        mTelephoneButtonEdit.setBackgroundResource(R.drawable.ic_mode_edit_black);
-                        mDatabaseUsers.child(mAuth.getCurrentUser().getUid()).child("Telephone").setValue(mTelephoneEditText.getText().toString());
+                mTelephoneButtonEdit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (mTelephoneEditText.isEnabled()) {
+                            mTelephoneEditText.setEnabled(false);
+                            mTelephoneButtonEdit.setBackgroundResource(R.drawable.ic_mode_edit_black);
+                            mDatabaseUsers.child(mAuth.getCurrentUser().getUid()).child("Telephone").setValue(mTelephoneEditText.getText().toString());
 
-                    } else {
-                        mTelephoneEditText.setEnabled(true);
-                        mTelephoneButtonEdit.setBackgroundResource(R.drawable.ic_save_black_24dp);
+                        } else {
+                            mTelephoneEditText.setEnabled(true);
+                            mTelephoneButtonEdit.setBackgroundResource(R.drawable.ic_save_black_24dp);
+                        }
                     }
-                }
-            });
-
-            logoutButton();
-            editPhoto();
-        }
+                });
+                editPhoto();
+            }
 
         } else if (!isNetworkAvailable()) {
 
@@ -242,18 +234,6 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-    //method for enable or disable edittext
-    private void logoutButton() {
-        mLogoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-    }
 
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager

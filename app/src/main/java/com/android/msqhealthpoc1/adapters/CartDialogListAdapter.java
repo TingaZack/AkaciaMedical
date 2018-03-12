@@ -2,17 +2,14 @@ package com.android.msqhealthpoc1.adapters;
 
 import android.app.Activity;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.design.widget.TextInputEditText;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -20,8 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.msqhealthpoc1.R;
-import com.android.msqhealthpoc1.activities.ContactUsActivity;
-import com.android.msqhealthpoc1.activities.MainActivity;
 import com.android.msqhealthpoc1.model.CartItem;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -133,7 +128,7 @@ public class CartDialogListAdapter extends RecyclerView.Adapter<CartDialogListAd
             holder.btnRemoveCartItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mDatabase.child(mValues.get(position).getProduct().getCode()).addValueEventListener(new ValueEventListener() {
+                    mDatabase.child(mValues.get(position).getProduct().getCode()).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists()){

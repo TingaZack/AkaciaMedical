@@ -115,19 +115,12 @@
                 android:paddingTop="16dp">
 
                 <TextView
+                    android:id="@+id/reset_password"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-condensed"
                     android:text="Forgot password? "
                     android:textColor="@android:color/white" />
-
-                <TextView
-                    android:id="@+id/reset_password"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Remember"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold" />
 
             </LinearLayout>
 

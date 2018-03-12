@@ -31,6 +31,9 @@
             android:name=".activities.LoginActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".activities.PublicationsActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".fragments.CategoryProductListFragment"
             android:screenOrientation="portrait" />
         <activity

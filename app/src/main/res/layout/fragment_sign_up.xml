@@ -81,27 +81,6 @@
                     android:textStyle="bold" />
             </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:textColorHint="@android:color/white"
-                app:backgroundTint="@android:color/white">
-
-                <android.support.v7.widget.AppCompatEditText
-                    android:id="@+id/confirm_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif"
-                    android:hint="Confirm password"
-                    android:inputType="textPassword"
-                    android:textColorHint="@android:color/white"
-                    app:backgroundTint="@android:color/white"
-                    android:textColor="@android:color/white"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
-            </android.support.design.widget.TextInputLayout>
-
         </LinearLayout>
 
 

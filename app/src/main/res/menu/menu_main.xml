@@ -9,14 +9,26 @@
         <!--android:title="Cart"-->
         <!--app:showAsAction="always"  />-->
     <item
-        android:id="@+id/action_message"
+        android:id="@+id/action_publications"
         android:orderInCategory="100"
-        android:title="Contact Us"
+        android:title="Publications"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/action_profile"
         android:orderInCategory="100"
         android:title="Profile"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_message"
+        android:orderInCategory="100"
+        android:title="Contact Us"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_log_out"
+        android:orderInCategory="100"
+        android:title="Log out"
         app:showAsAction="never" />
 </menu>
