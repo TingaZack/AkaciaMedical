@@ -12,7 +12,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -39,7 +38,6 @@ public class ProfileActivity extends AppCompatActivity {
     private static final int GALLERY_REQUEST_CODE = 1;
     private EditText mNameEditText, mSpecialityEditText, mSuburbEditText, mTelephoneEditText;
     private ImageButton mNameButtonEdit, mSpecialityButtonEdit, mSuburbButtonEdit, mTelephoneButtonEdit;
-    private Button mLogoutButton;
     private TextView mEmailTextView, mPracticeNumberTextView;
     private FloatingActionButton mFab;
     private ImageView mUserImageView;
@@ -63,7 +61,6 @@ public class ProfileActivity extends AppCompatActivity {
         mSuburbButtonEdit = findViewById(R.id.suburb_edit);
         mTelephoneEditText = findViewById(R.id.profile_telephone);
         mTelephoneButtonEdit = findViewById(R.id.telephone_edit);
-        mLogoutButton = findViewById(R.id.profile_logout);
         mUserImageView = findViewById(R.id.user_img);
 
         mFab = findViewById(R.id.profile_pic_edit);
