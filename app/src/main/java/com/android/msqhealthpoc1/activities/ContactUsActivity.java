@@ -64,8 +64,6 @@ public class ContactUsActivity extends AppCompatActivity {
             mMessageEditText = findViewById(R.id.et_message);
             mProgressDialog = new ProgressDialog(this);
 
-            Toast.makeText(this, "uid: " + uid, Toast.LENGTH_SHORT).show();
-
             if (uid != null) {
                 System.out.println("UID: " + uid);
                 mUsersDatabaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(uid);
