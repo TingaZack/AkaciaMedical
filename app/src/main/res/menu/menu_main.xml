@@ -8,11 +8,11 @@
         <!--android:orderInCategory="100"-->
         <!--android:title="Cart"-->
         <!--app:showAsAction="always"  />-->
-    <item
-        android:id="@+id/action_publications"
-        android:orderInCategory="100"
-        android:title="Publications"
-        app:showAsAction="never" />
+    <!--<item-->
+        <!--android:id="@+id/action_publications"-->
+        <!--android:orderInCategory="100"-->
+        <!--android:title="Publications"-->
+        <!--app:showAsAction="never" />-->
 
     <item
         android:id="@+id/action_profile"

@@ -105,7 +105,7 @@ public class WelcomeSetupActivity extends AppCompatActivity {
                     public void onTextChanged(final CharSequence s, final int start, int before, int count) {
                         System.out.println("CHAR COUNT: " + s.length());
 
-                        if (s.length() == 15) {
+                        if (s.length() == 7) {
                             final Query query = mDatabasePractice.orderByChild("PRACTICE_NUMBER").equalTo(eSearchPractice.getText().toString());
                             progressDialog.setMessage("Searching for practice. Please wait...");
                             progressDialog.setCancelable(false);
@@ -117,7 +117,7 @@ public class WelcomeSetupActivity extends AppCompatActivity {
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                         //Check first if the Practice Number already exist or not
                                     if (dataSnapshot.exists()) {
-                                        Toast.makeText(WelcomeSetupActivity.this, "Practice Number Already Exist.", Toast.LENGTH_SHORT).show();
+//                                        Toast.makeText(WelcomeSetupActivity.this, "Practice Number Already Registered.", Toast.LENGTH_SHORT).show();
                                         progressDialog.dismiss();
                                         //If the practice number already exist, it displays the button to navigate to login
                                         btnSave.setVisibility(View.VISIBLE);
@@ -130,7 +130,7 @@ public class WelcomeSetupActivity extends AppCompatActivity {
                                                 finish();
                                             }
                                         });
-                                    } else {
+                                    } else if (!dataSnapshot.exists()){
                                         query.addValueEventListener(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -220,16 +220,13 @@ public class WelcomeSetupActivity extends AppCompatActivity {
                     @Override
                     public void afterTextChanged(final Editable s) {
                         int length = s.length();
-                        if ((prevL < length) && (length == 3 || length == 7 || length == 11)) {
-                            s.append(",");
-                        }
 
                         btnSave.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
 
-                                if (s.length() != 15) {
-                                    eSearchPractice.setError("Length should be 12 digits");
+                                if (s.length() != 7) {
+                                    eSearchPractice.setError("Length should be 7 digits");
                                 }
                             }
                         });
@@ -249,15 +246,15 @@ public class WelcomeSetupActivity extends AppCompatActivity {
         }
     }
 
-    private void checkIfUserExist() {
-
-        if (mAuth.getCurrentUser() == null) {
-            Toast.makeText(this, "Hello" + mAuth.getCurrentUser().getUid(), Toast.LENGTH_SHORT).show();
-            Intent setupIntent = new Intent(WelcomeSetupActivity.this, LoginActivity.class);
-            setupIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(setupIntent);
-        }
-    }
+//    private void checkIfUserExist() {
+//
+//        if (mAuth.getCurrentUser() == null) {
+//            Toast.makeText(this, "Hello" + mAuth.getCurrentUser().getUid(), Toast.LENGTH_SHORT).show();
+//            Intent setupIntent = new Intent(WelcomeSetupActivity.this, LoginActivity.class);
+//            setupIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//            startActivity(setupIntent);
+//        }
+//    }
 
     private void showDialog() {
         View mView = LayoutInflater.from(WelcomeSetupActivity.this).inflate(R.layout.deleted_custom_dialog, null);
@@ -300,8 +297,37 @@ public class WelcomeSetupActivity extends AppCompatActivity {
             setupIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(setupIntent);
             Toast.makeText(this, "Please verify the email", Toast.LENGTH_SHORT).show();
+            finish();
         }
 
+    }
+
+    private void checkIfUserExist() {
+
+        if (mAuth.getCurrentUser() != null) {
+
+            final String user_uid = mAuth.getCurrentUser().getUid();
+            //Check if the value a user entered exists on the database or not
+//            mUsersDatabase.addValueEventListener(new ValueEventListener() {
+//                //@param dataSnapshot returns the results
+//                @Override
+//                public void onDataChange(DataSnapshot dataSnapshot) {
+//                    //Check if the result has a child on the database
+//                    if (!dataSnapshot.child(user_uid).hasChild("Practice_Number")) {
+//                        Intent setupIntent = new Intent(WelcomeSetupActivity.this, LoginActivity.class);
+//                        setupIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                        startActivity(setupIntent);
+//                        finish();
+//                    }
+//                }
+//
+//                @Override
+//                public void onCancelled(DatabaseError databaseError) {
+//
+//                }
+//            });
+
+        }
     }
 
     private boolean isNetworkAvailable() {

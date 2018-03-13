@@ -23,12 +23,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.msqhealthpoc1.R;
 import com.android.msqhealthpoc1.dialogs.CartDialogs;
 import com.android.msqhealthpoc1.fragments.ProductFragment;
 import com.android.msqhealthpoc1.fragments.PromotionalContentFragment;
 import com.android.msqhealthpoc1.helpers.PrefManager;
+import com.android.msqhealthpoc1.model.CartItem;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -64,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference mDatabase, mDatabaseUsers;
     private FirebaseAuth mAuth;
     private int cart_count = 0;
+    private int count_cart = 0;
     private TextView mCartCountTextView;
     private FirebaseUser user;
 
@@ -96,6 +99,10 @@ public class MainActivity extends AppCompatActivity {
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
+//        prefManager = new PrefManager(this);
+//        if(prefManager.isFirstTimeSignup()){
+//
+//        }
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
@@ -148,6 +155,54 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+
+//        FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("cart").child("cart-items").addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(final DataSnapshot dataSnapshot) {
+////                dataSnapshot.notify();
+//                double _amount = 0;
+//                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                    try {
+//                        count_cart = count_cart + Integer.parseInt(snapshot.child("quantity").getValue().toString());
+//                        System.out.println("MANY: " + Integer.parseInt(snapshot.child("quantity").getValue().toString()));
+//                        _amount = _amount + ((Double.parseDouble(String.valueOf(snapshot.child("product").child("price").getValue()))) * (Integer.parseInt(snapshot.child("quantity").getValue().toString())));
+//
+//
+//                        System.out.println("Amount Cart " + count_cart);
+//                    } catch (Exception e) {
+//                        e.getMessage();
+//                    }
+//                }
+//
+//                int qu = count_cart;
+//                if (qu == 0) {
+//                    mCartCountTextView.setVisibility(View.GONE);
+//                } else {
+//                    mCartCountTextView.setVisibility(View.VISIBLE);
+//                    mCartCountTextView.setText(String.valueOf(qu));
+//                    btnCart.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View view) {
+//                            CartDialogs dialog = new CartDialogs();
+//                            dialog.show(getSupportFragmentManager(), "Checkout");
+//                        }
+//                    });
+//                    mCartCountTextView.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View view) {
+//                            CartDialogs dialog = new CartDialogs();
+//                            dialog.show(getSupportFragmentManager(), "Checkout");
+//                        }
+//                    });
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+
 
         if (isNetworkAvailable()) {
 
@@ -234,11 +289,11 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             return true;
         }
-        if (id == R.id.action_publications) {
-            Intent intent = new Intent(MainActivity.this, PublicationsActivity.class);
-            startActivity(intent);
-            return true;
-        }
+//        if (id == R.id.action_publications) {
+//            Intent intent = new Intent(MainActivity.this, PublicationsActivity.class);
+//            startActivity(intent);
+//            return true;
+//        }
         if (id == R.id.action_log_out) {
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
@@ -304,16 +359,15 @@ public class MainActivity extends AppCompatActivity {
 
             final String user_uid = mAuth.getCurrentUser().getUid();
             //Check if the value a user entered exists on the database or not
-            mDatabaseUsers.addValueEventListener(new ValueEventListener() {
+            mDatabaseUsers.child(user_uid).child("Practice_Number").addValueEventListener(new ValueEventListener() {
                 //@param dataSnapshot returns the results
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     //Check if the result has a child on the database
-                    if (!dataSnapshot.child(user_uid).hasChild("Practice_Number")) {
-                        Intent setupIntent = new Intent(MainActivity.this, WelcomeSetupActivity.class);
-                        setupIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(setupIntent);
+                    if (!dataSnapshot.exists()){
+                        Toast.makeText(MainActivity.this, "It does not Exist", Toast.LENGTH_SHORT).show();
                     }
+
                 }
 
                 @Override
@@ -330,6 +384,7 @@ public class MainActivity extends AppCompatActivity {
             Intent setupIntent = new Intent(getApplicationContext(), LoginActivity.class);
             setupIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(setupIntent);
+            finish();
         }
     }
 

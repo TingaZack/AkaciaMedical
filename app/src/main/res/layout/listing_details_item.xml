@@ -57,6 +57,18 @@
                     android:layout_weight="1"
                     android:textSize="13sp" />
 
+                <TextView
+                    android:id="@+id/info_price"
+                    tools:text="R0.00"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="8dp"
+                    android:fontFamily="sans-serif"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:textAppearanceMedium"/>
+
+
             </LinearLayout>
 
             <LinearLayout
@@ -65,16 +77,51 @@
                 android:orientation="horizontal"
                 android:gravity="center">
 
-                <TextView
-                    android:id="@+id/info_price"
-                    tools:text="R0.00"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
                     android:layout_weight="1"
-                    android:layout_marginLeft="8dp"
-                    android:fontFamily="sans-serif"
-                    android:textStyle="bold"
-                    android:textAppearance="?android:textAppearanceMedium"/>
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btn_decrement"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/ic_remove_circle_outline_black_24dp"
+                        android:text="-" />
+
+
+                    <EditText
+                        android:id="@+id/cart_item_quantity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:fontFamily="sans-serif"
+                        android:text="1"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:tint="@color/colorPrimary" />
+
+                    <ImageButton
+                        android:id="@+id/btn_increment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/ic_control_point_black_24dp"
+                        android:text="+" />
+
+                </LinearLayout>
+
 
                 <Button
                     android:id="@+id/addToCart"

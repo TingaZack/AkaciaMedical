@@ -41,8 +41,8 @@ public class CartDialogListAdapter extends RecyclerView.Adapter<CartDialogListAd
 
     private final List<CartItem> mValues;
     private Activity activity;
-    double total = 0.0;
-    int score = 0;
+    long total = 0;
+    long my_sum = 0;
     private DataSnapshot dataSnapshot;
 
     public CartDialogListAdapter(List<CartItem> items, Activity activity, DataSnapshot dataSnapshot) {
@@ -67,6 +67,7 @@ public class CartDialogListAdapter extends RecyclerView.Adapter<CartDialogListAd
             holder.userid = holder.mAuth.getCurrentUser().getUid();
 
             final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(holder.userid).child("cart").child("cart-items");
+            final DatabaseReference mDatabaseQuantity = FirebaseDatabase.getInstance().getReference().child("users").child(holder.userid).child("cart").child("cart-items");
 
             System.out.println(mValues.get(position).getProduct().consumables);
 
@@ -79,7 +80,7 @@ public class CartDialogListAdapter extends RecyclerView.Adapter<CartDialogListAd
             holder.mCodeTextView.setText(mValues.get(position).getProduct().code);
             holder.mPricingTextView.setText(String.valueOf(mValues.get(position).getProduct().price));
             holder.mPricingUnitTextView.setText(String.valueOf(mValues.get(position).getProduct().unit_of_messuremeant));
-            String tot = String.valueOf(decimalDigitsFormat.format(mValues.get(position).getProduct().price * Integer.parseInt(holder.mCartItemQuantity.getText().toString())));
+            final String tot = String.valueOf(decimalDigitsFormat.format(mValues.get(position).getProduct().price * Integer.parseInt(holder.mCartItemQuantity.getText().toString())));
             holder.mCartItemTotal.setText(tot);
 
             System.out.println("CODE: " + mValues.get(position).getProduct().getCode());
@@ -93,12 +94,15 @@ public class CartDialogListAdapter extends RecyclerView.Adapter<CartDialogListAd
                         final int[][] quantity = {{Integer.parseInt(holder.mCartItemQuantity.getText().toString())}};
                         System.out.println("NEW : " + quant[0]);
 
+                        total = total + quant[0];
+                        System.out.println("NEW T: " + total);
+
                         //Button to decrement the items in the cart
                         holder.btnDecrementCart.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
 
-                                if (Integer.parseInt(holder.mCartItemQuantity.getText().toString()) > 0){
+                                if (Integer.parseInt(holder.mCartItemQuantity.getText().toString()) >= 2){
                                     quantity[0][0]--;
                                     System.out.println("GET QUANTITY: " + quantity[0][0]);
                                     holder.mCartItemQuantity.setText(String.valueOf(quantity[0][0]));
@@ -116,6 +120,34 @@ public class CartDialogListAdapter extends RecyclerView.Adapter<CartDialogListAd
                             }
                         });
                     }
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+            my_sum = total;
+            System.out.println("WHOLE SUM: " + my_sum);
+
+            mDatabaseQuantity.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    if (dataSnapshot.exists()) {
+
+//                        long sum = (long) dataSnapshot.child("quantity").getValue();
+                        System.out.println("Q: " + dataSnapshot.child("quantity").getValue());
+                    }
+
+//                    for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+////                        long sum = (long) snapshot.child("quantity").getValue();
+//                        System.out.println("QUANtity: " + snapshot.child("quantity").getValue());
+//                        total = total + sum;
+//                        System.out.println("Total Price: " + total);
+//                    }
                 }
 
                 @Override
@@ -135,7 +167,8 @@ public class CartDialogListAdapter extends RecyclerView.Adapter<CartDialogListAd
                                 dataSnapshot.getRef().setValue(null);
                                 mValues.remove(position);
                                 notifyDataSetChanged();
-                                showDialog();
+
+//                                showDialog();
                             }
                         }
 
@@ -230,8 +263,8 @@ public class CartDialogListAdapter extends RecyclerView.Adapter<CartDialogListAd
 
     public double countCart(TextView textViewPrice) {
         double sum = Double.parseDouble(textViewPrice.getText().toString());
-        total = total + sum;
-        System.out.println("Total Price: " + total);
+//        total = total + sum;
+//        System.out.println("Total Price: " + total);
 
         return sum;
     }

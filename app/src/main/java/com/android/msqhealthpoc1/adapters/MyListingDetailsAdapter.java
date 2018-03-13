@@ -17,7 +17,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -70,20 +72,77 @@ public class MyListingDetailsAdapter extends RecyclerView.Adapter<MyListingDetai
         System.out.println("Print COde" + mValues.get(position).getCode());
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("cart").child("cart-items");
         DatabaseReference mCheckReference = FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("cart");
-        mCheckReference.child("cart-items").child(mValues.get(position).getCode()).addValueEventListener(new ValueEventListener() {
+//        mCheckReference.child("cart-items").child(mValues.get(position).getCode()).addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                if (dataSnapshot.exists()) {
+//                    for (DataSnapshot snapShot : dataSnapshot.getChildren()) {
+//                        System.out.println("EXIST");
+//                        holder.btnAddToCart.setAlpha(.5f);
+//                        holder.btnAddToCart.setClickable(false);
+//                        holder.btnAddToCart.setEnabled(false);
+//                    }
+//                } else if (!dataSnapshot.exists()) {
+//                    System.out.println("EXIST NOT");
+//                    holder.btnAddToCart.setEnabled(true);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+
+        //Button to decrement the items in the cart
+        holder.mDecrementButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+//                quant[0] = (long) dataSnapshot.child("quantity").getValue();
+                int quantity = Integer.parseInt(holder.mQuantity.getText().toString());
+
+                if (quantity >= 2){
+                    quantity--;
+                    System.out.println("GET QUANTITY: " + quantity);
+                    holder.mQuantity.setText(String.valueOf(quantity));
+                }
+            }
+        });
+
+        //Button to increment the items in the cart
+        holder.mIncrementButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final int[][] quantity = {{Integer.parseInt(holder.mQuantity.getText().toString())}};
+                quantity[0][0]++;
+                System.out.println("GET QUANTITY: " + quantity[0][0]);
+                holder.mQuantity.setText(String.valueOf(quantity[0][0]));
+            }
+        });
+
+        mDatabase.child(mValues.get(position).getCode()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                long quant = 0;
                 if (dataSnapshot.exists()) {
-                    for (DataSnapshot snapShot : dataSnapshot.getChildren()) {
-                        System.out.println("EXIST");
-                        holder.btnAddToCart.setAlpha(.5f);
-                        holder.btnAddToCart.setClickable(false);
-                        holder.btnAddToCart.setEnabled(false);
-                    }
-                } else if (!dataSnapshot.exists()) {
-                    System.out.println("EXIST NOT");
-                    holder.btnAddToCart.setEnabled(true);
+                    quant = (long) dataSnapshot.child("quantity").getValue();
+                    final int[][] quantity = {{Integer.parseInt(holder.mQuantity.getText().toString())}};
+                    System.out.println("NEW : " + quant);
+
+                    holder.mQuantity.setText(String.valueOf(quant));
+
+                    //Button to decrement the items in the cart
+//                    holder.mIncrementButton.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View view) {
+//                            quantity[0][0]++;
+//                            System.out.println("GET QUANTITY: " + quantity[0][0]);
+//                            holder.mQuantity.setText(String.valueOf(quantity[0][0]));
+//                        }
+//                    });
                 }
             }
 
@@ -100,61 +159,68 @@ public class MyListingDetailsAdapter extends RecyclerView.Adapter<MyListingDetai
                     holder.btnAddToCart.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-//                            if (holder.mQuantity.getText().toString() == "") {
-//                                holder.mQuantity.setError("Please add quantity...");
-//                                return;
-//                            }
-//
-//                            CartItem item = dataSnapshot.getValue(CartItem.class);
-//                            try {
-//                                if (holder.mQuantity.getText() != null) {
-//                                    item.setQuantity(item.getQuantity() + Integer.parseInt(holder.mQuantity.getText().toString()));
-//                                } else {
-//                                    item.setQuantity(item.getQuantity() + 1);
-//                                    return;
-//                                }
-//                            } catch (Exception ex) {
-//                                holder.mQuantity.setError("Please add a quantity");
-//                                return;
-//                            }
-//                            Map<String, Object> postValues = item.toMap();
+                            if (holder.mQuantity.getText().toString() == "") {
+                                holder.mQuantity.setError("Please add quantity...");
+                                return;
+                            }
 
-//                            Map<String, Object> childUpdates = new HashMap<>();
-//                            childUpdates.put("/cart/cart-items/" + mValues.get(position).getCode(), postValues);
-//                            FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
-//                                @Override
-//                                public void onComplete(@NonNull Task<Void> task) {
-//                                    if (task.isSuccessful()) {
-//                                        Toast.makeText(activity, "Item added to cart", Toast.LENGTH_SHORT).show();
-//                                    } else {
-//                                        task.getException().printStackTrace();
-//                                    }
-//                                }
-//                            });
+                            CartItem item = dataSnapshot.getValue(CartItem.class);
+                            try {
+                                if (holder.mQuantity.getText() != null) {
+                                    item.setQuantity(item.getQuantity() + Integer.parseInt(holder.mQuantity.getText().toString()));
+                                } else {
+                                    item.setQuantity(item.getQuantity() + 1);
+                                    return;
+                                }
+                            } catch (Exception ex) {
+                                holder.mQuantity.setError("Please add a quantity");
+                                return;
+                            }
+                            Map<String, Object> postValues = item.toMap();
+
+                            Map<String, Object> childUpdates = new HashMap<>();
+                            childUpdates.put("/cart/cart-items/" + mValues.get(position).getCode(), postValues);
+                            FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Snackbar snack = Snackbar.make(holder.mLinearLayout, "Item/s added to cart",
+                                                Snackbar.LENGTH_INDEFINITE).setDuration(2000);
+                                        snack.getView().setBackgroundColor(ContextCompat.getColor(activity, android.R.color.holo_green_dark));
+                                        View view = snack.getView();
+                                        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) view.getLayoutParams();
+                                        params.gravity = Gravity.BOTTOM;
+                                        view.setLayoutParams(params);
+                                        snack.show();
+                                    } else {
+                                        task.getException().printStackTrace();
+                                    }
+                                }
+                            });
                         }
                     });
                 } else {
                     holder.btnAddToCart.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-//                            if (holder.mQuantity.getText().toString() == "") {
-//                                holder.mQuantity.setError("Please add quantity...");
-//                                return;
-//                            }
+                            if (holder.mQuantity.getText().toString() == "") {
+                                holder.mQuantity.setError("Please add quantity...");
+                                return;
+                            }
                             CartItem cartItem = new CartItem();
                             cartItem.setOwner_id(user.getUid());
                             cartItem.setProduct(holder.mItem);
                             cartItem.setQuantity(1);
-//                            try {
-//                                if (holder.mQuantity.getText() != null) {
-//                                    cartItem.setQuantity(Integer.parseInt(holder.mQuantity.getText().toString()));
-//                                } else {
-//                                    cartItem.setQuantity(1);
-//                                }
-//                            } catch (Exception ex) {
-//                                holder.mQuantity.setError("Please add a quantity");
-//                                return;
-//                            }
+                            try {
+                                if (holder.mQuantity.getText() != null) {
+                                    cartItem.setQuantity(Integer.parseInt(holder.mQuantity.getText().toString()));
+                                } else {
+                                    cartItem.setQuantity(1);
+                                }
+                            } catch (Exception ex) {
+                                holder.mQuantity.setError("Please add a quantity");
+                                return;
+                            }
 
                             Map<String, Object> postValues = cartItem.toMap();
 
@@ -169,7 +235,14 @@ public class MyListingDetailsAdapter extends RecyclerView.Adapter<MyListingDetai
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
-                                            showDialog();
+                                            Snackbar snack = Snackbar.make(holder.mLinearLayout, "Item/s added to cart",
+                                                    Snackbar.LENGTH_INDEFINITE).setDuration(1000);
+                                            snack.getView().setBackgroundColor(ContextCompat.getColor(activity, android.R.color.holo_green_dark));
+                                            View view = snack.getView();
+                                            CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) view.getLayoutParams();
+                                            params.gravity = Gravity.BOTTOM;
+                                            view.setLayoutParams(params);
+                                            snack.show();
 //                                        Toast.makeText(activity, "Item added to cart", Toast.LENGTH_SHORT).show();
                                         } else {
                                             task.getException().printStackTrace();
@@ -258,6 +331,9 @@ public class MyListingDetailsAdapter extends RecyclerView.Adapter<MyListingDetai
         public final TextView mPricingView;
         public final Button btnAddToCart;
         public final TextView mCodeview;
+        public final EditText mQuantity;
+        public final ImageButton mIncrementButton;
+        public final ImageButton mDecrementButton;
         public final LinearLayout mLinearLayout;
         public Product mItem;
 
@@ -270,6 +346,9 @@ public class MyListingDetailsAdapter extends RecyclerView.Adapter<MyListingDetai
             btnAddToCart = view.findViewById(R.id.addToCart);
             mCodeview = view.findViewById(R.id.nappi_code);
             mLinearLayout = view.findViewById(R.id.linear);
+            mDecrementButton = view.findViewById(R.id.btn_decrement);
+            mIncrementButton = view.findViewById(R.id.btn_increment);
+            mQuantity = view.findViewById(R.id.cart_item_quantity);
         }
 
         @Override

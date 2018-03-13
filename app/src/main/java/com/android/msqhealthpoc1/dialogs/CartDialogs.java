@@ -18,6 +18,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,9 +50,10 @@ public class CartDialogs extends DialogFragment {
     List<CartItem> items = new ArrayList<>();
     private DatabaseReference mDatabase;
 
-    TextView mCartItemCount;
+    TextView mCartItemCount, mText_view;
     RecyclerView mList;
     Button btnCheckOut, btnClearAll;
+    ImageButton mImageButtonEmptyCart;
 
     CartDialogListAdapter adapter;
 
@@ -73,6 +75,9 @@ public class CartDialogs extends DialogFragment {
 
         btnCheckOut = (Button) view.findViewById(R.id.checkout);
         btnClearAll = (Button) view.findViewById(R.id.clearAll);
+        mText_view = view.findViewById(R.id.text_view);
+
+        mImageButtonEmptyCart = view.findViewById(R.id.imgb_cart);
 
         mCartItemCount = (TextView) view.findViewById(R.id.cart_total_count);
         mList = (RecyclerView) view.findViewById(R.id.list);
@@ -104,6 +109,37 @@ public class CartDialogs extends DialogFragment {
                     double valueRounded = Math.round(amount * 100D) / 100D;
                     mCartItemCount.setText(String.valueOf("Total R" + valueRounded));
                     System.out.println("FINAL Amount is: " + valueRounded);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+            FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("cart").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    System.out.println("SNAP: " + dataSnapshot.getChildrenCount());
+
+                    if (dataSnapshot.getChildrenCount() == 0) {
+                        btnClearAll.setVisibility(View.GONE);
+                        mCartItemCount.setVisibility(View.GONE);
+                        btnCheckOut.setEnabled(false);
+                        btnCheckOut.setText("Start Shopping");
+                        mImageButtonEmptyCart.setVisibility(View.VISIBLE);
+                        mText_view.setVisibility(View.VISIBLE);
+                        btnCheckOut.setAlpha(.5f);
+                        btnCheckOut.setClickable(false);
+                    } else {
+                        btnCheckOut.setText("Checkout");
+                        btnClearAll.setVisibility(View.VISIBLE);
+                        mCartItemCount.setVisibility(View.VISIBLE);
+                        btnCheckOut.setEnabled(true);
+                        mImageButtonEmptyCart.setVisibility(View.GONE);
+                        mText_view.setVisibility(View.GONE);
+                    }
                 }
 
                 @Override

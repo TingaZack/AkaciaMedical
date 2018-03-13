@@ -123,6 +123,9 @@
     <string name="msq_slogan">"Want to learn more about our services?
 Please get in touch, we'd love to hear from you!"</string>
 
+    <string name="empty_cart">Look at this shiny new trolley, just waiting to be filled.\n
+        Start shopping now!</string>
+
     <string-array name="hasPractice">
         <item>---Select---</item>
         <item>Yes</item>
