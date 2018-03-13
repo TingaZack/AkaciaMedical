@@ -248,7 +248,7 @@ public class PromotionalContentRecyclerViewAdapter extends RecyclerView.Adapter<
                                                         Snackbar.LENGTH_INDEFINITE).setDuration(2000);
                                                 snack.getView().setBackgroundColor(ContextCompat.getColor(activity, android.R.color.holo_green_dark));
                                                 View view = snack.getView();
-                                                CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) view.getLayoutParams();
+                                                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
                                                 params.gravity = Gravity.BOTTOM;
                                                 view.setLayoutParams(params);
                                                 snack.show();
