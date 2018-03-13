@@ -126,12 +126,15 @@ public class CartDialogs extends DialogFragment {
                     if (dataSnapshot.getChildrenCount() == 0) {
                         btnClearAll.setVisibility(View.GONE);
                         mCartItemCount.setVisibility(View.GONE);
-                        btnCheckOut.setEnabled(false);
-                        btnCheckOut.setText("Start Shopping");
+                        btnCheckOut.setText("Browse for Shopping!");
                         mImageButtonEmptyCart.setVisibility(View.VISIBLE);
                         mText_view.setVisibility(View.VISIBLE);
-                        btnCheckOut.setAlpha(.5f);
-                        btnCheckOut.setClickable(false);
+                        btnCheckOut.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                dismiss();
+                            }
+                        });
                     } else {
                         btnCheckOut.setText("Checkout");
                         btnClearAll.setVisibility(View.VISIBLE);
