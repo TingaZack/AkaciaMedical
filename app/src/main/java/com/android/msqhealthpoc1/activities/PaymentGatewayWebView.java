@@ -57,7 +57,6 @@ public class PaymentGatewayWebView extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.webview);
         sendXml = new CkXml();
-        sendXml.put_Tag("Invoice");
 
         user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -79,6 +78,7 @@ public class PaymentGatewayWebView extends AppCompatActivity {
     public void getURLPostData() {
 
         final CkXml xml = new CkXml();
+        sendXml.put_Tag("Invoice");
 
 
         FirebaseDatabase.getInstance().getReference("users").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -104,26 +104,23 @@ public class PaymentGatewayWebView extends AppCompatActivity {
             public void onDataChange(final DataSnapshot dataSnapshot) {
                 double total = 0;
                 int i = 1;
-                sendXml.put_Tag("Product");
+                sendXml.put_Tag("Invoice");
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     _amount = 0;
-                    CartItem cartItem = new CartItem();
 
                     _amount = _amount + ((Double.parseDouble(String.valueOf(snapshot.child("product").child("price").getValue()))) * (Integer.parseInt(snapshot.child("quantity").getValue().toString())));
                     total = total +_amount;
                     xml.put_Tag("Row");
-                    xml.NewChild("No", String.valueOf(i));
-                    xml.NewChild("Part Nr", snapshot.child("product").child("code").getValue().toString());
-                    xml.NewChild("Product Description", snapshot.child("product").child("description").getValue().toString());
-                    xml.NewChild("Qty", snapshot.child("quantity").getValue().toString());
-                    xml.NewChild("Unit Rand Price", snapshot.child("product").child("price").getValue().toString());
+                    xml.NewChild("Product|No", String.valueOf(i));
+                    xml.NewChild("Product|Part Nr", snapshot.child("product").child("code").getValue().toString());
+                    xml.NewChild("Product|Description", snapshot.child("product").child("description").getValue().toString());
+                    xml.NewChild("Product|Qty", snapshot.child("quantity").getValue().toString());
+                    xml.NewChild("Product|Unit Rand Price", snapshot.child("product").child("price").getValue().toString());
                     xml.NewChild("Total Rand Price", String.valueOf(_amount));
 
                     sendXml.AddChildTree(xml);
-                    System.out.println( sendXml.getXml()+"\n\n\n\n");
                     xml.Clear();
 
-                    cartItem.setQuantity(Integer.parseInt(snapshot.child("quantity").getValue().toString()));
 
                     Product product = new Product();
                     product.setCode(snapshot.child("product").child("code").getValue().toString());
@@ -132,8 +129,7 @@ public class PaymentGatewayWebView extends AppCompatActivity {
                     product.setPrice(Double.parseDouble(snapshot.child("product").child("price").getValue().toString()));
                     product.setTrueImageUrl(snapshot.child("product").child("trueImageUrl").getValue().toString());
                     product.setUnit_of_messuremeant(snapshot.child("product").child("unit_of_messuremeant").getValue().toString());
-                    cartItem.setProduct(product);
-                    items.add(cartItem.toMap());
+
                     System.out.println("Amount is " + _amount);
                     i++;
                 }
@@ -177,6 +173,7 @@ public class PaymentGatewayWebView extends AppCompatActivity {
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
+
             if (url.startsWith("http://akacia.co.za")) {
                 System.out.println("Request Intercepted");
 
@@ -184,10 +181,12 @@ public class PaymentGatewayWebView extends AppCompatActivity {
                 FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("cart").child("cart-items").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(final DataSnapshot dataSnapshot) {
+
                         if (dataSnapshot != null) {
 
                             double _amount = 0;
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
                                 CartItem cartItem = new CartItem();
                                 cartItem.setQuantity(Integer.parseInt(snapshot.child("quantity").getValue().toString()));
                                 _amount = _amount + ((Double.parseDouble(String.valueOf(snapshot.child("product").child("price").getValue()))) * (Integer.parseInt(snapshot.child("quantity").getValue().toString())));
@@ -207,12 +206,14 @@ public class PaymentGatewayWebView extends AppCompatActivity {
 
                             String key = FirebaseDatabase.getInstance().getReference().child("carts").push().getKey();
 
+
+
                             final Cart cart = new Cart();
                             cart.setItems(items);
                             cart.setSubtotal(amount);
                             cart.setUserID(user.getUid());
 
-                            final Map<String, Object> postValues = cart.toMap();
+                            Map<String, Object> postValues = cart.toMap();
 
                             Map<String, Object> childUpdates = new HashMap<>();
                             childUpdates.put("/carts/checked-out/" + user.getUid() + "/" + key, postValues);
