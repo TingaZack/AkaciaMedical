@@ -2,6 +2,7 @@
     <string name="app_name">MSQ Health</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="practice_number_not_found">Practice Number not found. Would you like to contact MSQ Health and register your practice?</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

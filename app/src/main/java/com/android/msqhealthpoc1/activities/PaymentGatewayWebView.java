@@ -1,12 +1,14 @@
 package com.android.msqhealthpoc1.activities;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.webkit.WebView;
@@ -25,13 +27,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import org.apache.http.util.EncodingUtils;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -77,67 +79,18 @@ public class PaymentGatewayWebView extends AppCompatActivity {
     }
 
     public void getURLPostData() {
-
-        final CkXml xml = new CkXml();
-
-
-        FirebaseDatabase.getInstance().getReference("users").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                sendXml.NewChild("Particulars|Practice Name", dataSnapshot.child("Name").getValue().toString());
-                sendXml.NewChild("Particulars|Date", new Date().toString());
-                sendXml.NewChild("Particulars|Order Person", dataSnapshot.child("Name").getValue().toString());
-                sendXml.NewChild("Particulars|Practice Phone", dataSnapshot.child("Telephone").getValue().toString());
-                sendXml.NewChild("Particulars|Practice Address", dataSnapshot.child("Suburb").getValue().toString());
-                sendXml.NewChild("Delivery|Delivery Address", dataSnapshot.child("billing_infomation").child("delivery_address").getValue().toString());
-                sendXml.NewChild("Delivery|Contact Person", dataSnapshot.child("billing_infomation").child("full_names").getValue().toString());
-                sendXml.NewChild("Delivery|Contact Number", dataSnapshot.child("billing_infomation").child("phone_number").getValue().toString());
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        pDialog.show();
         FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("cart").child("cart-items").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
                 double total = 0;
                 int i = 1;
+                _amount = 0;
                 sendXml.put_Tag("Product");
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    _amount = 0;
-                    CartItem cartItem = new CartItem();
-
                     _amount = _amount + ((Double.parseDouble(String.valueOf(snapshot.child("product").child("price").getValue()))) * (Integer.parseInt(snapshot.child("quantity").getValue().toString())));
-                    total = total +_amount;
-                    xml.put_Tag("Row");
-                    xml.NewChild("No", String.valueOf(i));
-                    xml.NewChild("Part Nr", snapshot.child("product").child("code").getValue().toString());
-                    xml.NewChild("Product Description", snapshot.child("product").child("description").getValue().toString());
-                    xml.NewChild("Qty", snapshot.child("quantity").getValue().toString());
-                    xml.NewChild("Unit Rand Price", snapshot.child("product").child("price").getValue().toString());
-                    xml.NewChild("Total Rand Price", String.valueOf(_amount));
-
-                    sendXml.AddChildTree(xml);
-                    System.out.println( sendXml.getXml()+"\n\n\n\n");
-                    xml.Clear();
-
-                    cartItem.setQuantity(Integer.parseInt(snapshot.child("quantity").getValue().toString()));
-
-                    Product product = new Product();
-                    product.setCode(snapshot.child("product").child("code").getValue().toString());
-                    product.setConsumables(snapshot.child("product").child("consumables").getValue().toString());
-                    product.setDescription(snapshot.child("product").child("description").getValue().toString());
-                    product.setPrice(Double.parseDouble(snapshot.child("product").child("price").getValue().toString()));
-                    product.setTrueImageUrl(snapshot.child("product").child("trueImageUrl").getValue().toString());
-                    product.setUnit_of_messuremeant(snapshot.child("product").child("unit_of_messuremeant").getValue().toString());
-                    cartItem.setProduct(product);
-                    items.add(cartItem.toMap());
-                    System.out.println("Amount is " + _amount);
-                    i++;
+                    total = total + _amount;
                 }
-                sendXml.NewChild("Total", String.valueOf(total));
 
 
                 StringBuilder builder = null;
@@ -156,10 +109,10 @@ public class PaymentGatewayWebView extends AppCompatActivity {
                     ex.printStackTrace();
                 }
 
-                pDialog.dismiss();
-
                 if (builder != null) {
+                    pDialog.dismiss();
                     webView.postUrl("https://virtual.mygateglobal.com/PaymentPage.cfm", EncodingUtils.getBytes(builder.toString(), "BASE64"));
+
                 } else {
                     System.out.println("String builder is null");
                 }
@@ -179,15 +132,45 @@ public class PaymentGatewayWebView extends AppCompatActivity {
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             if (url.startsWith("http://akacia.co.za")) {
                 System.out.println("Request Intercepted");
+                pDialog.setMessage("Creating order...");
+                pDialog.show();
+                final CkXml xml = new CkXml();
 
-                finish();
+
+                FirebaseDatabase.getInstance().getReference("users").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        sendXml.NewChild("Particulars|Practice Name", dataSnapshot.child("Name").getValue().toString());
+                        sendXml.NewChild("Particulars|Date", new Date().toString());
+                        sendXml.NewChild("Particulars|Order Person", dataSnapshot.child("Name").getValue().toString());
+                        if(dataSnapshot.child("Telephone").exists()) {
+                            sendXml.NewChild("Particulars|Practice Phone", dataSnapshot.child("Telephone").getValue().toString());
+                        } else {
+                            sendXml.NewChild("Particulars|Practice Phone", dataSnapshot.child("billing_infomation").child("phone_number").getValue().toString());
+                        }
+                        sendXml.NewChild("Particulars|Practice Address", dataSnapshot.child("Suburb").getValue().toString());
+                        sendXml.NewChild("Delivery|Delivery Address", dataSnapshot.child("billing_infomation").child("delivery_address").getValue().toString());
+                        sendXml.NewChild("Delivery|Contact Person", dataSnapshot.child("billing_infomation").child("full_names").getValue().toString());
+                        sendXml.NewChild("Delivery|Contact Number", dataSnapshot.child("billing_infomation").child("phone_number").getValue().toString());
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
                 FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("cart").child("cart-items").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(final DataSnapshot dataSnapshot) {
                         if (dataSnapshot != null) {
 
+                            double total = 0;
+                            int i = 1;
                             double _amount = 0;
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
+                                System.out.println("Break Point 2 :  Items in cart : " + dataSnapshot.getChildrenCount());
                                 CartItem cartItem = new CartItem();
                                 cartItem.setQuantity(Integer.parseInt(snapshot.child("quantity").getValue().toString()));
                                 _amount = _amount + ((Double.parseDouble(String.valueOf(snapshot.child("product").child("price").getValue()))) * (Integer.parseInt(snapshot.child("quantity").getValue().toString())));
@@ -199,9 +182,31 @@ public class PaymentGatewayWebView extends AppCompatActivity {
                                 product.setTrueImageUrl(snapshot.child("product").child("trueImageUrl").getValue().toString());
                                 product.setUnit_of_messuremeant(snapshot.child("product").child("unit_of_messuremeant").getValue().toString());
                                 cartItem.setProduct(product);
+
+                                System.out.println(cartItem.toMap().toString());
+
                                 items.add(cartItem.toMap());
-                                System.out.println("Amount is " + _amount);
+
+
+                                xml.put_Tag("Row");
+                                xml.NewChild("No", String.valueOf(i));
+                                xml.NewChild("Part Nr", snapshot.child("product").child("code").getValue().toString());
+                                xml.NewChild("Product Description", snapshot.child("product").child("description").getValue().toString());
+                                xml.NewChild("Qty", snapshot.child("quantity").getValue().toString());
+                                xml.NewChild("Unit Rand Price", snapshot.child("product").child("price").getValue().toString());
+                                xml.NewChild("Total Rand Price", String.valueOf(_amount));
+
+                                sendXml.AddChildTree(xml);
+                                xml.Clear();
+
+                                i++;
                             }
+
+                            System.out.println("Break Point 2 :  Items in cart : " + items.size());
+
+
+                            sendXml.NewChild("Total", String.valueOf(total));
+
 
                             final double amount = _amount;
 
@@ -216,31 +221,13 @@ public class PaymentGatewayWebView extends AppCompatActivity {
 
                             Map<String, Object> childUpdates = new HashMap<>();
                             childUpdates.put("/carts/checked-out/" + user.getUid() + "/" + key, postValues);
-                            childUpdates.put("/users/" + user.getUid() + "/carts/checked-out/" + key, postValues);
-
-                            new Thread(new Runnable() {
-
-                                @Override
-                                public void run() {
-                                    try {
-                                        GMailSender sender = new GMailSender("mosecoza@gmail.com", "moses@357");
-                                        sender.sendMail("Checked Out Invoice",
-                                                sendXml.getXml(),
-                                                "mosecoza@gmail.com",
-                                                "info@buildhealth.co.za");
-                                    } catch (Exception e) {
-                                        Log.e("++++++error____SendMail", e.getMessage(), e);
-                                    }
-                                }
-
-                            }).start();
+                            childUpdates.put("/users/" + user.getUid() + "/carts/completed/" + key, postValues);
 
                             FirebaseDatabase.getInstance().getReference().updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-                                        dataSnapshot.getRef().removeValue();
-
+                                        new SendEmail(dataSnapshot).execute();
                                     }
                                 }
                             });
@@ -259,7 +246,6 @@ public class PaymentGatewayWebView extends AppCompatActivity {
 
         @Override
         public void onPageFinished(WebView view, String url) {
-            pDialog.dismiss();
             if (url.equals("http://akacia.co.za")) {
                 Toast.makeText(PaymentGatewayWebView.this, "Payment Completed Successfully", Toast.LENGTH_LONG).show();
                 finish();
@@ -275,4 +261,65 @@ public class PaymentGatewayWebView extends AppCompatActivity {
         // then you will see the following error message at application startup:
         //"The application <your-application-name> has stopped unexpectedly. Please try again."
     }
+
+    public class SendEmail extends AsyncTask<Void, Void, Boolean> {
+
+
+        DataSnapshot dataSnapshot;
+
+        public SendEmail(DataSnapshot dataSnapshot) {
+            this.dataSnapshot = dataSnapshot;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            pDialog.setMessage("Completing your order");
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+
+            try {
+
+                GMailSender sender = new GMailSender("mosecoza@gmail.com", "moses@357");
+                sender.sendMail("Checked Out Invoice",
+                        sendXml.getXml(),
+                        "mosecoza@gmail.com",
+                        "info@buildhealth.co.za");
+                return true;
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                return false;
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(Boolean emailSent) {
+            super.onPostExecute(emailSent);
+            pDialog.dismiss();
+            if (emailSent) {
+                dataSnapshot.getRef().removeValue(new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                        orderCompleted().show();
+                    }
+                });
+                finish();
+            }
+        }
+    }
+
+    public AlertDialog orderCompleted() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(PaymentGatewayWebView.this);
+        builder.setMessage("Your order has been completed. Please expect delivery in 3 to 5 day.")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // FIRE ZE MISSILES!
+                    }
+                });
+        // Create the AlertDialog object and return it
+        return builder.create();
+    }
+
 }

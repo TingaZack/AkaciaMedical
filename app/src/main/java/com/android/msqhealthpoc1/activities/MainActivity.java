@@ -19,6 +19,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -30,7 +31,6 @@ import com.android.msqhealthpoc1.dialogs.CartDialogs;
 import com.android.msqhealthpoc1.fragments.ProductFragment;
 import com.android.msqhealthpoc1.fragments.PromotionalContentFragment;
 import com.android.msqhealthpoc1.helpers.PrefManager;
-import com.android.msqhealthpoc1.model.CartItem;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main_menu);
 
         //Initialising and setting my toolBar
@@ -99,10 +100,6 @@ public class MainActivity extends AppCompatActivity {
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-//        prefManager = new PrefManager(this);
-//        if(prefManager.isFirstTimeSignup()){
-//
-//        }
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
@@ -202,24 +199,17 @@ public class MainActivity extends AppCompatActivity {
 //
 //            }
 //        });
-
-
+        //Checks if a user profile exists or not
+        /*
         if (isNetworkAvailable()) {
 
-            if (user == null) {
-                finish();
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
-            }
-
             if (user != null) {
-                System.out.println("EMAIL VERIFIED: " + user.isEmailVerified());
                 String uid = user.getUid();
-                mDatabase.child("users").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+                mDatabaseUsers.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.getValue() == null) {
+                        if (!dataSnapshot.exists()) {
                             startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                            finish();
                         }
                     }
 
@@ -229,11 +219,13 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
                 checkIfUserExist();
-                checkEmailVerification();
+                //checkEmailVerification();
             }
 
 
-        } else if (!isNetworkAvailable()) {
+        } else */
+
+        if (!isNetworkAvailable()) {
 
             Snackbar snack = Snackbar.make(findViewById(R.id.linear), "No Connection Available, please check your internet settings and try again.",
                     Snackbar.LENGTH_INDEFINITE).setDuration(5000);
@@ -252,22 +244,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-
-//        MenuItem item = menu.findItem(R.id.action_cart);
-//        MenuItemCompat.setActionView(item, R.layout.badge_layout);
-//        RelativeLayout notifCount = (RelativeLayout)   MenuItemCompat.getActionView(item);
-//
-//        tv = (TextView) notifCount.findViewById(R.id.actionbar_notifcation_textview);
-//        tv.setText(String.valueOf()cart_count);
-//
-//        tv.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                Toast.makeText(MainActivity.this, "Hello Cart", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-
 
         return true;
     }
@@ -348,14 +324,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void launchOnboardingScreen() {
-        startActivity(new Intent(MainActivity.this, WelcomeSetupActivity.class));
-        finish();
-    }
 
     private void checkIfUserExist() {
 
-        if (mAuth.getCurrentUser() != null) {
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
 
             final String user_uid = mAuth.getCurrentUser().getUid();
             //Check if the value a user entered exists on the database or not
@@ -364,7 +336,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     //Check if the result has a child on the database
-                    if (!dataSnapshot.exists()){
+                    if (!dataSnapshot.exists()) {
                         Toast.makeText(MainActivity.this, "It does not Exist", Toast.LENGTH_SHORT).show();
                     }
 
@@ -379,14 +351,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void checkEmailVerification() {
+    /*public void checkEmailVerification() {
         if (!user.isEmailVerified()) {
             Intent setupIntent = new Intent(getApplicationContext(), LoginActivity.class);
             setupIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(setupIntent);
             finish();
         }
-    }
+    }*/
 
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager

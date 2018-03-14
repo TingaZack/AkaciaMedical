@@ -9,7 +9,6 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputEditText;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -18,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -73,7 +71,6 @@ public class MyListingDetailsAdapter extends RecyclerView.Adapter<MyListingDetai
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("cart").child("cart-items");
-        DatabaseReference mCheckReference = FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("cart");
 //        mCheckReference.child("cart-items").child(mValues.get(position).getCode()).addValueEventListener(new ValueEventListener() {
 //            @Override
 //            public void onDataChange(DataSnapshot dataSnapshot) {
@@ -130,7 +127,6 @@ public class MyListingDetailsAdapter extends RecyclerView.Adapter<MyListingDetai
                 if (dataSnapshot.exists()) {
                     quant = (long) dataSnapshot.child("quantity").getValue();
                     final int[][] quantity = {{Integer.parseInt(holder.mQuantity.getText().toString())}};
-                    System.out.println("NEW : " + quant);
 
                     holder.mQuantity.setText(String.valueOf(quant));
 
@@ -152,7 +148,7 @@ public class MyListingDetailsAdapter extends RecyclerView.Adapter<MyListingDetai
             }
         });
 
-        FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("cart").child("cart-items").child(mValues.get(position).code).addValueEventListener(new ValueEventListener() {
+        mDatabase.child(mValues.get(position).code).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue() != null) {
@@ -224,12 +220,11 @@ public class MyListingDetailsAdapter extends RecyclerView.Adapter<MyListingDetai
 
                             Map<String, Object> postValues = cartItem.toMap();
 
-                            String key = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("cart").push().getKey();
 
                             if (isNetworkAvailable()) {
 
                                 Map<String, Object> childUpdates = new HashMap<>();
-                                childUpdates.put("/cart/cart-items/" + mValues.get(position).getCode(), postValues);
+                                childUpdates.put("/carts/pending/" + mValues.get(position).getCode(), postValues);
 
                                 FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override

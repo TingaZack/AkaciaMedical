@@ -161,6 +161,5 @@ public class Product {
         result.put("PRICING UNIT", unit_of_messuremeant);
         result.put("True Image", trueImageUrl);
         return result;
-
     }
 }
