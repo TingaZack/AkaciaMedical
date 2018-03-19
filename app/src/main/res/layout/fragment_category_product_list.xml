@@ -9,5 +9,5 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
-    tools:context="com.android.msqhealthpoc1.fragments.CategoryProductListFragment"
+    tools:context="com.msqhealth.main.fragments.CategoryProductListFragment"
     tools:listitem="@layout/fragment_category_product_list_item" />

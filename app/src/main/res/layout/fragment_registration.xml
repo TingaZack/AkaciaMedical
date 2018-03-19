@@ -46,7 +46,7 @@
                     android:layout_marginRight="64dp"
                     android:fontFamily="sans-serif"
                     android:gravity="center"
-                    android:text="Please provide us with your practice number."
+                    android:text="Please enter last 7 numbers of your practice number."
                     android:textSize="13sp" />
 
             </LinearLayout>
@@ -55,9 +55,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingTop="16dp"
                 android:paddingLeft="32dp"
-                android:paddingRight="32dp">
+                android:paddingRight="32dp"
+                android:paddingTop="16dp">
 
                 <LinearLayout
                     android:id="@+id/practice_number_insert"
@@ -73,13 +73,13 @@
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
                         android:layout_marginTop="8dp"
+                        android:hint="Practice Number"
                         android:textColorHint="@color/colorPrimaryDark">
 
                         <EditText
                             android:id="@+id/practice_number"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:hint="Practice Number"
                             android:inputType="number"
                             android:maxLength="7"
                             android:textColor="@color/colorPrimaryDark"

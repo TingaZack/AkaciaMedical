@@ -9,10 +9,11 @@
 
 
     <RelativeLayout
+        android:id="@+id/cart_empty_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_centerInParent="true">
+        android:layout_centerInParent="true"
+        android:gravity="center">
 
         <ImageButton
             android:id="@+id/imgb_cart"
@@ -29,13 +30,20 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/imgb_cart"
             android:layout_marginLeft="48dp"
-            android:layout_marginTop="16dp"
             android:layout_marginRight="48dp"
+            android:layout_marginTop="16dp"
             android:text="@string/empty_cart"
             android:textAlignment="center"
             android:visibility="gone" />
 
     </RelativeLayout>
+
+    <View
+        android:id="@+id/straight_line"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_above="@+id/checkout"
+        android:background="@android:color/darker_gray" />
 
     <Button
         android:id="@+id/checkout"
@@ -55,7 +63,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/checkout"
+        android:layout_above="@+id/straight_line"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
@@ -64,8 +72,9 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp">
+            android:background="@color/colorPrimary"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
 
 
             <Button
@@ -79,7 +88,7 @@
                 android:fontFamily="sans-serif"
                 android:text="Clear All"
                 android:textAllCaps="false"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/white"
                 android:textStyle="bold" />
 
 
@@ -94,6 +103,7 @@
                 android:layout_toLeftOf="@+id/clearAll"
                 android:fontFamily="sans-serif"
                 android:gravity="center_vertical"
+                android:textColor="@color/white"
                 android:textStyle="bold" />
 
         </RelativeLayout>

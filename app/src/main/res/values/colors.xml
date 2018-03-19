@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#1A6B9F</color>
-    <color name="colorPrimaryDark">#1A6B9F</color>
-    <color name="colorAccent">#e08708</color>
+    <color name="colorPrimary">#006EA5</color>
+    <color name="colorPrimaryDark">#005681</color>
+    <color name="colorAccent">#E1880C</color>
     <color name="white">#fff</color>
 
     <!-- Screens background color-->
@@ -26,7 +26,7 @@
 
     <color name="negro_label">#e7ffffff</color>
 
-        android:backgroundTint="@color/negro_label"
+    android:backgroundTint="@color/negro_label"
 
     <!-- dots active colors -->
     <color name="dot_light_screen1">#f98da5</color>

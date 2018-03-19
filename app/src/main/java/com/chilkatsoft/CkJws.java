@@ -9,220 +9,220 @@
 package com.chilkatsoft;
 
 public class CkJws {
-  private transient long swigCPtr;
-  protected transient boolean swigCMemOwn;
+    protected transient boolean swigCMemOwn;
+    private transient long swigCPtr;
 
-  protected CkJws(long cPtr, boolean cMemoryOwn) {
-    swigCMemOwn = cMemoryOwn;
-    swigCPtr = cPtr;
-  }
-
-  protected static long getCPtr(CkJws obj) {
-    return (obj == null) ? 0 : obj.swigCPtr;
-  }
-
-  protected void finalize() {
-    delete();
-  }
-
-  public synchronized void delete() {
-    if (swigCPtr != 0) {
-      if (swigCMemOwn) {
-        swigCMemOwn = false;
-        chilkatJNI.delete_CkJws(swigCPtr);
-      }
-      swigCPtr = 0;
+    protected CkJws(long cPtr, boolean cMemoryOwn) {
+        swigCMemOwn = cMemoryOwn;
+        swigCPtr = cPtr;
     }
-  }
 
-  public CkJws() {
-    this(chilkatJNI.new_CkJws(), true);
-  }
+    public CkJws() {
+        this(chilkatJNI.new_CkJws(), true);
+    }
 
-  public void LastErrorXml(CkString str) {
-    chilkatJNI.CkJws_LastErrorXml(swigCPtr, this, CkString.getCPtr(str), str);
-  }
+    protected static long getCPtr(CkJws obj) {
+        return (obj == null) ? 0 : obj.swigCPtr;
+    }
 
-  public void LastErrorHtml(CkString str) {
-    chilkatJNI.CkJws_LastErrorHtml(swigCPtr, this, CkString.getCPtr(str), str);
-  }
+    protected void finalize() {
+        delete();
+    }
 
-  public void LastErrorText(CkString str) {
-    chilkatJNI.CkJws_LastErrorText(swigCPtr, this, CkString.getCPtr(str), str);
-  }
+    public synchronized void delete() {
+        if (swigCPtr != 0) {
+            if (swigCMemOwn) {
+                swigCMemOwn = false;
+                chilkatJNI.delete_CkJws(swigCPtr);
+            }
+            swigCPtr = 0;
+        }
+    }
 
-  public void get_DebugLogFilePath(CkString str) {
-    chilkatJNI.CkJws_get_DebugLogFilePath(swigCPtr, this, CkString.getCPtr(str), str);
-  }
+    public void LastErrorXml(CkString str) {
+        chilkatJNI.CkJws_LastErrorXml(swigCPtr, this, CkString.getCPtr(str), str);
+    }
 
-  public String debugLogFilePath() {
-    return chilkatJNI.CkJws_debugLogFilePath(swigCPtr, this);
-  }
+    public void LastErrorHtml(CkString str) {
+        chilkatJNI.CkJws_LastErrorHtml(swigCPtr, this, CkString.getCPtr(str), str);
+    }
 
-  public void put_DebugLogFilePath(String newVal) {
-    chilkatJNI.CkJws_put_DebugLogFilePath(swigCPtr, this, newVal);
-  }
+    public void LastErrorText(CkString str) {
+        chilkatJNI.CkJws_LastErrorText(swigCPtr, this, CkString.getCPtr(str), str);
+    }
 
-  public void get_LastErrorHtml(CkString str) {
-    chilkatJNI.CkJws_get_LastErrorHtml(swigCPtr, this, CkString.getCPtr(str), str);
-  }
+    public void get_DebugLogFilePath(CkString str) {
+        chilkatJNI.CkJws_get_DebugLogFilePath(swigCPtr, this, CkString.getCPtr(str), str);
+    }
 
-  public String lastErrorHtml() {
-    return chilkatJNI.CkJws_lastErrorHtml(swigCPtr, this);
-  }
+    public String debugLogFilePath() {
+        return chilkatJNI.CkJws_debugLogFilePath(swigCPtr, this);
+    }
 
-  public void get_LastErrorText(CkString str) {
-    chilkatJNI.CkJws_get_LastErrorText(swigCPtr, this, CkString.getCPtr(str), str);
-  }
+    public void put_DebugLogFilePath(String newVal) {
+        chilkatJNI.CkJws_put_DebugLogFilePath(swigCPtr, this, newVal);
+    }
 
-  public String lastErrorText() {
-    return chilkatJNI.CkJws_lastErrorText(swigCPtr, this);
-  }
+    public void get_LastErrorHtml(CkString str) {
+        chilkatJNI.CkJws_get_LastErrorHtml(swigCPtr, this, CkString.getCPtr(str), str);
+    }
 
-  public void get_LastErrorXml(CkString str) {
-    chilkatJNI.CkJws_get_LastErrorXml(swigCPtr, this, CkString.getCPtr(str), str);
-  }
+    public String lastErrorHtml() {
+        return chilkatJNI.CkJws_lastErrorHtml(swigCPtr, this);
+    }
 
-  public String lastErrorXml() {
-    return chilkatJNI.CkJws_lastErrorXml(swigCPtr, this);
-  }
+    public void get_LastErrorText(CkString str) {
+        chilkatJNI.CkJws_get_LastErrorText(swigCPtr, this, CkString.getCPtr(str), str);
+    }
 
-  public boolean get_LastMethodSuccess() {
-    return chilkatJNI.CkJws_get_LastMethodSuccess(swigCPtr, this);
-  }
+    public String lastErrorText() {
+        return chilkatJNI.CkJws_lastErrorText(swigCPtr, this);
+    }
 
-  public void put_LastMethodSuccess(boolean newVal) {
-    chilkatJNI.CkJws_put_LastMethodSuccess(swigCPtr, this, newVal);
-  }
+    public void get_LastErrorXml(CkString str) {
+        chilkatJNI.CkJws_get_LastErrorXml(swigCPtr, this, CkString.getCPtr(str), str);
+    }
 
-  public int get_NumSignatures() {
-    return chilkatJNI.CkJws_get_NumSignatures(swigCPtr, this);
-  }
+    public String lastErrorXml() {
+        return chilkatJNI.CkJws_lastErrorXml(swigCPtr, this);
+    }
 
-  public boolean get_PreferCompact() {
-    return chilkatJNI.CkJws_get_PreferCompact(swigCPtr, this);
-  }
+    public boolean get_LastMethodSuccess() {
+        return chilkatJNI.CkJws_get_LastMethodSuccess(swigCPtr, this);
+    }
 
-  public void put_PreferCompact(boolean newVal) {
-    chilkatJNI.CkJws_put_PreferCompact(swigCPtr, this, newVal);
-  }
+    public void put_LastMethodSuccess(boolean newVal) {
+        chilkatJNI.CkJws_put_LastMethodSuccess(swigCPtr, this, newVal);
+    }
 
-  public boolean get_PreferFlattened() {
-    return chilkatJNI.CkJws_get_PreferFlattened(swigCPtr, this);
-  }
+    public int get_NumSignatures() {
+        return chilkatJNI.CkJws_get_NumSignatures(swigCPtr, this);
+    }
 
-  public void put_PreferFlattened(boolean newVal) {
-    chilkatJNI.CkJws_put_PreferFlattened(swigCPtr, this, newVal);
-  }
+    public boolean get_PreferCompact() {
+        return chilkatJNI.CkJws_get_PreferCompact(swigCPtr, this);
+    }
 
-  public boolean get_VerboseLogging() {
-    return chilkatJNI.CkJws_get_VerboseLogging(swigCPtr, this);
-  }
+    public void put_PreferCompact(boolean newVal) {
+        chilkatJNI.CkJws_put_PreferCompact(swigCPtr, this, newVal);
+    }
 
-  public void put_VerboseLogging(boolean newVal) {
-    chilkatJNI.CkJws_put_VerboseLogging(swigCPtr, this, newVal);
-  }
+    public boolean get_PreferFlattened() {
+        return chilkatJNI.CkJws_get_PreferFlattened(swigCPtr, this);
+    }
 
-  public void get_Version(CkString str) {
-    chilkatJNI.CkJws_get_Version(swigCPtr, this, CkString.getCPtr(str), str);
-  }
+    public void put_PreferFlattened(boolean newVal) {
+        chilkatJNI.CkJws_put_PreferFlattened(swigCPtr, this, newVal);
+    }
 
-  public String version() {
-    return chilkatJNI.CkJws_version(swigCPtr, this);
-  }
+    public boolean get_VerboseLogging() {
+        return chilkatJNI.CkJws_get_VerboseLogging(swigCPtr, this);
+    }
 
-  public boolean CreateJws(CkString outStr) {
-    return chilkatJNI.CkJws_CreateJws(swigCPtr, this, CkString.getCPtr(outStr), outStr);
-  }
+    public void put_VerboseLogging(boolean newVal) {
+        chilkatJNI.CkJws_put_VerboseLogging(swigCPtr, this, newVal);
+    }
 
-  public String createJws() {
-    return chilkatJNI.CkJws_createJws(swigCPtr, this);
-  }
+    public void get_Version(CkString str) {
+        chilkatJNI.CkJws_get_Version(swigCPtr, this, CkString.getCPtr(str), str);
+    }
 
-  public boolean CreateJwsSb(CkStringBuilder sbJws) {
-    return chilkatJNI.CkJws_CreateJwsSb(swigCPtr, this, CkStringBuilder.getCPtr(sbJws), sbJws);
-  }
+    public String version() {
+        return chilkatJNI.CkJws_version(swigCPtr, this);
+    }
 
-  public boolean GetPayload(String charset, CkString outStr) {
-    return chilkatJNI.CkJws_GetPayload(swigCPtr, this, charset, CkString.getCPtr(outStr), outStr);
-  }
+    public boolean CreateJws(CkString outStr) {
+        return chilkatJNI.CkJws_CreateJws(swigCPtr, this, CkString.getCPtr(outStr), outStr);
+    }
 
-  public String getPayload(String charset) {
-    return chilkatJNI.CkJws_getPayload(swigCPtr, this, charset);
-  }
+    public String createJws() {
+        return chilkatJNI.CkJws_createJws(swigCPtr, this);
+    }
 
-  public String payload(String charset) {
-    return chilkatJNI.CkJws_payload(swigCPtr, this, charset);
-  }
+    public boolean CreateJwsSb(CkStringBuilder sbJws) {
+        return chilkatJNI.CkJws_CreateJwsSb(swigCPtr, this, CkStringBuilder.getCPtr(sbJws), sbJws);
+    }
 
-  public boolean GetPayloadBd(CkBinData binData) {
-    return chilkatJNI.CkJws_GetPayloadBd(swigCPtr, this, CkBinData.getCPtr(binData), binData);
-  }
+    public boolean GetPayload(String charset, CkString outStr) {
+        return chilkatJNI.CkJws_GetPayload(swigCPtr, this, charset, CkString.getCPtr(outStr), outStr);
+    }
 
-  public boolean GetPayloadSb(String charset, CkStringBuilder sbPayload) {
-    return chilkatJNI.CkJws_GetPayloadSb(swigCPtr, this, charset, CkStringBuilder.getCPtr(sbPayload), sbPayload);
-  }
+    public String getPayload(String charset) {
+        return chilkatJNI.CkJws_getPayload(swigCPtr, this, charset);
+    }
 
-  public CkJsonObject GetProtectedHeader(int index) {
-    long cPtr = chilkatJNI.CkJws_GetProtectedHeader(swigCPtr, this, index);
-    return (cPtr == 0) ? null : new CkJsonObject(cPtr, true);
-  }
+    public String payload(String charset) {
+        return chilkatJNI.CkJws_payload(swigCPtr, this, charset);
+    }
 
-  public CkJsonObject GetUnprotectedHeader(int index) {
-    long cPtr = chilkatJNI.CkJws_GetUnprotectedHeader(swigCPtr, this, index);
-    return (cPtr == 0) ? null : new CkJsonObject(cPtr, true);
-  }
+    public boolean GetPayloadBd(CkBinData binData) {
+        return chilkatJNI.CkJws_GetPayloadBd(swigCPtr, this, CkBinData.getCPtr(binData), binData);
+    }
 
-  public boolean LoadJws(String jwsStr) {
-    return chilkatJNI.CkJws_LoadJws(swigCPtr, this, jwsStr);
-  }
+    public boolean GetPayloadSb(String charset, CkStringBuilder sbPayload) {
+        return chilkatJNI.CkJws_GetPayloadSb(swigCPtr, this, charset, CkStringBuilder.getCPtr(sbPayload), sbPayload);
+    }
 
-  public boolean LoadJwsSb(CkStringBuilder sbJws) {
-    return chilkatJNI.CkJws_LoadJwsSb(swigCPtr, this, CkStringBuilder.getCPtr(sbJws), sbJws);
-  }
+    public CkJsonObject GetProtectedHeader(int index) {
+        long cPtr = chilkatJNI.CkJws_GetProtectedHeader(swigCPtr, this, index);
+        return (cPtr == 0) ? null : new CkJsonObject(cPtr, true);
+    }
 
-  public boolean SaveLastError(String path) {
-    return chilkatJNI.CkJws_SaveLastError(swigCPtr, this, path);
-  }
+    public CkJsonObject GetUnprotectedHeader(int index) {
+        long cPtr = chilkatJNI.CkJws_GetUnprotectedHeader(swigCPtr, this, index);
+        return (cPtr == 0) ? null : new CkJsonObject(cPtr, true);
+    }
 
-  public boolean SetMacKey(int index, String key, String encoding) {
-    return chilkatJNI.CkJws_SetMacKey(swigCPtr, this, index, key, encoding);
-  }
+    public boolean LoadJws(String jwsStr) {
+        return chilkatJNI.CkJws_LoadJws(swigCPtr, this, jwsStr);
+    }
 
-  public boolean SetMacKeyBd(int index, CkBinData key) {
-    return chilkatJNI.CkJws_SetMacKeyBd(swigCPtr, this, index, CkBinData.getCPtr(key), key);
-  }
+    public boolean LoadJwsSb(CkStringBuilder sbJws) {
+        return chilkatJNI.CkJws_LoadJwsSb(swigCPtr, this, CkStringBuilder.getCPtr(sbJws), sbJws);
+    }
 
-  public boolean SetPayload(String payload, String charset, boolean includeBom) {
-    return chilkatJNI.CkJws_SetPayload(swigCPtr, this, payload, charset, includeBom);
-  }
+    public boolean SaveLastError(String path) {
+        return chilkatJNI.CkJws_SaveLastError(swigCPtr, this, path);
+    }
 
-  public boolean SetPayloadBd(CkBinData binData) {
-    return chilkatJNI.CkJws_SetPayloadBd(swigCPtr, this, CkBinData.getCPtr(binData), binData);
-  }
+    public boolean SetMacKey(int index, String key, String encoding) {
+        return chilkatJNI.CkJws_SetMacKey(swigCPtr, this, index, key, encoding);
+    }
 
-  public boolean SetPayloadSb(CkStringBuilder sbPayload, String charset, boolean includeBom) {
-    return chilkatJNI.CkJws_SetPayloadSb(swigCPtr, this, CkStringBuilder.getCPtr(sbPayload), sbPayload, charset, includeBom);
-  }
+    public boolean SetMacKeyBd(int index, CkBinData key) {
+        return chilkatJNI.CkJws_SetMacKeyBd(swigCPtr, this, index, CkBinData.getCPtr(key), key);
+    }
 
-  public boolean SetPrivateKey(int index, CkPrivateKey privKey) {
-    return chilkatJNI.CkJws_SetPrivateKey(swigCPtr, this, index, CkPrivateKey.getCPtr(privKey), privKey);
-  }
+    public boolean SetPayload(String payload, String charset, boolean includeBom) {
+        return chilkatJNI.CkJws_SetPayload(swigCPtr, this, payload, charset, includeBom);
+    }
 
-  public boolean SetProtectedHeader(int index, CkJsonObject json) {
-    return chilkatJNI.CkJws_SetProtectedHeader(swigCPtr, this, index, CkJsonObject.getCPtr(json), json);
-  }
+    public boolean SetPayloadBd(CkBinData binData) {
+        return chilkatJNI.CkJws_SetPayloadBd(swigCPtr, this, CkBinData.getCPtr(binData), binData);
+    }
 
-  public boolean SetPublicKey(int index, CkPublicKey pubKey) {
-    return chilkatJNI.CkJws_SetPublicKey(swigCPtr, this, index, CkPublicKey.getCPtr(pubKey), pubKey);
-  }
+    public boolean SetPayloadSb(CkStringBuilder sbPayload, String charset, boolean includeBom) {
+        return chilkatJNI.CkJws_SetPayloadSb(swigCPtr, this, CkStringBuilder.getCPtr(sbPayload), sbPayload, charset, includeBom);
+    }
 
-  public boolean SetUnprotectedHeader(int index, CkJsonObject json) {
-    return chilkatJNI.CkJws_SetUnprotectedHeader(swigCPtr, this, index, CkJsonObject.getCPtr(json), json);
-  }
+    public boolean SetPrivateKey(int index, CkPrivateKey privKey) {
+        return chilkatJNI.CkJws_SetPrivateKey(swigCPtr, this, index, CkPrivateKey.getCPtr(privKey), privKey);
+    }
 
-  public int Validate(int index) {
-    return chilkatJNI.CkJws_Validate(swigCPtr, this, index);
-  }
+    public boolean SetProtectedHeader(int index, CkJsonObject json) {
+        return chilkatJNI.CkJws_SetProtectedHeader(swigCPtr, this, index, CkJsonObject.getCPtr(json), json);
+    }
+
+    public boolean SetPublicKey(int index, CkPublicKey pubKey) {
+        return chilkatJNI.CkJws_SetPublicKey(swigCPtr, this, index, CkPublicKey.getCPtr(pubKey), pubKey);
+    }
+
+    public boolean SetUnprotectedHeader(int index, CkJsonObject json) {
+        return chilkatJNI.CkJws_SetUnprotectedHeader(swigCPtr, this, index, CkJsonObject.getCPtr(json), json);
+    }
+
+    public int Validate(int index) {
+        return chilkatJNI.CkJws_Validate(swigCPtr, this, index);
+    }
 
 }

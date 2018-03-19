@@ -2,8 +2,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@color/white" />
     <item>
-        <bitmap
-            android:src="@drawable/image" />
+        <bitmap android:src="@drawable/image" />
     </item>
     <item
         android:bottom="-100dp"

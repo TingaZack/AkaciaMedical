@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linear"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/linear"
     android:orientation="vertical"
     tools:context=".activities.MainActivity">
 
@@ -21,15 +21,15 @@
             android:gravity="center">
 
             <TextView
-                android:text="MSQ Health"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="@android:color/white"
+                android:layout_alignParentLeft="true"
                 android:layout_centerInParent="true"
-                android:layout_alignParentLeft="true"/>
+                android:gravity="center"
+                android:text="MSQ Health"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <RelativeLayout
                 android:id="@+id/cart_layout"
@@ -51,16 +51,14 @@
                     android:id="@+id/actionbar_notifcation_textview"
                     android:layout_width="18dp"
                     android:layout_height="18dp"
-                    android:text="99"
-                    android:gravity="center"
-                    android:textSize="12sp"
-                    android:visibility="gone"
-                    android:layout_marginBottom="24dp"
                     android:layout_alignParentRight="true"
+                    android:layout_marginBottom="24dp"
+                    android:background="@drawable/circle_drawable"
+                    android:gravity="center"
+                    android:text="99"
                     android:textColor="@android:color/white"
-                    android:background="@drawable/circle_drawable"/>
-
-
+                    android:textSize="12sp"
+                    android:visibility="gone" />
             </RelativeLayout>
 
         </RelativeLayout>
@@ -72,18 +70,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        app:tabTextColor="@android:color/white"
-        app:tabSelectedTextColor="@android:color/white"/>
+        app:tabSelectedTextColor="@android:color/white"
+        app:tabTextColor="@android:color/white" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:background="@color/white">
 
         <android.support.v4.view.ViewPager
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/white"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     </LinearLayout>

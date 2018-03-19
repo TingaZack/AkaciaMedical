@@ -67,9 +67,9 @@
                         android:layout_marginTop="4dp"
                         android:fontFamily="sans-serif"
                         android:gravity="center"
+                        android:text="R"
                         android:textSize="13sp"
-                        android:textStyle="bold"
-                        android:text="R" />
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/cart_item_price"

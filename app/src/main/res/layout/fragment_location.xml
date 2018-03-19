@@ -13,7 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            tools:context="com.android.msqhealthpoc1.fragments.profile.create.ProfilePictureNameFragment">
+            tools:context="com.msqhealth.main.fragments.profile.create.ProfilePictureNameFragment">
 
             <RelativeLayout
                 android:layout_width="match_parent"

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.android.msqhealthpoc1.activities.ListingDetailsActivity"
+    tools:context="com.msqhealth.main.activities.ListingDetailsActivity"
     tools:showIn="@layout/activity_listing_details">
 
     <LinearLayout

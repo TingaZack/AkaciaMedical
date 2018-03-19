@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.android.msqhealthpoc1.activities.authentication.NewPracticeRegistration">
+    tools:context="com.msqhealth.main.activities.authentication.NewPracticeRegistration">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -43,7 +43,7 @@
                 android:layout_height="match_parent"
                 android:hint="Practice Number"
                 android:inputType="number"
-                android:maxLength="7"
+                android:maxLength="12"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="12sp"
                 android:textStyle="bold" />
@@ -56,7 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:layout_marginRight="16dp"
-            android:text="Please provide the last 7 digits"
+            android:text="Please provide the full 12 digits"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="11sp" />
 
@@ -180,6 +180,7 @@
                 android:layout_height="match_parent"
                 android:hint="Cellphone Number"
                 android:inputType="phone"
+                android:maxLength="10"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="12sp"
                 android:textStyle="bold" />
@@ -201,6 +202,7 @@
                 android:layout_height="match_parent"
                 android:hint="Office Number"
                 android:inputType="phone"
+                android:maxLength="10"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="12sp"
                 android:textStyle="bold" />

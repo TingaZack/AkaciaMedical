@@ -8,20 +8,20 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/msq_background"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop"
+        android:src="@drawable/msq_background" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_margin="16dp">
+        android:layout_margin="16dp"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1.2"
             android:layout_gravity="center"
+            android:layout_weight="1.2"
             android:gravity="center">
 
             <ImageView
@@ -83,9 +83,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="16dp"
             android:layout_weight="1.4"
-            android:orientation="vertical"
-            android:layout_marginTop="16dp">
+            android:orientation="vertical">
 
             <Button
                 android:id="@+id/sign_up"

@@ -9,274 +9,274 @@
 package com.chilkatsoft;
 
 public class CkCsv {
-  private transient long swigCPtr;
-  protected transient boolean swigCMemOwn;
+    protected transient boolean swigCMemOwn;
+    private transient long swigCPtr;
 
-  protected CkCsv(long cPtr, boolean cMemoryOwn) {
-    swigCMemOwn = cMemoryOwn;
-    swigCPtr = cPtr;
-  }
-
-  protected static long getCPtr(CkCsv obj) {
-    return (obj == null) ? 0 : obj.swigCPtr;
-  }
-
-  protected void finalize() {
-    delete();
-  }
-
-  public synchronized void delete() {
-    if (swigCPtr != 0) {
-      if (swigCMemOwn) {
-        swigCMemOwn = false;
-        chilkatJNI.delete_CkCsv(swigCPtr);
-      }
-      swigCPtr = 0;
+    protected CkCsv(long cPtr, boolean cMemoryOwn) {
+        swigCMemOwn = cMemoryOwn;
+        swigCPtr = cPtr;
     }
-  }
 
-  public CkCsv() {
-    this(chilkatJNI.new_CkCsv(), true);
-  }
+    public CkCsv() {
+        this(chilkatJNI.new_CkCsv(), true);
+    }
 
-  public void LastErrorXml(CkString str) {
-    chilkatJNI.CkCsv_LastErrorXml(swigCPtr, this, CkString.getCPtr(str), str);
-  }
+    protected static long getCPtr(CkCsv obj) {
+        return (obj == null) ? 0 : obj.swigCPtr;
+    }
 
-  public void LastErrorHtml(CkString str) {
-    chilkatJNI.CkCsv_LastErrorHtml(swigCPtr, this, CkString.getCPtr(str), str);
-  }
+    protected void finalize() {
+        delete();
+    }
 
-  public void LastErrorText(CkString str) {
-    chilkatJNI.CkCsv_LastErrorText(swigCPtr, this, CkString.getCPtr(str), str);
-  }
+    public synchronized void delete() {
+        if (swigCPtr != 0) {
+            if (swigCMemOwn) {
+                swigCMemOwn = false;
+                chilkatJNI.delete_CkCsv(swigCPtr);
+            }
+            swigCPtr = 0;
+        }
+    }
 
-  public boolean get_AutoTrim() {
-    return chilkatJNI.CkCsv_get_AutoTrim(swigCPtr, this);
-  }
+    public void LastErrorXml(CkString str) {
+        chilkatJNI.CkCsv_LastErrorXml(swigCPtr, this, CkString.getCPtr(str), str);
+    }
 
-  public void put_AutoTrim(boolean newVal) {
-    chilkatJNI.CkCsv_put_AutoTrim(swigCPtr, this, newVal);
-  }
+    public void LastErrorHtml(CkString str) {
+        chilkatJNI.CkCsv_LastErrorHtml(swigCPtr, this, CkString.getCPtr(str), str);
+    }
 
-  public boolean get_Crlf() {
-    return chilkatJNI.CkCsv_get_Crlf(swigCPtr, this);
-  }
+    public void LastErrorText(CkString str) {
+        chilkatJNI.CkCsv_LastErrorText(swigCPtr, this, CkString.getCPtr(str), str);
+    }
 
-  public void put_Crlf(boolean newVal) {
-    chilkatJNI.CkCsv_put_Crlf(swigCPtr, this, newVal);
-  }
+    public boolean get_AutoTrim() {
+        return chilkatJNI.CkCsv_get_AutoTrim(swigCPtr, this);
+    }
 
-  public void get_DebugLogFilePath(CkString str) {
-    chilkatJNI.CkCsv_get_DebugLogFilePath(swigCPtr, this, CkString.getCPtr(str), str);
-  }
+    public void put_AutoTrim(boolean newVal) {
+        chilkatJNI.CkCsv_put_AutoTrim(swigCPtr, this, newVal);
+    }
 
-  public String debugLogFilePath() {
-    return chilkatJNI.CkCsv_debugLogFilePath(swigCPtr, this);
-  }
+    public boolean get_Crlf() {
+        return chilkatJNI.CkCsv_get_Crlf(swigCPtr, this);
+    }
 
-  public void put_DebugLogFilePath(String newVal) {
-    chilkatJNI.CkCsv_put_DebugLogFilePath(swigCPtr, this, newVal);
-  }
+    public void put_Crlf(boolean newVal) {
+        chilkatJNI.CkCsv_put_Crlf(swigCPtr, this, newVal);
+    }
 
-  public void get_Delimiter(CkString str) {
-    chilkatJNI.CkCsv_get_Delimiter(swigCPtr, this, CkString.getCPtr(str), str);
-  }
+    public void get_DebugLogFilePath(CkString str) {
+        chilkatJNI.CkCsv_get_DebugLogFilePath(swigCPtr, this, CkString.getCPtr(str), str);
+    }
 
-  public String delimiter() {
-    return chilkatJNI.CkCsv_delimiter(swigCPtr, this);
-  }
+    public String debugLogFilePath() {
+        return chilkatJNI.CkCsv_debugLogFilePath(swigCPtr, this);
+    }
 
-  public void put_Delimiter(String newVal) {
-    chilkatJNI.CkCsv_put_Delimiter(swigCPtr, this, newVal);
-  }
+    public void put_DebugLogFilePath(String newVal) {
+        chilkatJNI.CkCsv_put_DebugLogFilePath(swigCPtr, this, newVal);
+    }
 
-  public boolean get_EnableQuotes() {
-    return chilkatJNI.CkCsv_get_EnableQuotes(swigCPtr, this);
-  }
+    public void get_Delimiter(CkString str) {
+        chilkatJNI.CkCsv_get_Delimiter(swigCPtr, this, CkString.getCPtr(str), str);
+    }
 
-  public void put_EnableQuotes(boolean newVal) {
-    chilkatJNI.CkCsv_put_EnableQuotes(swigCPtr, this, newVal);
-  }
+    public String delimiter() {
+        return chilkatJNI.CkCsv_delimiter(swigCPtr, this);
+    }
 
-  public boolean get_EscapeBackslash() {
-    return chilkatJNI.CkCsv_get_EscapeBackslash(swigCPtr, this);
-  }
+    public void put_Delimiter(String newVal) {
+        chilkatJNI.CkCsv_put_Delimiter(swigCPtr, this, newVal);
+    }
 
-  public void put_EscapeBackslash(boolean newVal) {
-    chilkatJNI.CkCsv_put_EscapeBackslash(swigCPtr, this, newVal);
-  }
+    public boolean get_EnableQuotes() {
+        return chilkatJNI.CkCsv_get_EnableQuotes(swigCPtr, this);
+    }
 
-  public boolean get_HasColumnNames() {
-    return chilkatJNI.CkCsv_get_HasColumnNames(swigCPtr, this);
-  }
+    public void put_EnableQuotes(boolean newVal) {
+        chilkatJNI.CkCsv_put_EnableQuotes(swigCPtr, this, newVal);
+    }
 
-  public void put_HasColumnNames(boolean newVal) {
-    chilkatJNI.CkCsv_put_HasColumnNames(swigCPtr, this, newVal);
-  }
+    public boolean get_EscapeBackslash() {
+        return chilkatJNI.CkCsv_get_EscapeBackslash(swigCPtr, this);
+    }
 
-  public void get_LastErrorHtml(CkString str) {
-    chilkatJNI.CkCsv_get_LastErrorHtml(swigCPtr, this, CkString.getCPtr(str), str);
-  }
+    public void put_EscapeBackslash(boolean newVal) {
+        chilkatJNI.CkCsv_put_EscapeBackslash(swigCPtr, this, newVal);
+    }
 
-  public String lastErrorHtml() {
-    return chilkatJNI.CkCsv_lastErrorHtml(swigCPtr, this);
-  }
+    public boolean get_HasColumnNames() {
+        return chilkatJNI.CkCsv_get_HasColumnNames(swigCPtr, this);
+    }
 
-  public void get_LastErrorText(CkString str) {
-    chilkatJNI.CkCsv_get_LastErrorText(swigCPtr, this, CkString.getCPtr(str), str);
-  }
+    public void put_HasColumnNames(boolean newVal) {
+        chilkatJNI.CkCsv_put_HasColumnNames(swigCPtr, this, newVal);
+    }
 
-  public String lastErrorText() {
-    return chilkatJNI.CkCsv_lastErrorText(swigCPtr, this);
-  }
+    public void get_LastErrorHtml(CkString str) {
+        chilkatJNI.CkCsv_get_LastErrorHtml(swigCPtr, this, CkString.getCPtr(str), str);
+    }
 
-  public void get_LastErrorXml(CkString str) {
-    chilkatJNI.CkCsv_get_LastErrorXml(swigCPtr, this, CkString.getCPtr(str), str);
-  }
+    public String lastErrorHtml() {
+        return chilkatJNI.CkCsv_lastErrorHtml(swigCPtr, this);
+    }
 
-  public String lastErrorXml() {
-    return chilkatJNI.CkCsv_lastErrorXml(swigCPtr, this);
-  }
+    public void get_LastErrorText(CkString str) {
+        chilkatJNI.CkCsv_get_LastErrorText(swigCPtr, this, CkString.getCPtr(str), str);
+    }
 
-  public boolean get_LastMethodSuccess() {
-    return chilkatJNI.CkCsv_get_LastMethodSuccess(swigCPtr, this);
-  }
+    public String lastErrorText() {
+        return chilkatJNI.CkCsv_lastErrorText(swigCPtr, this);
+    }
 
-  public void put_LastMethodSuccess(boolean newVal) {
-    chilkatJNI.CkCsv_put_LastMethodSuccess(swigCPtr, this, newVal);
-  }
+    public void get_LastErrorXml(CkString str) {
+        chilkatJNI.CkCsv_get_LastErrorXml(swigCPtr, this, CkString.getCPtr(str), str);
+    }
 
-  public int get_NumColumns() {
-    return chilkatJNI.CkCsv_get_NumColumns(swigCPtr, this);
-  }
+    public String lastErrorXml() {
+        return chilkatJNI.CkCsv_lastErrorXml(swigCPtr, this);
+    }
 
-  public int get_NumRows() {
-    return chilkatJNI.CkCsv_get_NumRows(swigCPtr, this);
-  }
+    public boolean get_LastMethodSuccess() {
+        return chilkatJNI.CkCsv_get_LastMethodSuccess(swigCPtr, this);
+    }
 
-  public boolean get_VerboseLogging() {
-    return chilkatJNI.CkCsv_get_VerboseLogging(swigCPtr, this);
-  }
+    public void put_LastMethodSuccess(boolean newVal) {
+        chilkatJNI.CkCsv_put_LastMethodSuccess(swigCPtr, this, newVal);
+    }
 
-  public void put_VerboseLogging(boolean newVal) {
-    chilkatJNI.CkCsv_put_VerboseLogging(swigCPtr, this, newVal);
-  }
+    public int get_NumColumns() {
+        return chilkatJNI.CkCsv_get_NumColumns(swigCPtr, this);
+    }
 
-  public void get_Version(CkString str) {
-    chilkatJNI.CkCsv_get_Version(swigCPtr, this, CkString.getCPtr(str), str);
-  }
+    public int get_NumRows() {
+        return chilkatJNI.CkCsv_get_NumRows(swigCPtr, this);
+    }
 
-  public String version() {
-    return chilkatJNI.CkCsv_version(swigCPtr, this);
-  }
+    public boolean get_VerboseLogging() {
+        return chilkatJNI.CkCsv_get_VerboseLogging(swigCPtr, this);
+    }
 
-  public boolean DeleteColumn(int index) {
-    return chilkatJNI.CkCsv_DeleteColumn(swigCPtr, this, index);
-  }
+    public void put_VerboseLogging(boolean newVal) {
+        chilkatJNI.CkCsv_put_VerboseLogging(swigCPtr, this, newVal);
+    }
 
-  public boolean DeleteColumnByName(String columnName) {
-    return chilkatJNI.CkCsv_DeleteColumnByName(swigCPtr, this, columnName);
-  }
+    public void get_Version(CkString str) {
+        chilkatJNI.CkCsv_get_Version(swigCPtr, this, CkString.getCPtr(str), str);
+    }
 
-  public boolean DeleteRow(int index) {
-    return chilkatJNI.CkCsv_DeleteRow(swigCPtr, this, index);
-  }
+    public String version() {
+        return chilkatJNI.CkCsv_version(swigCPtr, this);
+    }
 
-  public boolean GetCell(int row, int col, CkString outStr) {
-    return chilkatJNI.CkCsv_GetCell(swigCPtr, this, row, col, CkString.getCPtr(outStr), outStr);
-  }
+    public boolean DeleteColumn(int index) {
+        return chilkatJNI.CkCsv_DeleteColumn(swigCPtr, this, index);
+    }
 
-  public String getCell(int row, int col) {
-    return chilkatJNI.CkCsv_getCell(swigCPtr, this, row, col);
-  }
+    public boolean DeleteColumnByName(String columnName) {
+        return chilkatJNI.CkCsv_DeleteColumnByName(swigCPtr, this, columnName);
+    }
 
-  public String cell(int row, int col) {
-    return chilkatJNI.CkCsv_cell(swigCPtr, this, row, col);
-  }
+    public boolean DeleteRow(int index) {
+        return chilkatJNI.CkCsv_DeleteRow(swigCPtr, this, index);
+    }
 
-  public boolean GetCellByName(int rowIndex, String columnName, CkString outStr) {
-    return chilkatJNI.CkCsv_GetCellByName(swigCPtr, this, rowIndex, columnName, CkString.getCPtr(outStr), outStr);
-  }
+    public boolean GetCell(int row, int col, CkString outStr) {
+        return chilkatJNI.CkCsv_GetCell(swigCPtr, this, row, col, CkString.getCPtr(outStr), outStr);
+    }
 
-  public String getCellByName(int rowIndex, String columnName) {
-    return chilkatJNI.CkCsv_getCellByName(swigCPtr, this, rowIndex, columnName);
-  }
+    public String getCell(int row, int col) {
+        return chilkatJNI.CkCsv_getCell(swigCPtr, this, row, col);
+    }
 
-  public String cellByName(int rowIndex, String columnName) {
-    return chilkatJNI.CkCsv_cellByName(swigCPtr, this, rowIndex, columnName);
-  }
+    public String cell(int row, int col) {
+        return chilkatJNI.CkCsv_cell(swigCPtr, this, row, col);
+    }
 
-  public boolean GetColumnName(int index, CkString outStr) {
-    return chilkatJNI.CkCsv_GetColumnName(swigCPtr, this, index, CkString.getCPtr(outStr), outStr);
-  }
+    public boolean GetCellByName(int rowIndex, String columnName, CkString outStr) {
+        return chilkatJNI.CkCsv_GetCellByName(swigCPtr, this, rowIndex, columnName, CkString.getCPtr(outStr), outStr);
+    }
 
-  public String getColumnName(int index) {
-    return chilkatJNI.CkCsv_getColumnName(swigCPtr, this, index);
-  }
+    public String getCellByName(int rowIndex, String columnName) {
+        return chilkatJNI.CkCsv_getCellByName(swigCPtr, this, rowIndex, columnName);
+    }
 
-  public String columnName(int index) {
-    return chilkatJNI.CkCsv_columnName(swigCPtr, this, index);
-  }
+    public String cellByName(int rowIndex, String columnName) {
+        return chilkatJNI.CkCsv_cellByName(swigCPtr, this, rowIndex, columnName);
+    }
 
-  public int GetIndex(String columnName) {
-    return chilkatJNI.CkCsv_GetIndex(swigCPtr, this, columnName);
-  }
+    public boolean GetColumnName(int index, CkString outStr) {
+        return chilkatJNI.CkCsv_GetColumnName(swigCPtr, this, index, CkString.getCPtr(outStr), outStr);
+    }
 
-  public int GetNumCols(int row) {
-    return chilkatJNI.CkCsv_GetNumCols(swigCPtr, this, row);
-  }
+    public String getColumnName(int index) {
+        return chilkatJNI.CkCsv_getColumnName(swigCPtr, this, index);
+    }
 
-  public boolean LoadFile(String path) {
-    return chilkatJNI.CkCsv_LoadFile(swigCPtr, this, path);
-  }
+    public String columnName(int index) {
+        return chilkatJNI.CkCsv_columnName(swigCPtr, this, index);
+    }
 
-  public boolean LoadFile2(String filename, String charset) {
-    return chilkatJNI.CkCsv_LoadFile2(swigCPtr, this, filename, charset);
-  }
+    public int GetIndex(String columnName) {
+        return chilkatJNI.CkCsv_GetIndex(swigCPtr, this, columnName);
+    }
 
-  public boolean LoadFromString(String csvData) {
-    return chilkatJNI.CkCsv_LoadFromString(swigCPtr, this, csvData);
-  }
+    public int GetNumCols(int row) {
+        return chilkatJNI.CkCsv_GetNumCols(swigCPtr, this, row);
+    }
 
-  public boolean RowMatches(int rowIndex, String matchPattern, boolean caseSensitive) {
-    return chilkatJNI.CkCsv_RowMatches(swigCPtr, this, rowIndex, matchPattern, caseSensitive);
-  }
+    public boolean LoadFile(String path) {
+        return chilkatJNI.CkCsv_LoadFile(swigCPtr, this, path);
+    }
 
-  public boolean SaveFile(String path) {
-    return chilkatJNI.CkCsv_SaveFile(swigCPtr, this, path);
-  }
+    public boolean LoadFile2(String filename, String charset) {
+        return chilkatJNI.CkCsv_LoadFile2(swigCPtr, this, filename, charset);
+    }
 
-  public boolean SaveFile2(String filename, String charset) {
-    return chilkatJNI.CkCsv_SaveFile2(swigCPtr, this, filename, charset);
-  }
+    public boolean LoadFromString(String csvData) {
+        return chilkatJNI.CkCsv_LoadFromString(swigCPtr, this, csvData);
+    }
 
-  public boolean SaveLastError(String path) {
-    return chilkatJNI.CkCsv_SaveLastError(swigCPtr, this, path);
-  }
+    public boolean RowMatches(int rowIndex, String matchPattern, boolean caseSensitive) {
+        return chilkatJNI.CkCsv_RowMatches(swigCPtr, this, rowIndex, matchPattern, caseSensitive);
+    }
 
-  public boolean SaveToString(CkString outStr) {
-    return chilkatJNI.CkCsv_SaveToString(swigCPtr, this, CkString.getCPtr(outStr), outStr);
-  }
+    public boolean SaveFile(String path) {
+        return chilkatJNI.CkCsv_SaveFile(swigCPtr, this, path);
+    }
 
-  public String saveToString() {
-    return chilkatJNI.CkCsv_saveToString(swigCPtr, this);
-  }
+    public boolean SaveFile2(String filename, String charset) {
+        return chilkatJNI.CkCsv_SaveFile2(swigCPtr, this, filename, charset);
+    }
 
-  public boolean SetCell(int row, int col, String content) {
-    return chilkatJNI.CkCsv_SetCell(swigCPtr, this, row, col, content);
-  }
+    public boolean SaveLastError(String path) {
+        return chilkatJNI.CkCsv_SaveLastError(swigCPtr, this, path);
+    }
 
-  public boolean SetCellByName(int rowIndex, String columnName, String contentStr) {
-    return chilkatJNI.CkCsv_SetCellByName(swigCPtr, this, rowIndex, columnName, contentStr);
-  }
+    public boolean SaveToString(CkString outStr) {
+        return chilkatJNI.CkCsv_SaveToString(swigCPtr, this, CkString.getCPtr(outStr), outStr);
+    }
 
-  public boolean SetColumnName(int index, String columnName) {
-    return chilkatJNI.CkCsv_SetColumnName(swigCPtr, this, index, columnName);
-  }
+    public String saveToString() {
+        return chilkatJNI.CkCsv_saveToString(swigCPtr, this);
+    }
 
-  public boolean SortByColumn(String columnName, boolean ascending, boolean caseSensitive) {
-    return chilkatJNI.CkCsv_SortByColumn(swigCPtr, this, columnName, ascending, caseSensitive);
-  }
+    public boolean SetCell(int row, int col, String content) {
+        return chilkatJNI.CkCsv_SetCell(swigCPtr, this, row, col, content);
+    }
+
+    public boolean SetCellByName(int rowIndex, String columnName, String contentStr) {
+        return chilkatJNI.CkCsv_SetCellByName(swigCPtr, this, rowIndex, columnName, contentStr);
+    }
+
+    public boolean SetColumnName(int index, String columnName) {
+        return chilkatJNI.CkCsv_SetColumnName(swigCPtr, this, index, columnName);
+    }
+
+    public boolean SortByColumn(String columnName, boolean ascending, boolean caseSensitive) {
+        return chilkatJNI.CkCsv_SortByColumn(swigCPtr, this, columnName, ascending, caseSensitive);
+    }
 
 }

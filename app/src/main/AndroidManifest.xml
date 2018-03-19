@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.android.msqhealthpoc1">
+    package="com.msqhealth.main">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name=".app.AppController"
+        android:name="com.msqhealth.main.app.AppController"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activities.LoginActivity"
+            android:name="com.msqhealth.main.activities.LoginActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -25,21 +25,21 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.SplashScreen"
+            android:name="com.msqhealth.main.activities.SplashScreen"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.authentication.RegistrationActivity"
+            android:name="com.msqhealth.main.activities.authentication.RegistrationActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name="com.msqhealth.main.activities.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:name=".activities.MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.msqhealth.main.activities.PublicationsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.PublicationsActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".fragments.CategoryProductListFragment"
+            android:name="com.msqhealth.main.fragments.CategoryProductListFragment"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
@@ -51,29 +51,29 @@
             android:value="AIzaSyAP2FuRBJMmskDKPXlvU-iEbe4oyVB9kmU" />
 
         <activity
-            android:name=".activities.ViewProfileActivity"
+            android:name="com.msqhealth.main.activities.ViewProfileActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activities.EditProfileActivity" />
+        <activity android:name="com.msqhealth.main.activities.EditProfileActivity" />
         <activity
-            android:name=".activities.ListingDetailsActivity"
+            android:name="com.msqhealth.main.activities.ListingDetailsActivity"
             android:label="@string/title_activity_listing_details"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.PaymentGatewayWebView"
+            android:name="com.msqhealth.main.activities.PaymentGatewayWebView"
             android:label="@string/title_activity_listing_details"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.FeaturedItemDetails"
+            android:name="com.msqhealth.main.activities.FeaturedItemDetails"
             android:label="@string/title_activity_featured_item_details"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.ContactUsActivity"
+            android:name="com.msqhealth.main.activities.ContactUsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.EditProfileActivityUpdated" />
-        <activity android:name=".activities.ConfirmCheckoutActivity" />
-        <activity android:name=".activities.WelcomeSetupActivity" />
+        <activity android:name="com.msqhealth.main.activities.EditProfileActivityUpdated" />
+        <activity android:name="com.msqhealth.main.activities.ConfirmCheckoutActivity" />
+        <activity android:name="com.msqhealth.main.activities.WelcomeSetupActivity" />
         <activity
-            android:name=".activities.ProfileActivity"
+            android:name="com.msqhealth.main.activities.ProfileActivity"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 

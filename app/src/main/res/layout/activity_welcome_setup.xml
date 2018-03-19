@@ -70,20 +70,20 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
-                        android:textColorHint="@color/colorPrimaryDark"
-                        android:layout_marginTop="16dp">
+                        android:layout_marginTop="16dp"
+                        android:textColorHint="@color/colorPrimaryDark">
 
                         <EditText
                             android:id="@+id/practice_number"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:maxLength="7"
+                            android:gravity="center"
                             android:hint="Practice Number"
                             android:inputType="number"
+                            android:maxLength="7"
                             android:textColor="@color/colorPrimaryDark"
                             android:textSize="12sp"
-                            android:textStyle="bold"
-                            android:gravity="center"/>
+                            android:textStyle="bold" />
 
                     </android.support.design.widget.TextInputLayout>
 
@@ -96,8 +96,8 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginTop="16dp"
-                    android:visibility="gone"
-                    android:textColorHint="@color/colorPrimaryDark">
+                    android:textColorHint="@color/colorPrimaryDark"
+                    android:visibility="gone">
 
                     <EditText
                         android:id="@+id/occupation"

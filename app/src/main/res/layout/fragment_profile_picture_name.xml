@@ -1,8 +1,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -10,7 +9,7 @@
         android:orientation="vertical"
         android:padding="16dp"
         android:weightSum="3"
-        tools:context="com.android.msqhealthpoc1.fragments.profile.create.ProfilePictureNameFragment">
+        tools:context="com.msqhealth.main.fragments.profile.create.ProfilePictureNameFragment">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -90,8 +89,8 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif"
                             android:gravity="center"
-                            android:inputType="textCapWords"
                             android:hint="What\'s your name?"
+                            android:inputType="textCapWords"
                             android:textColor="@color/colorPrimaryDark"
                             android:textSize="12sp"
                             android:textStyle="bold" />

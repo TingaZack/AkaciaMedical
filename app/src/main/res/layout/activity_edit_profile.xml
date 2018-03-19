@@ -12,7 +12,7 @@
         android:paddingLeft="32dp"
         android:paddingRight="32dp"
         android:paddingTop="8dp"
-        tools:context="com.android.msqhealthpoc1.activities.EditProfileActivity">
+        tools:context="com.msqhealth.main.activities.EditProfileActivity">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/display_picture"

@@ -1,18 +1,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.android.msqhealthpoc1.activities.MainActivity">
+    tools:context="com.msqhealth.main.activities.MainActivity">
     <!--<item-->
-        <!--android:id="@+id/action_cart"-->
-        <!--android:icon="@drawable/ic_shopping_cart_white"-->
-        <!--android:orderInCategory="100"-->
-        <!--android:title="Cart"-->
-        <!--app:showAsAction="always"  />-->
+    <!--android:id="@+id/action_cart"-->
+    <!--android:icon="@drawable/ic_shopping_cart_white"-->
+    <!--android:orderInCategory="100"-->
+    <!--android:title="Cart"-->
+    <!--app:showAsAction="always"  />-->
     <!--<item-->
-        <!--android:id="@+id/action_publications"-->
-        <!--android:orderInCategory="100"-->
-        <!--android:title="Publications"-->
-        <!--app:showAsAction="never" />-->
+    <!--android:id="@+id/action_publications"-->
+    <!--android:orderInCategory="100"-->
+    <!--android:title="Publications"-->
+    <!--app:showAsAction="never" />-->
 
     <item
         android:id="@+id/action_profile"

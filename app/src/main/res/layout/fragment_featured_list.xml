@@ -7,5 +7,5 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layoutManager="LinearLayoutManager"
-    tools:context="com.android.msqhealthpoc1.fragments.FeaturedFragment"
+    tools:context="com.msqhealth.main.fragments.FeaturedFragment"
     tools:listitem="@layout/fragment_featured" />

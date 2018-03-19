@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linear"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/linear"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="#f5f5f5"
     android:orientation="vertical"
     android:paddingLeft="16dp"
@@ -23,16 +23,18 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <TextView
-                tools:text="Description"
                 android:id="@+id/info_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
-                android:textSize="18sp" />
+                android:capitalize="words"
+                android:textAllCaps="false"
+                android:textSize="18sp"
+                tools:text="Description" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -42,31 +44,31 @@
                 android:weightSum="2">
 
                 <TextView
-                    tools:text="Unit"
                     android:id="@+id/info_unit"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    tools:text="Unit" />
 
                 <TextView
-                    tools:text="Nappi Code"
                     android:id="@+id/nappi_code"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    tools:text="Nappi Code" />
 
                 <TextView
                     android:id="@+id/info_price"
-                    tools:text="R0.00"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_marginLeft="8dp"
+                    android:layout_weight="1"
                     android:fontFamily="sans-serif"
+                    android:textAppearance="?android:textAppearanceMedium"
                     android:textStyle="bold"
-                    android:textAppearance="?android:textAppearanceMedium"/>
+                    tools:text="R0.00" />
 
 
             </LinearLayout>
@@ -74,8 +76,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -104,9 +106,9 @@
                         android:layout_weight="1"
                         android:background="@null"
                         android:fontFamily="sans-serif"
-                        android:text="1"
                         android:gravity="center"
                         android:inputType="number"
+                        android:text="1"
                         android:textSize="15sp"
                         android:textStyle="bold"
                         android:tint="@color/colorPrimary" />
@@ -126,14 +128,14 @@
                 <Button
                     android:id="@+id/addToCart"
                     android:layout_width="match_parent"
-                    android:textColorHint="@color/colorPrimary"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:textColor="#fff"
+                    android:layout_weight="1"
                     android:background="@drawable/square_blue_button"
                     android:fontFamily="sans-serif"
-                    android:layout_height="wrap_content"
-                    android:text="Add to Cart" />
+                    android:text="Add to Cart"
+                    android:textColor="#fff"
+                    android:textColorHint="@color/colorPrimary" />
 
             </LinearLayout>
 

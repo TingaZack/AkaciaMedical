@@ -9,154 +9,154 @@
 package com.chilkatsoft;
 
 public class CkBinData {
-  private transient long swigCPtr;
-  protected transient boolean swigCMemOwn;
+    protected transient boolean swigCMemOwn;
+    private transient long swigCPtr;
 
-  protected CkBinData(long cPtr, boolean cMemoryOwn) {
-    swigCMemOwn = cMemoryOwn;
-    swigCPtr = cPtr;
-  }
-
-  protected static long getCPtr(CkBinData obj) {
-    return (obj == null) ? 0 : obj.swigCPtr;
-  }
-
-  protected void finalize() {
-    delete();
-  }
-
-  public synchronized void delete() {
-    if (swigCPtr != 0) {
-      if (swigCMemOwn) {
-        swigCMemOwn = false;
-        chilkatJNI.delete_CkBinData(swigCPtr);
-      }
-      swigCPtr = 0;
+    protected CkBinData(long cPtr, boolean cMemoryOwn) {
+        swigCMemOwn = cMemoryOwn;
+        swigCPtr = cPtr;
     }
-  }
 
-  public CkBinData() {
-    this(chilkatJNI.new_CkBinData(), true);
-  }
+    public CkBinData() {
+        this(chilkatJNI.new_CkBinData(), true);
+    }
 
-  public boolean get_LastMethodSuccess() {
-    return chilkatJNI.CkBinData_get_LastMethodSuccess(swigCPtr, this);
-  }
+    protected static long getCPtr(CkBinData obj) {
+        return (obj == null) ? 0 : obj.swigCPtr;
+    }
 
-  public void put_LastMethodSuccess(boolean newVal) {
-    chilkatJNI.CkBinData_put_LastMethodSuccess(swigCPtr, this, newVal);
-  }
+    protected void finalize() {
+        delete();
+    }
 
-  public int get_NumBytes() {
-    return chilkatJNI.CkBinData_get_NumBytes(swigCPtr, this);
-  }
+    public synchronized void delete() {
+        if (swigCPtr != 0) {
+            if (swigCMemOwn) {
+                swigCMemOwn = false;
+                chilkatJNI.delete_CkBinData(swigCPtr);
+            }
+            swigCPtr = 0;
+        }
+    }
 
-  public boolean AppendBd(CkBinData binData) {
-    return chilkatJNI.CkBinData_AppendBd(swigCPtr, this, CkBinData.getCPtr(binData), binData);
-  }
+    public boolean get_LastMethodSuccess() {
+        return chilkatJNI.CkBinData_get_LastMethodSuccess(swigCPtr, this);
+    }
 
-  public boolean AppendBinary(CkByteData data) {
-    return chilkatJNI.CkBinData_AppendBinary(swigCPtr, this, CkByteData.getCPtr(data), data);
-  }
+    public void put_LastMethodSuccess(boolean newVal) {
+        chilkatJNI.CkBinData_put_LastMethodSuccess(swigCPtr, this, newVal);
+    }
 
-  public boolean AppendBom(String charset) {
-    return chilkatJNI.CkBinData_AppendBom(swigCPtr, this, charset);
-  }
+    public int get_NumBytes() {
+        return chilkatJNI.CkBinData_get_NumBytes(swigCPtr, this);
+    }
 
-  public boolean AppendEncoded(String encData, String encoding) {
-    return chilkatJNI.CkBinData_AppendEncoded(swigCPtr, this, encData, encoding);
-  }
+    public boolean AppendBd(CkBinData binData) {
+        return chilkatJNI.CkBinData_AppendBd(swigCPtr, this, CkBinData.getCPtr(binData), binData);
+    }
 
-  public boolean AppendEncodedSb(CkStringBuilder sb, String encoding) {
-    return chilkatJNI.CkBinData_AppendEncodedSb(swigCPtr, this, CkStringBuilder.getCPtr(sb), sb, encoding);
-  }
+    public boolean AppendBinary(CkByteData data) {
+        return chilkatJNI.CkBinData_AppendBinary(swigCPtr, this, CkByteData.getCPtr(data), data);
+    }
 
-  public boolean AppendSb(CkStringBuilder sb, String charset) {
-    return chilkatJNI.CkBinData_AppendSb(swigCPtr, this, CkStringBuilder.getCPtr(sb), sb, charset);
-  }
+    public boolean AppendBom(String charset) {
+        return chilkatJNI.CkBinData_AppendBom(swigCPtr, this, charset);
+    }
 
-  public boolean AppendString(String str, String charset) {
-    return chilkatJNI.CkBinData_AppendString(swigCPtr, this, str, charset);
-  }
+    public boolean AppendEncoded(String encData, String encoding) {
+        return chilkatJNI.CkBinData_AppendEncoded(swigCPtr, this, encData, encoding);
+    }
 
-  public boolean Clear() {
-    return chilkatJNI.CkBinData_Clear(swigCPtr, this);
-  }
+    public boolean AppendEncodedSb(CkStringBuilder sb, String encoding) {
+        return chilkatJNI.CkBinData_AppendEncodedSb(swigCPtr, this, CkStringBuilder.getCPtr(sb), sb, encoding);
+    }
 
-  public boolean ContentsEqual(CkBinData binData) {
-    return chilkatJNI.CkBinData_ContentsEqual(swigCPtr, this, CkBinData.getCPtr(binData), binData);
-  }
+    public boolean AppendSb(CkStringBuilder sb, String charset) {
+        return chilkatJNI.CkBinData_AppendSb(swigCPtr, this, CkStringBuilder.getCPtr(sb), sb, charset);
+    }
 
-  public boolean GetBinary(CkByteData outBytes) {
-    return chilkatJNI.CkBinData_GetBinary(swigCPtr, this, CkByteData.getCPtr(outBytes), outBytes);
-  }
+    public boolean AppendString(String str, String charset) {
+        return chilkatJNI.CkBinData_AppendString(swigCPtr, this, str, charset);
+    }
 
-  public boolean GetBinaryChunk(int offset, int numBytes, CkByteData outBytes) {
-    return chilkatJNI.CkBinData_GetBinaryChunk(swigCPtr, this, offset, numBytes, CkByteData.getCPtr(outBytes), outBytes);
-  }
+    public boolean Clear() {
+        return chilkatJNI.CkBinData_Clear(swigCPtr, this);
+    }
 
-  public boolean GetEncoded(String encoding, CkString outStr) {
-    return chilkatJNI.CkBinData_GetEncoded(swigCPtr, this, encoding, CkString.getCPtr(outStr), outStr);
-  }
+    public boolean ContentsEqual(CkBinData binData) {
+        return chilkatJNI.CkBinData_ContentsEqual(swigCPtr, this, CkBinData.getCPtr(binData), binData);
+    }
 
-  public String getEncoded(String encoding) {
-    return chilkatJNI.CkBinData_getEncoded(swigCPtr, this, encoding);
-  }
+    public boolean GetBinary(CkByteData outBytes) {
+        return chilkatJNI.CkBinData_GetBinary(swigCPtr, this, CkByteData.getCPtr(outBytes), outBytes);
+    }
 
-  public String encoded(String encoding) {
-    return chilkatJNI.CkBinData_encoded(swigCPtr, this, encoding);
-  }
+    public boolean GetBinaryChunk(int offset, int numBytes, CkByteData outBytes) {
+        return chilkatJNI.CkBinData_GetBinaryChunk(swigCPtr, this, offset, numBytes, CkByteData.getCPtr(outBytes), outBytes);
+    }
 
-  public boolean GetEncodedChunk(int offset, int numBytes, String encoding, CkString outStr) {
-    return chilkatJNI.CkBinData_GetEncodedChunk(swigCPtr, this, offset, numBytes, encoding, CkString.getCPtr(outStr), outStr);
-  }
+    public boolean GetEncoded(String encoding, CkString outStr) {
+        return chilkatJNI.CkBinData_GetEncoded(swigCPtr, this, encoding, CkString.getCPtr(outStr), outStr);
+    }
 
-  public String getEncodedChunk(int offset, int numBytes, String encoding) {
-    return chilkatJNI.CkBinData_getEncodedChunk(swigCPtr, this, offset, numBytes, encoding);
-  }
+    public String getEncoded(String encoding) {
+        return chilkatJNI.CkBinData_getEncoded(swigCPtr, this, encoding);
+    }
 
-  public String encodedChunk(int offset, int numBytes, String encoding) {
-    return chilkatJNI.CkBinData_encodedChunk(swigCPtr, this, offset, numBytes, encoding);
-  }
+    public String encoded(String encoding) {
+        return chilkatJNI.CkBinData_encoded(swigCPtr, this, encoding);
+    }
 
-  public boolean GetEncodedSb(String encoding, CkStringBuilder sb) {
-    return chilkatJNI.CkBinData_GetEncodedSb(swigCPtr, this, encoding, CkStringBuilder.getCPtr(sb), sb);
-  }
+    public boolean GetEncodedChunk(int offset, int numBytes, String encoding, CkString outStr) {
+        return chilkatJNI.CkBinData_GetEncodedChunk(swigCPtr, this, offset, numBytes, encoding, CkString.getCPtr(outStr), outStr);
+    }
 
-  public boolean GetString(String charset, CkString outStr) {
-    return chilkatJNI.CkBinData_GetString(swigCPtr, this, charset, CkString.getCPtr(outStr), outStr);
-  }
+    public String getEncodedChunk(int offset, int numBytes, String encoding) {
+        return chilkatJNI.CkBinData_getEncodedChunk(swigCPtr, this, offset, numBytes, encoding);
+    }
 
-  public String getString(String charset) {
-    return chilkatJNI.CkBinData_getString(swigCPtr, this, charset);
-  }
+    public String encodedChunk(int offset, int numBytes, String encoding) {
+        return chilkatJNI.CkBinData_encodedChunk(swigCPtr, this, offset, numBytes, encoding);
+    }
 
-  public String string(String charset) {
-    return chilkatJNI.CkBinData_string(swigCPtr, this, charset);
-  }
+    public boolean GetEncodedSb(String encoding, CkStringBuilder sb) {
+        return chilkatJNI.CkBinData_GetEncodedSb(swigCPtr, this, encoding, CkStringBuilder.getCPtr(sb), sb);
+    }
 
-  public boolean LoadBinary(CkByteData data) {
-    return chilkatJNI.CkBinData_LoadBinary(swigCPtr, this, CkByteData.getCPtr(data), data);
-  }
+    public boolean GetString(String charset, CkString outStr) {
+        return chilkatJNI.CkBinData_GetString(swigCPtr, this, charset, CkString.getCPtr(outStr), outStr);
+    }
 
-  public boolean LoadEncoded(String encData, String encoding) {
-    return chilkatJNI.CkBinData_LoadEncoded(swigCPtr, this, encData, encoding);
-  }
+    public String getString(String charset) {
+        return chilkatJNI.CkBinData_getString(swigCPtr, this, charset);
+    }
 
-  public boolean LoadFile(String path) {
-    return chilkatJNI.CkBinData_LoadFile(swigCPtr, this, path);
-  }
+    public String string(String charset) {
+        return chilkatJNI.CkBinData_string(swigCPtr, this, charset);
+    }
 
-  public boolean RemoveChunk(int offset, int numBytes) {
-    return chilkatJNI.CkBinData_RemoveChunk(swigCPtr, this, offset, numBytes);
-  }
+    public boolean LoadBinary(CkByteData data) {
+        return chilkatJNI.CkBinData_LoadBinary(swigCPtr, this, CkByteData.getCPtr(data), data);
+    }
 
-  public boolean SecureClear() {
-    return chilkatJNI.CkBinData_SecureClear(swigCPtr, this);
-  }
+    public boolean LoadEncoded(String encData, String encoding) {
+        return chilkatJNI.CkBinData_LoadEncoded(swigCPtr, this, encData, encoding);
+    }
 
-  public boolean WriteFile(String path) {
-    return chilkatJNI.CkBinData_WriteFile(swigCPtr, this, path);
-  }
+    public boolean LoadFile(String path) {
+        return chilkatJNI.CkBinData_LoadFile(swigCPtr, this, path);
+    }
+
+    public boolean RemoveChunk(int offset, int numBytes) {
+        return chilkatJNI.CkBinData_RemoveChunk(swigCPtr, this, offset, numBytes);
+    }
+
+    public boolean SecureClear() {
+        return chilkatJNI.CkBinData_SecureClear(swigCPtr, this);
+    }
+
+    public boolean WriteFile(String path) {
+        return chilkatJNI.CkBinData_WriteFile(swigCPtr, this, path);
+    }
 
 }

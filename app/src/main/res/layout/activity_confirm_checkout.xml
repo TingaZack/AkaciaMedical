@@ -8,18 +8,18 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:layout_centerInParent="true"
         android:paddingLeft="32dp"
         android:paddingRight="32dp"
-        android:layout_gravity="center"
-        tools:context="com.android.msqhealthpoc1.activities.EditProfileActivity">
+        tools:context="com.msqhealth.main.activities.EditProfileActivity">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/delivery_truck"/>
+            android:src="@drawable/delivery_truck" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -32,11 +32,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textSize="12sp"
             android:layout_marginTop="16dp"
             android:text="Please confirm the  information below for  conviniency in delivery and great MSQ Health service"
-            android:textColor="@color/colorPrimaryDark"/>
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="12sp" />
 
 
         <android.support.design.widget.TextInputLayout
@@ -52,8 +52,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
-                android:inputType="textCapWords"
                 android:hint="Contact Person Name"
+                android:inputType="textCapWords"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="15sp"
                 android:textStyle="bold" />

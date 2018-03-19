@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.android.msqhealthpoc1.activities.authentication.RegistrationActivity">
+    tools:context="com.msqhealth.main.activities.authentication.RegistrationActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

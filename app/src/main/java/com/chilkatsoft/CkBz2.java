@@ -9,206 +9,206 @@
 package com.chilkatsoft;
 
 public class CkBz2 {
-  private transient long swigCPtr;
-  protected transient boolean swigCMemOwn;
+    protected transient boolean swigCMemOwn;
+    private transient long swigCPtr;
 
-  protected CkBz2(long cPtr, boolean cMemoryOwn) {
-    swigCMemOwn = cMemoryOwn;
-    swigCPtr = cPtr;
-  }
-
-  protected static long getCPtr(CkBz2 obj) {
-    return (obj == null) ? 0 : obj.swigCPtr;
-  }
-
-  protected void finalize() {
-    delete();
-  }
-
-  public synchronized void delete() {
-    if (swigCPtr != 0) {
-      if (swigCMemOwn) {
-        swigCMemOwn = false;
-        chilkatJNI.delete_CkBz2(swigCPtr);
-      }
-      swigCPtr = 0;
+    protected CkBz2(long cPtr, boolean cMemoryOwn) {
+        swigCMemOwn = cMemoryOwn;
+        swigCPtr = cPtr;
     }
-  }
 
-  public CkBz2() {
-    this(chilkatJNI.new_CkBz2(), true);
-  }
+    public CkBz2() {
+        this(chilkatJNI.new_CkBz2(), true);
+    }
 
-  public void LastErrorXml(CkString str) {
-    chilkatJNI.CkBz2_LastErrorXml(swigCPtr, this, CkString.getCPtr(str), str);
-  }
+    protected static long getCPtr(CkBz2 obj) {
+        return (obj == null) ? 0 : obj.swigCPtr;
+    }
 
-  public void LastErrorHtml(CkString str) {
-    chilkatJNI.CkBz2_LastErrorHtml(swigCPtr, this, CkString.getCPtr(str), str);
-  }
+    protected void finalize() {
+        delete();
+    }
 
-  public void LastErrorText(CkString str) {
-    chilkatJNI.CkBz2_LastErrorText(swigCPtr, this, CkString.getCPtr(str), str);
-  }
+    public synchronized void delete() {
+        if (swigCPtr != 0) {
+            if (swigCMemOwn) {
+                swigCMemOwn = false;
+                chilkatJNI.delete_CkBz2(swigCPtr);
+            }
+            swigCPtr = 0;
+        }
+    }
 
-  public void put_EventCallbackObject(CkBaseProgress progress) {
-    chilkatJNI.CkBz2_put_EventCallbackObject(swigCPtr, this, CkBaseProgress.getCPtr(progress), progress);
-  }
+    public void LastErrorXml(CkString str) {
+        chilkatJNI.CkBz2_LastErrorXml(swigCPtr, this, CkString.getCPtr(str), str);
+    }
 
-  public boolean get_AbortCurrent() {
-    return chilkatJNI.CkBz2_get_AbortCurrent(swigCPtr, this);
-  }
+    public void LastErrorHtml(CkString str) {
+        chilkatJNI.CkBz2_LastErrorHtml(swigCPtr, this, CkString.getCPtr(str), str);
+    }
 
-  public void put_AbortCurrent(boolean newVal) {
-    chilkatJNI.CkBz2_put_AbortCurrent(swigCPtr, this, newVal);
-  }
+    public void LastErrorText(CkString str) {
+        chilkatJNI.CkBz2_LastErrorText(swigCPtr, this, CkString.getCPtr(str), str);
+    }
 
-  public void get_DebugLogFilePath(CkString str) {
-    chilkatJNI.CkBz2_get_DebugLogFilePath(swigCPtr, this, CkString.getCPtr(str), str);
-  }
+    public void put_EventCallbackObject(CkBaseProgress progress) {
+        chilkatJNI.CkBz2_put_EventCallbackObject(swigCPtr, this, CkBaseProgress.getCPtr(progress), progress);
+    }
 
-  public String debugLogFilePath() {
-    return chilkatJNI.CkBz2_debugLogFilePath(swigCPtr, this);
-  }
+    public boolean get_AbortCurrent() {
+        return chilkatJNI.CkBz2_get_AbortCurrent(swigCPtr, this);
+    }
 
-  public void put_DebugLogFilePath(String newVal) {
-    chilkatJNI.CkBz2_put_DebugLogFilePath(swigCPtr, this, newVal);
-  }
+    public void put_AbortCurrent(boolean newVal) {
+        chilkatJNI.CkBz2_put_AbortCurrent(swigCPtr, this, newVal);
+    }
 
-  public int get_HeartbeatMs() {
-    return chilkatJNI.CkBz2_get_HeartbeatMs(swigCPtr, this);
-  }
+    public void get_DebugLogFilePath(CkString str) {
+        chilkatJNI.CkBz2_get_DebugLogFilePath(swigCPtr, this, CkString.getCPtr(str), str);
+    }
 
-  public void put_HeartbeatMs(int newVal) {
-    chilkatJNI.CkBz2_put_HeartbeatMs(swigCPtr, this, newVal);
-  }
+    public String debugLogFilePath() {
+        return chilkatJNI.CkBz2_debugLogFilePath(swigCPtr, this);
+    }
 
-  public void get_LastErrorHtml(CkString str) {
-    chilkatJNI.CkBz2_get_LastErrorHtml(swigCPtr, this, CkString.getCPtr(str), str);
-  }
+    public void put_DebugLogFilePath(String newVal) {
+        chilkatJNI.CkBz2_put_DebugLogFilePath(swigCPtr, this, newVal);
+    }
 
-  public String lastErrorHtml() {
-    return chilkatJNI.CkBz2_lastErrorHtml(swigCPtr, this);
-  }
+    public int get_HeartbeatMs() {
+        return chilkatJNI.CkBz2_get_HeartbeatMs(swigCPtr, this);
+    }
 
-  public void get_LastErrorText(CkString str) {
-    chilkatJNI.CkBz2_get_LastErrorText(swigCPtr, this, CkString.getCPtr(str), str);
-  }
+    public void put_HeartbeatMs(int newVal) {
+        chilkatJNI.CkBz2_put_HeartbeatMs(swigCPtr, this, newVal);
+    }
 
-  public String lastErrorText() {
-    return chilkatJNI.CkBz2_lastErrorText(swigCPtr, this);
-  }
+    public void get_LastErrorHtml(CkString str) {
+        chilkatJNI.CkBz2_get_LastErrorHtml(swigCPtr, this, CkString.getCPtr(str), str);
+    }
 
-  public void get_LastErrorXml(CkString str) {
-    chilkatJNI.CkBz2_get_LastErrorXml(swigCPtr, this, CkString.getCPtr(str), str);
-  }
+    public String lastErrorHtml() {
+        return chilkatJNI.CkBz2_lastErrorHtml(swigCPtr, this);
+    }
 
-  public String lastErrorXml() {
-    return chilkatJNI.CkBz2_lastErrorXml(swigCPtr, this);
-  }
+    public void get_LastErrorText(CkString str) {
+        chilkatJNI.CkBz2_get_LastErrorText(swigCPtr, this, CkString.getCPtr(str), str);
+    }
 
-  public boolean get_LastMethodSuccess() {
-    return chilkatJNI.CkBz2_get_LastMethodSuccess(swigCPtr, this);
-  }
+    public String lastErrorText() {
+        return chilkatJNI.CkBz2_lastErrorText(swigCPtr, this);
+    }
 
-  public void put_LastMethodSuccess(boolean newVal) {
-    chilkatJNI.CkBz2_put_LastMethodSuccess(swigCPtr, this, newVal);
-  }
+    public void get_LastErrorXml(CkString str) {
+        chilkatJNI.CkBz2_get_LastErrorXml(swigCPtr, this, CkString.getCPtr(str), str);
+    }
 
-  public boolean get_VerboseLogging() {
-    return chilkatJNI.CkBz2_get_VerboseLogging(swigCPtr, this);
-  }
+    public String lastErrorXml() {
+        return chilkatJNI.CkBz2_lastErrorXml(swigCPtr, this);
+    }
 
-  public void put_VerboseLogging(boolean newVal) {
-    chilkatJNI.CkBz2_put_VerboseLogging(swigCPtr, this, newVal);
-  }
+    public boolean get_LastMethodSuccess() {
+        return chilkatJNI.CkBz2_get_LastMethodSuccess(swigCPtr, this);
+    }
 
-  public void get_Version(CkString str) {
-    chilkatJNI.CkBz2_get_Version(swigCPtr, this, CkString.getCPtr(str), str);
-  }
+    public void put_LastMethodSuccess(boolean newVal) {
+        chilkatJNI.CkBz2_put_LastMethodSuccess(swigCPtr, this, newVal);
+    }
 
-  public String version() {
-    return chilkatJNI.CkBz2_version(swigCPtr, this);
-  }
+    public boolean get_VerboseLogging() {
+        return chilkatJNI.CkBz2_get_VerboseLogging(swigCPtr, this);
+    }
 
-  public boolean CompressFile(String inFilename, String toPath) {
-    return chilkatJNI.CkBz2_CompressFile(swigCPtr, this, inFilename, toPath);
-  }
+    public void put_VerboseLogging(boolean newVal) {
+        chilkatJNI.CkBz2_put_VerboseLogging(swigCPtr, this, newVal);
+    }
 
-  public CkTask CompressFileAsync(String inFilename, String toPath) {
-    long cPtr = chilkatJNI.CkBz2_CompressFileAsync(swigCPtr, this, inFilename, toPath);
-    return (cPtr == 0) ? null : new CkTask(cPtr, true);
-  }
+    public void get_Version(CkString str) {
+        chilkatJNI.CkBz2_get_Version(swigCPtr, this, CkString.getCPtr(str), str);
+    }
 
-  public boolean CompressFileToMem(String inFilename, CkByteData outBytes) {
-    return chilkatJNI.CkBz2_CompressFileToMem(swigCPtr, this, inFilename, CkByteData.getCPtr(outBytes), outBytes);
-  }
+    public String version() {
+        return chilkatJNI.CkBz2_version(swigCPtr, this);
+    }
 
-  public CkTask CompressFileToMemAsync(String inFilename) {
-    long cPtr = chilkatJNI.CkBz2_CompressFileToMemAsync(swigCPtr, this, inFilename);
-    return (cPtr == 0) ? null : new CkTask(cPtr, true);
-  }
+    public boolean CompressFile(String inFilename, String toPath) {
+        return chilkatJNI.CkBz2_CompressFile(swigCPtr, this, inFilename, toPath);
+    }
 
-  public boolean CompressMemory(CkByteData inData, CkByteData outBytes) {
-    return chilkatJNI.CkBz2_CompressMemory(swigCPtr, this, CkByteData.getCPtr(inData), inData, CkByteData.getCPtr(outBytes), outBytes);
-  }
+    public CkTask CompressFileAsync(String inFilename, String toPath) {
+        long cPtr = chilkatJNI.CkBz2_CompressFileAsync(swigCPtr, this, inFilename, toPath);
+        return (cPtr == 0) ? null : new CkTask(cPtr, true);
+    }
 
-  public CkTask CompressMemoryAsync(CkByteData inData) {
-    long cPtr = chilkatJNI.CkBz2_CompressMemoryAsync(swigCPtr, this, CkByteData.getCPtr(inData), inData);
-    return (cPtr == 0) ? null : new CkTask(cPtr, true);
-  }
+    public boolean CompressFileToMem(String inFilename, CkByteData outBytes) {
+        return chilkatJNI.CkBz2_CompressFileToMem(swigCPtr, this, inFilename, CkByteData.getCPtr(outBytes), outBytes);
+    }
 
-  public boolean CompressMemToFile(CkByteData inData, String toPath) {
-    return chilkatJNI.CkBz2_CompressMemToFile(swigCPtr, this, CkByteData.getCPtr(inData), inData, toPath);
-  }
+    public CkTask CompressFileToMemAsync(String inFilename) {
+        long cPtr = chilkatJNI.CkBz2_CompressFileToMemAsync(swigCPtr, this, inFilename);
+        return (cPtr == 0) ? null : new CkTask(cPtr, true);
+    }
 
-  public CkTask CompressMemToFileAsync(CkByteData inData, String toPath) {
-    long cPtr = chilkatJNI.CkBz2_CompressMemToFileAsync(swigCPtr, this, CkByteData.getCPtr(inData), inData, toPath);
-    return (cPtr == 0) ? null : new CkTask(cPtr, true);
-  }
+    public boolean CompressMemory(CkByteData inData, CkByteData outBytes) {
+        return chilkatJNI.CkBz2_CompressMemory(swigCPtr, this, CkByteData.getCPtr(inData), inData, CkByteData.getCPtr(outBytes), outBytes);
+    }
 
-  public boolean SaveLastError(String path) {
-    return chilkatJNI.CkBz2_SaveLastError(swigCPtr, this, path);
-  }
+    public CkTask CompressMemoryAsync(CkByteData inData) {
+        long cPtr = chilkatJNI.CkBz2_CompressMemoryAsync(swigCPtr, this, CkByteData.getCPtr(inData), inData);
+        return (cPtr == 0) ? null : new CkTask(cPtr, true);
+    }
 
-  public boolean UncompressFile(String inFilename, String toPath) {
-    return chilkatJNI.CkBz2_UncompressFile(swigCPtr, this, inFilename, toPath);
-  }
+    public boolean CompressMemToFile(CkByteData inData, String toPath) {
+        return chilkatJNI.CkBz2_CompressMemToFile(swigCPtr, this, CkByteData.getCPtr(inData), inData, toPath);
+    }
 
-  public CkTask UncompressFileAsync(String inFilename, String toPath) {
-    long cPtr = chilkatJNI.CkBz2_UncompressFileAsync(swigCPtr, this, inFilename, toPath);
-    return (cPtr == 0) ? null : new CkTask(cPtr, true);
-  }
+    public CkTask CompressMemToFileAsync(CkByteData inData, String toPath) {
+        long cPtr = chilkatJNI.CkBz2_CompressMemToFileAsync(swigCPtr, this, CkByteData.getCPtr(inData), inData, toPath);
+        return (cPtr == 0) ? null : new CkTask(cPtr, true);
+    }
 
-  public boolean UncompressFileToMem(String inFilename, CkByteData outBytes) {
-    return chilkatJNI.CkBz2_UncompressFileToMem(swigCPtr, this, inFilename, CkByteData.getCPtr(outBytes), outBytes);
-  }
+    public boolean SaveLastError(String path) {
+        return chilkatJNI.CkBz2_SaveLastError(swigCPtr, this, path);
+    }
 
-  public CkTask UncompressFileToMemAsync(String inFilename) {
-    long cPtr = chilkatJNI.CkBz2_UncompressFileToMemAsync(swigCPtr, this, inFilename);
-    return (cPtr == 0) ? null : new CkTask(cPtr, true);
-  }
+    public boolean UncompressFile(String inFilename, String toPath) {
+        return chilkatJNI.CkBz2_UncompressFile(swigCPtr, this, inFilename, toPath);
+    }
 
-  public boolean UncompressMemory(CkByteData inData, CkByteData outBytes) {
-    return chilkatJNI.CkBz2_UncompressMemory(swigCPtr, this, CkByteData.getCPtr(inData), inData, CkByteData.getCPtr(outBytes), outBytes);
-  }
+    public CkTask UncompressFileAsync(String inFilename, String toPath) {
+        long cPtr = chilkatJNI.CkBz2_UncompressFileAsync(swigCPtr, this, inFilename, toPath);
+        return (cPtr == 0) ? null : new CkTask(cPtr, true);
+    }
 
-  public CkTask UncompressMemoryAsync(CkByteData inData) {
-    long cPtr = chilkatJNI.CkBz2_UncompressMemoryAsync(swigCPtr, this, CkByteData.getCPtr(inData), inData);
-    return (cPtr == 0) ? null : new CkTask(cPtr, true);
-  }
+    public boolean UncompressFileToMem(String inFilename, CkByteData outBytes) {
+        return chilkatJNI.CkBz2_UncompressFileToMem(swigCPtr, this, inFilename, CkByteData.getCPtr(outBytes), outBytes);
+    }
 
-  public boolean UncompressMemToFile(CkByteData inData, String toPath) {
-    return chilkatJNI.CkBz2_UncompressMemToFile(swigCPtr, this, CkByteData.getCPtr(inData), inData, toPath);
-  }
+    public CkTask UncompressFileToMemAsync(String inFilename) {
+        long cPtr = chilkatJNI.CkBz2_UncompressFileToMemAsync(swigCPtr, this, inFilename);
+        return (cPtr == 0) ? null : new CkTask(cPtr, true);
+    }
 
-  public CkTask UncompressMemToFileAsync(CkByteData inData, String toPath) {
-    long cPtr = chilkatJNI.CkBz2_UncompressMemToFileAsync(swigCPtr, this, CkByteData.getCPtr(inData), inData, toPath);
-    return (cPtr == 0) ? null : new CkTask(cPtr, true);
-  }
+    public boolean UncompressMemory(CkByteData inData, CkByteData outBytes) {
+        return chilkatJNI.CkBz2_UncompressMemory(swigCPtr, this, CkByteData.getCPtr(inData), inData, CkByteData.getCPtr(outBytes), outBytes);
+    }
 
-  public boolean UnlockComponent(String regCode) {
-    return chilkatJNI.CkBz2_UnlockComponent(swigCPtr, this, regCode);
-  }
+    public CkTask UncompressMemoryAsync(CkByteData inData) {
+        long cPtr = chilkatJNI.CkBz2_UncompressMemoryAsync(swigCPtr, this, CkByteData.getCPtr(inData), inData);
+        return (cPtr == 0) ? null : new CkTask(cPtr, true);
+    }
+
+    public boolean UncompressMemToFile(CkByteData inData, String toPath) {
+        return chilkatJNI.CkBz2_UncompressMemToFile(swigCPtr, this, CkByteData.getCPtr(inData), inData, toPath);
+    }
+
+    public CkTask UncompressMemToFileAsync(CkByteData inData, String toPath) {
+        long cPtr = chilkatJNI.CkBz2_UncompressMemToFileAsync(swigCPtr, this, CkByteData.getCPtr(inData), inData, toPath);
+        return (cPtr == 0) ? null : new CkTask(cPtr, true);
+    }
+
+    public boolean UnlockComponent(String regCode) {
+        return chilkatJNI.CkBz2_UnlockComponent(swigCPtr, this, regCode);
+    }
 
 }
