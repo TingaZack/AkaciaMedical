@@ -17,10 +17,12 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.msqhealth.main.R;
 import com.msqhealth.main.activities.MainActivity;
+import com.msqhealth.main.activities.TermsAndCondtionsActivity;
 import com.msqhealth.main.helpers.PrefManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -41,6 +43,7 @@ import com.google.firebase.database.ValueEventListener;
 public class SignUpFragment extends Fragment {
 
 
+    TextView tvTC;
     PrefManager prefManager;
     private EditText mUserEmail, mUserPassword;
     private Button btnSignUp;
@@ -121,7 +124,7 @@ public class SignUpFragment extends Fragment {
 
         mUserEmail = view.findViewById(R.id.email);
         mUserPassword = view.findViewById(R.id.password);
-
+        tvTC = view.findViewById(R.id.signup_tc);
         pDialog = new ProgressDialog(getActivity());
         pDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         pDialog.setMessage("Signing up");
@@ -144,6 +147,13 @@ public class SignUpFragment extends Fragment {
         btnSignUp.setEnabled(false);
         mUserEmail.addTextChangedListener(mTextWatcher);
         mUserPassword.addTextChangedListener(mTextWatcher);
+
+        tvTC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), TermsAndCondtionsActivity.class));
+            }
+        });
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override

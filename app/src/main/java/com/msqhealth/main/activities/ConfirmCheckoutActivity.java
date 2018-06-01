@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.msqhealth.main.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -35,7 +36,7 @@ public class ConfirmCheckoutActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
-
+    TextView tvTC;
     private String user_id, address, name, telephone;
     private ProgressDialog mProgressDialog;
 
@@ -50,6 +51,7 @@ public class ConfirmCheckoutActivity extends AppCompatActivity {
             mBillingAddressEditText = findViewById(R.id.et_billing_address);
             mPhoneNumberEditText = findViewById(R.id.et_cell);
             mConfirm = findViewById(R.id.save);
+            tvTC = findViewById(R.id.confirm_tc);
 
             mProgressDialog = new ProgressDialog(this);
             mAuth = FirebaseAuth.getInstance();
@@ -136,6 +138,13 @@ public class ConfirmCheckoutActivity extends AppCompatActivity {
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
 
+                }
+            });
+
+            tvTC.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(getApplicationContext(), TermsAndCondtionsActivity.class));
                 }
             });
 

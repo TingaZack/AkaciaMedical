@@ -262,8 +262,8 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             return true;
         }
-        if (id == R.id.action_message) {
-            Intent intent = new Intent(MainActivity.this, ContactUsActivity.class);
+        if (id == R.id.action_terms_and_conditions) {
+            Intent intent = new Intent(MainActivity.this, AboutUs.class);
             startActivity(intent);
             return true;
         }

@@ -17,10 +17,12 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.msqhealth.main.R;
 import com.msqhealth.main.activities.MainActivity;
+import com.msqhealth.main.activities.TermsAndCondtionsActivity;
 import com.msqhealth.main.activities.authentication.RegistrationActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -29,12 +31,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.msqhealth.main.app.AppController;
 
 public class LoginFragment extends Fragment {
 
     EditText mUserEmail, mUserPassword;
     Button btnSignIn;
 
+    TextView tvTC;
     private ProgressDialog pDialog;
 
     private FirebaseAuth mAuth;
@@ -95,6 +99,14 @@ public class LoginFragment extends Fragment {
 
         mUserEmail = view.findViewById(R.id.email);
         mUserPassword = view.findViewById(R.id.password);
+
+        tvTC = view.findViewById(R.id.login_tc);
+        tvTC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), TermsAndCondtionsActivity.class));
+            }
+        });
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 

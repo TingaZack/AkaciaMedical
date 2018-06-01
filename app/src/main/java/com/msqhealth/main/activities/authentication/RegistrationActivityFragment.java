@@ -40,6 +40,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.msqhealth.main.activities.TermsAndCondtionsActivity;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -50,6 +51,7 @@ public class RegistrationActivityFragment extends Fragment {
     private EditText eSearchPractice, eEmailAddress, ePassword;
     private Button btnSave;
     private ProgressDialog progressDialog;
+    TextView tvTC;
 
     String name, practice_number, suburb, telephone;
 
@@ -79,6 +81,14 @@ public class RegistrationActivityFragment extends Fragment {
             eEmailAddress = view.findViewById(R.id.email);
             ePassword = view.findViewById(R.id.password);
             btnSave = view.findViewById(R.id.save);
+
+            tvTC = view.findViewById(R.id.register_tc);
+            tvTC.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(getActivity(), TermsAndCondtionsActivity.class));
+                }
+            });
 
             mAuth = FirebaseAuth.getInstance();
 

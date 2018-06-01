@@ -21,9 +21,9 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_message"
+        android:id="@+id/action_terms_and_conditions"
         android:orderInCategory="100"
-        android:title="Contact Us"
+        android:title="About Us"
         app:showAsAction="never" />
 
     <item
