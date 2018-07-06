@@ -2,23 +2,22 @@ package com.msqhealth.main.activities;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.msqhealth.main.R;
-import com.msqhealth.main.helpers.GMailSender;
-import com.msqhealth.main.model.Cart;
-import com.msqhealth.main.model.CartItem;
-import com.msqhealth.main.model.Product;
 import com.chilkatsoft.CkXml;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -29,19 +28,30 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.msqhealth.main.R;
+import com.msqhealth.main.model.Cart;
+import com.msqhealth.main.model.CartItem;
+import com.msqhealth.main.model.Product;
 
-import org.apache.http.util.EncodingUtils;
+import org.apache.commons.net.ftp.FTP;
+import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPFile;
+import org.apache.commons.net.ftp.FTPReply;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-/**
- * Created by sihlemabaleka on 9/23/17.
- */
 
 public class PaymentGatewayWebView extends AppCompatActivity {
 
@@ -51,16 +61,22 @@ public class PaymentGatewayWebView extends AppCompatActivity {
     private ProgressDialog pDialog;
     private FirebaseUser user;
     CkXml sendXml;
+    CkXml ordersXML;
+    CkXml orderXML;
     double _amount;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.webview);
-        sendXml = new CkXml();
-        sendXml.put_Tag("Invoice");
 
+
+        sendXml = new CkXml();
+
+        createxmlFile();
+
+        boolean autoCreate = true;
         user = FirebaseAuth.getInstance().getCurrentUser();
 
         pDialog = new ProgressDialog(PaymentGatewayWebView.this);
@@ -73,7 +89,8 @@ public class PaymentGatewayWebView extends AppCompatActivity {
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         webView.setWebViewClient(new MyBrowser());
-        sendXml = new CkXml();
+
+
         getURLPostData();
 
     }
@@ -86,7 +103,14 @@ public class PaymentGatewayWebView extends AppCompatActivity {
                 double total = 0;
                 int i = 1;
                 _amount = 0;
-                sendXml.put_Tag("Product");
+                sendXml.put_Tag("eExact");
+                ordersXML.put_Tag("Orders");
+                orderXML.put_Tag("Order");
+                orderXML.UpdateAttribute("type", "V");
+                ordersXML.AddChildTree(orderXML);
+                sendXml.AddChildTree(ordersXML);
+
+                sendXml.UpdateAttrAt("Orders|Order", true, "type", "V");
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     _amount = _amount + ((Double.parseDouble(String.valueOf(snapshot.child("product").child("price").getValue()))) * (Integer.parseInt(snapshot.child("quantity").getValue().toString())));
                 }
@@ -95,30 +119,11 @@ public class PaymentGatewayWebView extends AppCompatActivity {
                 DecimalFormat df = new DecimalFormat("##.##");
                 String finalAmount = String.valueOf(df.format(_amount).replace(",", "."));
 
-                StringBuilder builder = null;
-                try {
-                    String postParams = "Mode=0&" +
-                            "MerchantID=F5785ECF-1EAE-40A0-9D37-93E2E8A4BAB3&" +
-                            "ApplicationID=C572C9CC-F2C8-4DC8-AC5E-48784B83AB35&" +
-                            "MerchantReference=" + user.getUid() + "1&" +
-                            "Amount=" + finalAmount + "&" +
-                            "RedirectSuccessfulURL=http://akacia.co.za" + "&" +
-                            "RedirectFailedURL=https://virtual.mygateglobal.com/success_failure.php&" +
-                            "txtCurrencyCode=ZAR&";
-                    builder = new StringBuilder(postParams);
-                    builder.deleteCharAt(builder.length() - 1);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
+                String sent_amount = finalAmount.replace(".", "");
+                String m_id = "MSQ" + new Date().getTime();
+                webView.loadUrl("file:///android_asset/gateway.html?merchantid=" + m_id + "&amount=" + sent_amount + ";");
 
-                if (builder != null) {
-                    pDialog.dismiss();
-                    webView.postUrl("https://virtual.mygateglobal.com/PaymentPage.cfm", EncodingUtils.getBytes(builder.toString(), "BASE64"));
-
-                } else {
-                    System.out.println("String builder is null");
-                }
-
+                pDialog.dismiss();
             }
 
             @Override
@@ -128,32 +133,55 @@ public class PaymentGatewayWebView extends AppCompatActivity {
         });
     }
 
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
     private class MyBrowser extends WebViewClient {
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            if (url.startsWith("http://akacia.co.za")) {
+            pDialog.dismiss();
+            System.out.println("--------------page loading started " + url);
+
+            if (!isNetworkAvailable()) {
+                //showInfoMessageDialog("network not available");
+                //load here your custom offline page for handling such errors
+
+                System.out.println("network not available");
+                return;
+            } else System.out.println("network available");
+
+            if (url.startsWith("https://msq-health.firebaseapp.com/success.html")) {
                 System.out.println("Request Intercepted");
-                pDialog.setMessage("Creating order...");
-                pDialog.show();
+
                 final CkXml xml = new CkXml();
 
 
                 FirebaseDatabase.getInstance().getReference("users").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        sendXml.NewChild("Particulars|Practice Name", dataSnapshot.child("Name").getValue().toString());
-                        sendXml.NewChild("Particulars|Date", new Date().toString());
-                        sendXml.NewChild("Particulars|Order Person", dataSnapshot.child("Name").getValue().toString());
-                        if (dataSnapshot.child("Telephone").exists()) {
-                            sendXml.NewChild("Particulars|Practice Phone", dataSnapshot.child("Telephone").getValue().toString());
-                        } else {
-                            sendXml.NewChild("Particulars|Practice Phone", dataSnapshot.child("billing_infomation").child("phone_number").getValue().toString());
-                        }
-                        sendXml.NewChild("Particulars|Practice Address", dataSnapshot.child("Suburb").getValue().toString());
-                        sendXml.NewChild("Delivery|Delivery Address", dataSnapshot.child("billing_infomation").child("delivery_address").getValue().toString());
-                        sendXml.NewChild("Delivery|Contact Person", dataSnapshot.child("billing_infomation").child("full_names").getValue().toString());
-                        sendXml.NewChild("Delivery|Contact Number", dataSnapshot.child("billing_infomation").child("phone_number").getValue().toString());
+
+
+                        orderXML.NewChild("Description", dataSnapshot.child("Practice_Number").getValue().toString());
+                        orderXML.NewChild("YourRef", user.getUid());
+                        orderXML.NewChild("Currency", "ZAR");
+                        Date date = Calendar.getInstance().getTime();
+                        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+                        String today = format.format(date);
+                        orderXML.NewChild("OrderedBy|Date", today);
+
+
+                        orderXML.UpdateAttrAt("OrderedBy|Debtor ", true, "code", user.getUid());
+                        orderXML.UpdateAttrAt("Warehouse", true, "code", "MJ20");
+                        orderXML.UpdateAttrAt("Selection ", true, "code", "10");
+
+                        ordersXML.AddChildTree(orderXML);
+                        sendXml.AddChildTree(ordersXML);
+
                     }
 
                     @Override
@@ -190,16 +218,24 @@ public class PaymentGatewayWebView extends AppCompatActivity {
                                 items.add(cartItem.toMap());
 
 
-                                xml.put_Tag("Row");
-                                xml.NewChild("No", String.valueOf(i));
-                                xml.NewChild("Part Nr", snapshot.child("product").child("code").getValue().toString());
-                                xml.NewChild("Product Description", snapshot.child("product").child("description").getValue().toString());
-                                xml.NewChild("Qty", snapshot.child("quantity").getValue().toString());
-                                xml.NewChild("Unit Rand Price", snapshot.child("product").child("price").getValue().toString());
-                                xml.NewChild("Total Rand Price", String.valueOf(_amount));
+                                Calendar c = Calendar.getInstance();
+                                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");// HH:mm:ss");
 
-                                sendXml.AddChildTree(xml);
+                                c.add(Calendar.DATE, 5);  // number of days to add
+                                String end_date = df.format(c.getTime());
+
+
+                                xml.put_Tag("OrderLine");
+                                xml.UpdateAttribute("LineNo", String.valueOf(i));
+                                xml.UpdateAttrAt("Item", true, "code", snapshot.child("product").child("code").getValue().toString());
+//                                xml.UpdateAttribute("code", snapshot.child("product").child("code").getValue().toString());
+                                xml.NewChild("Quantity", snapshot.child("quantity").getValue().toString());
+                                xml.NewChild("Delivery|Date", end_date);
+//                                xml.NewChild("Total Rand Price", String.valueOf(_amount));
+                                orderXML.AddChildTree(xml);
                                 xml.Clear();
+                                ordersXML.AddChildTree(orderXML);
+                                sendXml.AddChildTree(ordersXML);
 
                                 i++;
                             }
@@ -207,7 +243,7 @@ public class PaymentGatewayWebView extends AppCompatActivity {
                             System.out.println("Break Point 2 :  Items in cart : " + items.size());
 
 
-                            sendXml.NewChild("Total", String.valueOf(total));
+//                            sendXml.NewChild("Total", String.valueOf(total));
 
 
                             final double amount = _amount;
@@ -246,70 +282,68 @@ public class PaymentGatewayWebView extends AppCompatActivity {
             }
         }
 
+        public class SendEmail extends AsyncTask<Void, Void, Boolean> {
+
+
+            DataSnapshot dataSnapshot;
+
+            public SendEmail(DataSnapshot dataSnapshot) {
+                this.dataSnapshot = dataSnapshot;
+            }
+
+
+            @Override
+            protected Boolean doInBackground(Void... voids) {
+
+
+                try {
+
+                    connnectingwithFTP(getString(R.string.order_address), "mlab", getString(R.string.order_pass));
+                    return true;
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    return false;
+                }
+
+            }
+
+            @Override
+            protected void onPostExecute(Boolean emailSent) {
+                super.onPostExecute(emailSent);
+
+                if (emailSent) {
+                    dataSnapshot.getRef().removeValue(new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+
+                        }
+                    });
+
+                }
+            }
+        }
+
+
         @Override
         public void onPageFinished(WebView view, String url) {
-            if (url.equals("http://akacia.co.za")) {
-                finish();
+            if (url.startsWith("https://msq-health.firebaseapp.com/success.html")) {
+                pDialog.dismiss();
+                orderCompleted().show();
+
+
+            } else if (url.startsWith("https://msq-health.firebaseapp.com/decline.html")) {
+
+                pDialog.dismiss();
+
             }
         }
     }
-
 
     static {
         System.loadLibrary("chilkat");
 
-        // Note: If the incorrect library name is passed to System.loadLibrary,
-        // then you will see the following error message at application startup:
-        //"The application <your-application-name> has stopped unexpectedly. Please try again."
     }
 
-    public class SendEmail extends AsyncTask<Void, Void, Boolean> {
-
-
-        DataSnapshot dataSnapshot;
-
-        public SendEmail(DataSnapshot dataSnapshot) {
-            this.dataSnapshot = dataSnapshot;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            pDialog.setMessage("Completing your order");
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... voids) {
-
-            try {
-
-                GMailSender sender = new GMailSender("mosecoza@gmail.com", "moses@357");
-                sender.sendMail("Checked Out Invoice",
-                        sendXml.getXml(),
-                        "mosecoza@gmail.com",
-                        "info@buildhealth.co.za");
-                return true;
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                return false;
-            }
-
-        }
-
-        @Override
-        protected void onPostExecute(Boolean emailSent) {
-            super.onPostExecute(emailSent);
-            pDialog.dismiss();
-            if (emailSent) {
-                dataSnapshot.getRef().removeValue(new DatabaseReference.CompletionListener() {
-                    @Override
-                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                        orderCompleted().show();
-                    }
-                });
-                finish();
-            }
-        }
-    }
 
     public AlertDialog orderCompleted() {
         AlertDialog.Builder builder = new AlertDialog.Builder(PaymentGatewayWebView.this);
@@ -317,10 +351,86 @@ public class PaymentGatewayWebView extends AppCompatActivity {
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // FIRE ZE MISSILES!
+                        finish();
                     }
                 });
         // Create the AlertDialog object and return it
         return builder.create();
+    }
+
+
+    /**
+     * @param ip
+     * @param userName
+     * @param pass
+     */
+    public void connnectingwithFTP(final String ip, final String userName, final String pass) {
+
+        Thread thread = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                    boolean status = false;
+                    try {
+                        FileInputStream inputStream = getApplicationContext().openFileInput("invoice.xml");
+                        FTPClient mFtpClient = new FTPClient();
+                        mFtpClient.setConnectTimeout(10 * 1000);
+                        mFtpClient.connect(InetAddress.getByName(ip));
+                        status = mFtpClient.login(userName, pass);
+                        Log.e("isFTPConnected", String.valueOf(status));
+                        if (FTPReply.isPositiveCompletion(mFtpClient.getReplyCode())) {
+                            mFtpClient.setFileType(FTP.ASCII_FILE_TYPE);
+                            mFtpClient.enterLocalPassiveMode();
+                            FTPFile[] mFileArray = mFtpClient.listFiles();
+                            Log.e("Size", String.valueOf(mFileArray.length));
+
+                            uploadFile(mFtpClient, inputStream);
+                        }
+                        System.out.println("FTP REMOTE: " + mFtpClient.isRemoteVerificationEnabled());
+                        mFtpClient.logout();
+                    } catch (SocketException e) {
+                        e.printStackTrace();
+                    } catch (UnknownHostException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+            }
+        });
+        thread.start();
+    }
+
+    /**
+     * @param ftpClient    FTPclient object
+     * @param downloadFile local file which need to be uploaded.
+     */
+
+    public void uploadFile(FTPClient ftpClient, FileInputStream downloadFile) {
+//        InputStream inputStream = context.openFileInput("invoice.xml");
+        try {
+//            FileInputStream inputStream = getApplicationContext().openFileInput("invoice.xml");
+//            FileInputStream srcFileStream = new FileInputStream(inputStream);
+            boolean status = ftpClient.storeFile("remote ftp path",
+                    downloadFile);
+            Log.e("Status", String.valueOf(status));
+            downloadFile.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void createxmlFile() {
+
+        try {
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(getApplicationContext().openFileOutput("invoice.xml", Context.MODE_PRIVATE));
+            outputStreamWriter.write(sendXml.getXml());
+            outputStreamWriter.close();
+        } catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
+
     }
 
 }

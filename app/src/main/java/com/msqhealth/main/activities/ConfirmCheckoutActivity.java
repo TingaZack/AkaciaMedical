@@ -60,32 +60,6 @@ public class ConfirmCheckoutActivity extends AppCompatActivity {
             user_id = mAuth.getCurrentUser().getUid();
 
 
-//            mPhoneNumberEditText.addTextChangedListener(new TextWatcher() {
-//                int prevL = 0;
-//
-//                @Override
-//                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//                    prevL = mPhoneNumberEditText.getText().toString().length();
-//
-//                }
-//
-//                @Override
-//                public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//                }
-//
-//                @Override
-//                public void afterTextChanged(Editable s) {
-//
-//                    int length = s.length();
-//                    if ((prevL < length) && (length == 4 || length == 9 || length == 14)) {
-//                        s.append("-");
-//                    }
-//
-//                }
-//            });
-
 
             mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user_id);
             mDatabase.keepSynced(true);

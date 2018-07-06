@@ -15,6 +15,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,6 +39,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.apache.commons.net.ftp.FTP;
+import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPFile;
+import org.apache.commons.net.ftp.FTPReply;
+
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -155,78 +165,6 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
-//        FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("cart").child("cart-items").addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(final DataSnapshot dataSnapshot) {
-////                dataSnapshot.notify();
-//                double _amount = 0;
-//                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-//                    try {
-//                        count_cart = count_cart + Integer.parseInt(snapshot.child("quantity").getValue().toString());
-//                        System.out.println("MANY: " + Integer.parseInt(snapshot.child("quantity").getValue().toString()));
-//                        _amount = _amount + ((Double.parseDouble(String.valueOf(snapshot.child("product").child("price").getValue()))) * (Integer.parseInt(snapshot.child("quantity").getValue().toString())));
-//
-//
-//                        System.out.println("Amount Cart " + count_cart);
-//                    } catch (Exception e) {
-//                        e.getMessage();
-//                    }
-//                }
-//
-//                int qu = count_cart;
-//                if (qu == 0) {
-//                    mCartCountTextView.setVisibility(View.GONE);
-//                } else {
-//                    mCartCountTextView.setVisibility(View.VISIBLE);
-//                    mCartCountTextView.setText(String.valueOf(qu));
-//                    btnCart.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View view) {
-//                            CartDialogs dialog = new CartDialogs();
-//                            dialog.show(getSupportFragmentManager(), "Checkout");
-//                        }
-//                    });
-//                    mCartCountTextView.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View view) {
-//                            CartDialogs dialog = new CartDialogs();
-//                            dialog.show(getSupportFragmentManager(), "Checkout");
-//                        }
-//                    });
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-        //Checks if a user profile exists or not
-        /*
-        if (isNetworkAvailable()) {
-
-            if (user != null) {
-                String uid = user.getUid();
-                mDatabaseUsers.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (!dataSnapshot.exists()) {
-                            startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-                checkIfUserExist();
-                //checkEmailVerification();
-            }
-
-
-        } else */
-
         if (!isNetworkAvailable()) {
 
             Snackbar snack = Snackbar.make(findViewById(R.id.linear), "No Connection Available, please check your internet settings and try again.",
@@ -238,6 +176,9 @@ public class MainActivity extends AppCompatActivity {
             view.setLayoutParams(params);
             snack.show();
         }
+
+
+
 
     }
 
@@ -331,5 +272,47 @@ public class MainActivity extends AppCompatActivity {
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    /**
+     *
+     * @param ip
+     * @param userName
+     * @param pass
+     */
+    public void connnectingwithFTP(final String ip, final String userName, final String pass)  {
+
+        Thread thread = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try  {
+                    //Your code goes here
+                    boolean status = false;
+                    try {
+                        FTPClient mFtpClient = new FTPClient();
+                        mFtpClient.setConnectTimeout(10 * 1000);
+                        mFtpClient.connect(InetAddress.getByName(ip));
+                        status = mFtpClient.login(userName, pass);
+                        Log.e("isFTPConnected", String.valueOf(status));
+                        if (FTPReply.isPositiveCompletion(mFtpClient.getReplyCode())) {
+                            mFtpClient.setFileType(FTP.ASCII_FILE_TYPE);
+                            mFtpClient.enterLocalPassiveMode();
+                            FTPFile[] mFileArray = mFtpClient.listFiles();
+                            Log.e("Size", String.valueOf(mFileArray.length));
+                        }
+                    } catch (SocketException e) {
+                        e.printStackTrace();
+                    } catch (UnknownHostException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
     }
 }

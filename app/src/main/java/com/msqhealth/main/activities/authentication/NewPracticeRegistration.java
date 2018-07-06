@@ -155,7 +155,7 @@ public class NewPracticeRegistration extends Fragment {
 
             try {
 
-                GMailSender sender = new GMailSender("mosecoza@gmail.com", "moses@357");
+                GMailSender sender = new GMailSender(getString(R.string.sender_email), getString(R.string.sender));
                 sender.sendMail("New Practice Number Registration",
                         "First Name : " + eFirstName.getText().toString() + "\n\n"
                                 + "Last Name : " + eLastName.getText().toString() + "\n\n"
@@ -164,8 +164,8 @@ public class NewPracticeRegistration extends Fragment {
                                 + "Cellphone number : " + eCellphone.getText().toString() + "\n\n"
                                 + "Telephone Number : " + eTelephone.getText().toString() + "\n\n"
                         ,
-                        "mosecoza@gmail.com",
-                        "info@buildhealth.co.za");
+                        getString(R.string.sender_email),
+                        "info@buildhealth.co.za","no attachment");
                 return true;
             } catch (Exception ex) {
                 ex.printStackTrace();
