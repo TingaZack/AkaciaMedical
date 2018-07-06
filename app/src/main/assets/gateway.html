@@ -6,14 +6,16 @@
 
 						merchantId = getAllUrlParams().merchantid;
 						theamount = getAllUrlParams().amount;
+						key = getAllUrlParams().thekey;
+						id = getAllUrlParams().theid;
 
 						test();
 					}
 
 
 
-					let key = "4832706E-29E4-4591-8574-70A371AD3C70";
-					let id = "E112445E-A003-416F-8EBE-73A6969D16D4"
+					let key;
+					let id;
 					var theamount = 0;
 					var merchantId = "jksdk234";
 
@@ -124,17 +126,17 @@
 
 					function test() {
 
-                        console.log("WE sending: "+ merchantId+" and money: "+ parseInt(theamount));
+                        console.log("OUR key: "+ key+" and our id: "+ id);
 
                         var x = 0;
                         var m_id = new Date().getTime().toString();
                          x = parseInt(theamount);
 
-						let load = key + "|" + id + "|Payment|"+ x +"|ZAR|" + merchantId;
+						let load = key.toUpperCase() + "|" + id.toUpperCase() + "|Payment|"+ x +"|ZAR|" + merchantId;
 						let checksum = SHA256(load)
 
 						window.hpp.payment({
-								MerchantID: id,
+								MerchantID: id.toUpperCase(),
 								TransactionType: "Payment",
 								MerchantReference: merchantId,
 								Amount: x,

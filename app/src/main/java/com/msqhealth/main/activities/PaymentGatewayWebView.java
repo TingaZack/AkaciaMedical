@@ -64,7 +64,7 @@ public class PaymentGatewayWebView extends AppCompatActivity {
     CkXml ordersXML;
     CkXml orderXML;
     double _amount;
-
+    String m_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +73,10 @@ public class PaymentGatewayWebView extends AppCompatActivity {
 
 
         sendXml = new CkXml();
+        ordersXML = new CkXml();
+        orderXML = new CkXml();
 
-        createxmlFile();
+//        createxmlFile();
 
         boolean autoCreate = true;
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -120,8 +122,8 @@ public class PaymentGatewayWebView extends AppCompatActivity {
                 String finalAmount = String.valueOf(df.format(_amount).replace(",", "."));
 
                 String sent_amount = finalAmount.replace(".", "");
-                String m_id = "MSQ" + new Date().getTime();
-                webView.loadUrl("file:///android_asset/gateway.html?merchantid=" + m_id + "&amount=" + sent_amount + ";");
+                m_id = "MSQ" + new Date().getTime();
+                webView.loadUrl("file:///android_asset/gateway.html?merchantid=" + m_id + "&amount=" + sent_amount + "&thekey="+getString(R.string.the_key)+"&theid="+getString(R.string.the_id)+"");
 
                 pDialog.dismiss();
             }
@@ -261,6 +263,7 @@ public class PaymentGatewayWebView extends AppCompatActivity {
                             childUpdates.put("/carts/checked-out/" + user.getUid() + "/" + key, postValues);
                             childUpdates.put("/users/" + user.getUid() + "/carts/completed/" + key, postValues);
 
+                            createxmlFile();
                             FirebaseDatabase.getInstance().getReference().updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
@@ -372,7 +375,7 @@ public class PaymentGatewayWebView extends AppCompatActivity {
             public void run() {
                     boolean status = false;
                     try {
-                        FileInputStream inputStream = getApplicationContext().openFileInput("invoice.xml");
+                        FileInputStream inputStream = getApplicationContext().openFileInput(m_id+"invoice.xml");
                         FTPClient mFtpClient = new FTPClient();
                         mFtpClient.setConnectTimeout(10 * 1000);
                         mFtpClient.connect(InetAddress.getByName(ip));
@@ -424,7 +427,7 @@ public class PaymentGatewayWebView extends AppCompatActivity {
     private void createxmlFile() {
 
         try {
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(getApplicationContext().openFileOutput("invoice.xml", Context.MODE_PRIVATE));
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(getApplicationContext().openFileOutput(m_id+"invoice.xml", Context.MODE_PRIVATE));
             outputStreamWriter.write(sendXml.getXml());
             outputStreamWriter.close();
         } catch (IOException e) {

@@ -606,9 +606,6 @@ public class CkRest {
         return chilkatJNI.CkRest_SetAuthAws(swigCPtr, this, CkAuthAws.getCPtr(authProvider), authProvider);
     }
 
-    public boolean SetAuthAzureAD(CkAuthAzureAD authProvider) {
-        return chilkatJNI.CkRest_SetAuthAzureAD(swigCPtr, this, CkAuthAzureAD.getCPtr(authProvider), authProvider);
-    }
 
     public boolean SetAuthAzureSas(CkAuthAzureSAS authProvider) {
         return chilkatJNI.CkRest_SetAuthAzureSas(swigCPtr, this, CkAuthAzureSAS.getCPtr(authProvider), authProvider);
