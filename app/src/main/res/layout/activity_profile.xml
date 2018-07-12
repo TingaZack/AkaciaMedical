@@ -259,6 +259,7 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:layout_weight="1"
+                        android:textColor="@android:color/holo_orange_dark"
                         android:background="@android:color/transparent"/>
 
                 </LinearLayout>
