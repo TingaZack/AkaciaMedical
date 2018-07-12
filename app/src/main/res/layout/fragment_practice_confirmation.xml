@@ -1,0 +1,177 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="vertical">
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/medical_doctor_icon" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:fontFamily="sans-serif"
+                    android:text="Practice Details"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/practice_question"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="64dp"
+                    android:layout_marginRight="64dp"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center"
+                    android:text="Please provide us with your practice Number below."
+                    android:textSize="13sp" />
+
+                <!--<Spinner-->
+                <!--android:id="@+id/hasPractice"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_below="@+id/practice_question"-->
+                <!--android:layout_centerHorizontal="true"-->
+                <!--android:layout_margin="16dp"-->
+                <!--android:entries="@array/hasPractice"-->
+                <!--android:paddingBottom="16dp"-->
+                <!--android:paddingLeft="32dp"-->
+                <!--android:paddingRight="32dp"-->
+                <!--android:paddingTop="16dp"-->
+                <!--android:textAllCaps="false"-->
+                <!--android:textColor="@android:color/white"-->
+                <!--android:textStyle="bold" />-->
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="32dp"
+                android:paddingRight="32dp">
+
+                <LinearLayout
+                    android:id="@+id/practice_number_insert"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:hint="Practice Number">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/practice_number"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:maxLength="15" />
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/practice_number_registration"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Practice Name">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/register_practice_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:inputType="textCapWords" />
+                    </android.support.design.widget.TextInputLayout>
+
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Practice Number">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/register_practice_number"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Practitioner ID Number"
+                        android:maxLength="10">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/register_practitioner_id_number"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:inputType="number"
+                            android:maxLength="13" />
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingLeft="64dp"
+                android:paddingRight="64dp">
+
+
+                <Button
+                    android:id="@+id/save"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/display_picture"
+                    android:layout_centerHorizontal="true"
+                    android:layout_margin="16dp"
+                    android:background="@drawable/round_orange_button"
+                    android:paddingLeft="64dp"
+                    android:paddingRight="64dp"
+                    android:text="Save"
+                    android:textAllCaps="false"
+                    android:textColor="#fff"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</ScrollView>

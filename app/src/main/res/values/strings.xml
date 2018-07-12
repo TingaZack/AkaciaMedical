@@ -1,0 +1,151 @@
+<resources>
+    <string name="app_name">MSQ Health</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="practice_number_not_found">Practice Number not found. Would you like to contact MSQ Health and register your practice?</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="next">NEXT</string>
+    <string name="skip">SKIP</string>
+    <string name="start">GOT IT</string>
+
+    <string name="slide_1_title">Hello Food!</string>
+    <string name="slide_1_desc">The easiest way to order food from your favourite restaurant!</string>
+
+    <string name="slide_2_title">Let\'s create a profile</string>
+    <string name="slide_2_desc">\n\n\nWe would really like to know who you are so we can better serve you.\n\nWe just have four questions that will better your experience of the app.</string>
+
+    <string name="slide_3_title">Basic Profile Complete</string>
+    <string name="slide_3_desc">And that\'s it! You can now enjoy the best in-app experience with MSQ Health</string>
+
+    <string name="slide_4_title">World Travel</string>
+    <string name="slide_4_desc">Book tickets of any transportation and travel the world!</string>
+
+    <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear data</string>
+    <string name="play_again">Play Again</string>
+    <string name="title_activity_listing_details">ListingDetailsActivity</string>
+    <string name="large_text">
+        "Material is the metaphor.\n\n"
+
+        "A material metaphor is the unifying theory of a rationalized space and a system of motion."
+        "The material is grounded in tactile reality, inspired by the study of paper and ink, yet "
+        "technologically advanced and open to imagination and magic.\n"
+        "Surfaces and edges of the material provide visual cues that are grounded in reality. The "
+        "use of familiar tactile attributes helps users quickly understand affordances. Yet the "
+        "flexibility of the material creates new affordances that supercede those in the physical "
+        "world, without breaking the rules of physics.\n"
+        "The fundamentals of light, surface, and movement are key to conveying how objects move, "
+        "interact, and exist in space and in relation to each other. Realistic lighting shows "
+        "seams, divides space, and indicates moving parts.\n\n"
+
+        "Bold, graphic, intentional.\n\n"
+
+        "The foundational elements of print based design typography, grids, space, scale, color, "
+        "and use of imagery guide visual treatments. These elements do far more than please the "
+        "eye. They create hierarchy, meaning, and focus. Deliberate color choices, edge to edge "
+        "imagery, large scale typography, and intentional white space create a bold and graphic "
+        "interface that immerse the user in the experience.\n"
+        "An emphasis on user actions makes core functionality immediately apparent and provides "
+        "waypoints for the user.\n\n"
+
+        "Motion provides meaning.\n\n"
+
+        "Motion respects and reinforces the user as the prime mover. Primary user actions are "
+        "inflection points that initiate motion, transforming the whole design.\n"
+        "All action takes place in a single environment. Objects are presented to the user without "
+        "breaking the continuity of experience even as they transform and reorganize.\n"
+        "Motion is meaningful and appropriate, serving to focus attention and maintain continuity. "
+        "Feedback is subtle yet clear. Transitions are efﬁcient yet coherent.\n\n"
+
+        "3D world.\n\n"
+
+        "The material environment is a 3D space, which means all objects have x, y, and z "
+        "dimensions. The z-axis is perpendicularly aligned to the plane of the display, with the "
+        "positive z-axis extending towards the viewer. Every sheet of material occupies a single "
+        "position along the z-axis and has a standard 1dp thickness.\n"
+        "On the web, the z-axis is used for layering and not for perspective. The 3D world is "
+        "emulated by manipulating the y-axis.\n\n"
+
+        "Light and shadow.\n\n"
+
+        "Within the material environment, virtual lights illuminate the scene. Key lights create "
+        "directional shadows, while ambient light creates soft shadows from all angles.\n"
+        "Shadows in the material environment are cast by these two light sources. In Android "
+        "development, shadows occur when light sources are blocked by sheets of material at "
+        "various positions along the z-axis. On the web, shadows are depicted by manipulating the "
+        "y-axis only. The following example shows the card with a height of 6dp.\n\n"
+
+        "Resting elevation.\n\n"
+
+        "All material objects, regardless of size, have a resting elevation, or default elevation "
+        "that does not change. If an object changes elevation, it should return to its resting "
+        "elevation as soon as possible.\n\n"
+
+        "Component elevations.\n\n"
+
+        "The resting elevation for a component type is consistent across apps (e.g., FAB elevation "
+        "does not vary from 6dp in one app to 16dp in another app).\n"
+        "Components may have different resting elevations across platforms, depending on the depth "
+        "of the environment (e.g., TV has a greater depth than mobile or desktop).\n\n"
+
+        "Responsive elevation and dynamic elevation offsets.\n\n"
+
+        "Some component types have responsive elevation, meaning they change elevation in response "
+        "to user input (e.g., normal, focused, and pressed) or system events. These elevation "
+        "changes are consistently implemented using dynamic elevation offsets.\n"
+        "Dynamic elevation offsets are the goal elevation that a component moves towards, relative "
+        "to the component’s resting state. They ensure that elevation changes are consistent "
+        "across actions and component types. For example, all components that lift on press have "
+        "the same elevation change relative to their resting elevation.\n"
+        "Once the input event is completed or cancelled, the component will return to its resting "
+        "elevation.\n\n"
+
+        "Avoiding elevation interference.\n\n"
+
+        "Components with responsive elevations may encounter other components as they move between "
+        "their resting elevations and dynamic elevation offsets. Because material cannot pass "
+        "through other material, components avoid interfering with one another any number of ways, "
+        "whether on a per component basis or using the entire app layout.\n"
+        "On a component level, components can move or be removed before they cause interference. "
+        "For example, a floating action button (FAB) can disappear or move off screen before a "
+        "user picks up a card, or it can move if a snackbar appears.\n"
+        "On the layout level, design your app layout to minimize opportunities for interference. "
+        "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
+        "when a user tries to pick up one of cards.\n\n"
+    </string>
+
+    <string name="title_activity_featured_item_details">FeaturedItemDetails</string>
+
+    <string name="message_sent_message">Thank You for contacting us.
+        Our team will get back to you shortly.</string>
+
+    <string name="msq_slogan">"Want to learn more about our services?
+Please get in touch, we'd love to hear from you!"</string>
+
+    <string name="empty_cart">Look at this shiny new trolley, just waiting to be filled.\n
+        Start shopping now!</string>
+
+    <string-array name="hasPractice">
+        <item>---Select---</item>
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+
+    <string name="about_msq">"MSQ Health was established in 2010 by a group of individuals who shared a vision of creating a consolidated healthcare company that offers integrated solutions that address the needs of a healthcare system.\n\n We are committed to locally manufacturing and distributing a comprehensive range of high quality Disposables, Consumables, Hospital Equipment, Medical Devices, Diagnostics &amp; Pharmaceuticals that are CE marked. Our manufacturing plants in Cape Town and Port Elizabeth adhere to world-class standards and are therefore certified with an ISO 13485 accreditation. Our current subsidiaries of MSQ Health are Akacia Medical™, Akacia Surgical™ and Clinisut™"</string>
+    <string name="meet_the_team">We have more than 400 staff members that are well experienced with pharmaceutical production, wholesale, retail and export for almost three decades. A world class management team of healthcare and innovation professionals with combined experience of more than 100 years in local &amp; international commercialization, innovation, financing and policy.\n\n We boast an international Advisory Board of global experts who have been inventors of record leading drugs and devices. We have successfully led R&amp;D and innovation teams in product development and intellectual property acquisitions that are local and international We have built and ran significant commercial entities locally</string>
+    <string name="msq_bee">MSQ matches the highest standards of BEE, an essential requirement for those wishing to invest in South Africa. Some of the MSQ Executives have worked at the highest level of government and business and have an unparalleled understanding of the political and regulatory environment. MSQ is familiar with the BEE principles and objectives detailed in various government Acts and codes of good practice and has the expertise to ensure full compliance.</string>
+    <string name="title_activity_about_us">AboutUs</string>
+    <string name="sender_email">mosecoza@gmail.com</string>
+    <string name="sender">moses@357</string>
+    <string name="receiver">info@buildhealth.co.za</string>
+    <string name="sender_mail">mosecoza@gmail.com</string>
+    <string name="order_address">synergy.akaciamedical.co.za</string>
+    <string name="order_pass">!App_4MSQ-FtP$</string>
+    <string name="the_key">4832706E-29E4-4591-8574-70A371AD3C70</string>
+    <string name="the_id">E112445E-A003-416F-8EBE-73A6969D16D4</string>
+
+
+    <string name="click_terms">By clicking \'Search\', you agree to the </string>
+</resources>

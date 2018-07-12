@@ -1,0 +1,231 @@
+{
+  "project_info": {
+    "project_number": "138278247819",
+    "firebase_url": "https://msq-health.firebaseio.com",
+    "project_id": "msq-health",
+    "storage_bucket": "msq-health.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:138278247819:android:bfb2f09c88bf66a1",
+        "android_client_info": {
+          "package_name": "com.android.msqhealthpoc1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "138278247819-mgm5as93m5ka3had0h06h19ttibaeg80.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.android.msqhealthpoc1",
+            "certificate_hash": "1a8e4b3fe7666a93b9993b20bb936c0be2dd9873"
+          }
+        },
+        {
+          "client_id": "138278247819-t3lsd6hkse7tn13ob2jhllnmdd2bjfvn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAP2FuRBJMmskDKPXlvU-iEbe4oyVB9kmU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "138278247819-t3lsd6hkse7tn13ob2jhllnmdd2bjfvn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:138278247819:android:63a3f6a72c576c70",
+        "android_client_info": {
+          "package_name": "com.android.markwhisperers.msqdeliveryapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "138278247819-kdrrpf8mt9o9f16tvt9boads06a950uj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.android.markwhisperers.msqdeliveryapp",
+            "certificate_hash": "1a8e4b3fe7666a93b9993b20bb936c0be2dd9873"
+          }
+        },
+        {
+          "client_id": "138278247819-t3lsd6hkse7tn13ob2jhllnmdd2bjfvn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAP2FuRBJMmskDKPXlvU-iEbe4oyVB9kmU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "138278247819-t3lsd6hkse7tn13ob2jhllnmdd2bjfvn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:138278247819:android:177b141d90a71056",
+        "android_client_info": {
+          "package_name": "com.android.msqdeliveryapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "138278247819-9d0ia3qqi3uqa97aha4nmlho5gdfkft3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.android.msqdeliveryapp",
+            "certificate_hash": "1a8e4b3fe7666a93b9993b20bb936c0be2dd9873"
+          }
+        },
+        {
+          "client_id": "138278247819-t3lsd6hkse7tn13ob2jhllnmdd2bjfvn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAP2FuRBJMmskDKPXlvU-iEbe4oyVB9kmU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "138278247819-t3lsd6hkse7tn13ob2jhllnmdd2bjfvn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:138278247819:android:62e35f3bb5c76d4c",
+        "android_client_info": {
+          "package_name": "com.msqdeliveryapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "138278247819-nhdhmdqqsa5p5gcpdguvuqgne78bfm48.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.msqdeliveryapp",
+            "certificate_hash": "1a8e4b3fe7666a93b9993b20bb936c0be2dd9873"
+          }
+        },
+        {
+          "client_id": "138278247819-t3lsd6hkse7tn13ob2jhllnmdd2bjfvn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAP2FuRBJMmskDKPXlvU-iEbe4oyVB9kmU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "138278247819-t3lsd6hkse7tn13ob2jhllnmdd2bjfvn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:138278247819:android:efd2c8a7b5598400",
+        "android_client_info": {
+          "package_name": "com.msqhealth.main"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "138278247819-tnurpv7mcgt2bi2g1unqno8njvbcl6qd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.msqhealth.main",
+            "certificate_hash": "1a8e4b3fe7666a93b9993b20bb936c0be2dd9873"
+          }
+        },
+        {
+          "client_id": "138278247819-t3lsd6hkse7tn13ob2jhllnmdd2bjfvn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAP2FuRBJMmskDKPXlvU-iEbe4oyVB9kmU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "138278247819-t3lsd6hkse7tn13ob2jhllnmdd2bjfvn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
