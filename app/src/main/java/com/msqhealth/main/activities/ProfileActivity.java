@@ -44,7 +44,7 @@ public class ProfileActivity extends AppCompatActivity {
     private StorageReference mStorage;
     private FirebaseAuth mAuth;
 
-    private Button mOrdersButton;
+//    private Button mOrdersButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +59,7 @@ public class ProfileActivity extends AppCompatActivity {
         mSuburbButtonEdit = findViewById(R.id.suburb_edit);
         mTelephoneEditText = findViewById(R.id.profile_telephone);
         mTelephoneButtonEdit = findViewById(R.id.telephone_edit);
-        mOrdersButton = findViewById(R.id.btn_orders);
+//        mOrdersButton = findViewById(R.id.btn_orders);
 
         mEmailTextView = findViewById(R.id.profile_email);
         mPracticeNumberTextView = findViewById(R.id.profile_practice_number);
@@ -82,12 +82,12 @@ public class ProfileActivity extends AppCompatActivity {
 
         if (mAuth.getCurrentUser() != null) {
 
-            mOrdersButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    startActivity(new Intent(getApplicationContext(), OrdersActivitty.class));
-                }
-            });
+//            mOrdersButton.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    startActivity(new Intent(getApplicationContext(), OrdersActivitty.class));
+//                }
+//            });
 
             mDatabaseUsers.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
                 @Override
