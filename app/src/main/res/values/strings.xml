@@ -145,6 +145,11 @@ Please get in touch, we'd love to hear from you!"</string>
     <string name="order_pass">!App_4MSQ-FtP$</string>
     <string name="the_key">4832706E-29E4-4591-8574-70A371AD3C70</string>
     <string name="the_id">E112445E-A003-416F-8EBE-73A6969D16D4</string>
+    <string name="rand">R</string>
+    <string name="percentage">% off</string>
+    <string name="promo_days"> days left</string>
+
+    <string name="welcome_messages">Hello, %1$s! You have %2$d new messages.</string>
 
 
     <string name="click_terms">By clicking \'Search\', you agree to the </string>

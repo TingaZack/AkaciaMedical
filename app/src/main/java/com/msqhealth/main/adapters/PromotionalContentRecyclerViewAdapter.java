@@ -35,14 +35,20 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class PromotionalContentRecyclerViewAdapter extends RecyclerView.Adapter<PromotionalContentRecyclerViewAdapter.ViewHolder> {
 
     private final List<Product> mValues;
     private Activity activity;
+    private int final_difference;
 
     public PromotionalContentRecyclerViewAdapter(List<Product> items, Activity activity) {
         mValues = items;
@@ -61,11 +67,38 @@ public class PromotionalContentRecyclerViewAdapter extends RecyclerView.Adapter<
         holder.mItem = mValues.get(position);
         holder.mConsumableView.setText(mValues.get(position).consumables);
         holder.mDescriptionView.setText(mValues.get(position).description.toLowerCase());
-        holder.mPercentageView.setText(mValues.get(position).percentage + "% off");
-        holder.mPriceView.setText("R" + String.valueOf(mValues.get(position).price));
+        holder.mPercentageView.setText(mValues.get(position).percentage + activity.getString(R.string.percentage));
+
+        double percentage = Double.parseDouble(mValues.get(position).percentage);
+        double price = Double.parseDouble(String.valueOf(mValues.get(position).price));
+//        double final_price = (price - (percentage / 100) * price);
+
+        holder.mEndDate.setText(mValues.get(position).end_date);
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date date = format.parse(mValues.get(position).end_date);
+            System.out.println("D A T E" + date);
+
+            int diff = (int) (date.getTime() - new Date().getTime());
+            int diffaddone = (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+            final_difference = diffaddone + 1;
+            System.out.println("PRINT: " + final_difference);
+
+            holder.mEndDate.setText(final_difference +""+ activity.getString(R.string.promo_days));
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        DecimalFormat df = new DecimalFormat("##.00");
+
+        holder.mPriceView.setText(activity.getString(R.string.rand) + String.valueOf(df.format(mValues.get(position).price)));
         holder.mCodeView.setText(mValues.get(position).code);
         holder.mPricingUnitView.setText(String.valueOf(mValues.get(position).unit_of_messuremeant.toLowerCase()));
         Glide.with(activity).load(mValues.get(position).trueImageUrl).into(holder.mProductImage);
+
+        System.out.println("PR___"+ String.valueOf(mValues.get(position).price));
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -300,6 +333,7 @@ public class PromotionalContentRecyclerViewAdapter extends RecyclerView.Adapter<
         public final TextView mPriceView, mDescriptionView, mPricingUnitView, mPercentageView, mCodeView;
         public final Button btnAddToCart;
         public final EditText mQuantity;
+        public final TextView mEndDate;
         RelativeLayout mRelativeLayout;
         public final ImageButton mIncrementButton;
         public final ImageButton mDecrementButton;
@@ -320,6 +354,7 @@ public class PromotionalContentRecyclerViewAdapter extends RecyclerView.Adapter<
             mDecrementButton = view.findViewById(R.id.btn_decrement);
             mIncrementButton = view.findViewById(R.id.btn_increment);
             mDescriptionView = (TextView) view.findViewById(R.id.tv_description);
+            mEndDate = (TextView) view.findViewById(R.id.tv_end_date);
         }
 
         @Override

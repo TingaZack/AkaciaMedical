@@ -79,6 +79,9 @@ public class MyListingDetailsAdapter extends RecyclerView.Adapter<MyListingDetai
         holder.mPriceView.setText(String.valueOf("R" + String.valueOf(df.format(mValues.get(position).price)).replace(",", ".")));
         holder.mCodeView.setText(mValues.get(position).code);
 
+        System.out.println("PRIC: " + mValues.get(position).code
+        );
+
         hideOtherViews(holder);
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -314,7 +317,7 @@ public class MyListingDetailsAdapter extends RecyclerView.Adapter<MyListingDetai
         public final View mView;
         public final ImageView mProductImage;
         public final TextView mConsumableView;
-        public final TextView mPriceView, mDescriptionView, mPricingUnitView, mPercentageView, mCodeView, tvStartDate, tvEndDate, tvHyphen;
+        public final TextView mPriceView, mDescriptionView, mPricingUnitView, mPercentageView, mCodeView, tvStartDate, tvEndDate;
         public final Button btnAddToCart;
         public final EditText mQuantity;
         RelativeLayout mRelativeLayout;
@@ -341,14 +344,12 @@ public class MyListingDetailsAdapter extends RecyclerView.Adapter<MyListingDetai
             mOrangeRibbon = view.findViewById(R.id.orange_ribbon);
             tvStartDate = view.findViewById(R.id.tv_start_date);
             tvEndDate = view.findViewById(R.id.tv_end_date);
-            tvHyphen = view.findViewById(R.id.hyphen);
         }
 
         @Override
         public String toString() {
             return super.toString() + " '" + mDescriptionView.getText() + "'";
         }
-
 
     }
 
@@ -357,6 +358,5 @@ public class MyListingDetailsAdapter extends RecyclerView.Adapter<MyListingDetai
         holder.mOrangeRibbon.setVisibility(View.GONE);
         holder.tvStartDate.setVisibility(View.GONE);
         holder.tvEndDate.setVisibility(View.GONE);
-        holder.tvHyphen.setVisibility(View.GONE);
     }
 }

@@ -100,6 +100,8 @@ public class PromoListingDetailsActivity extends AppCompatActivity {
             mQueryPromoContent.addValueEventListener(new ValueEventListener() {
                 public void onDataChange(DataSnapshot snapshot) {
 
+                    System.out.println("CHILD COUNT CH---: " + snapshot.getValue());
+
                     if(snapshot.hasChildren()){
 
                     }

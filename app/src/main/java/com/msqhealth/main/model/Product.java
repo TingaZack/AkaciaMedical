@@ -20,6 +20,7 @@ public class Product {
     public String percentage;
     public String trueImageUrl;
     public String imageUrl;
+    public String end_date;
     public boolean promotion = false;
     public Map<String, Boolean> stars = new HashMap<>();
 
@@ -55,6 +56,18 @@ public class Product {
         this.percentage = percentage;
         this.trueImageUrl = trueImageUrl;
         this.promotion = promotion;
+    }
+
+    public Product(String code, String consumables, String description, double price, String unit_of_messuremeant, String percentage, String trueImageUrl, boolean promotion, String end_date) {
+        this.code = code;
+        this.consumables = consumables;
+        this.description = description;
+        this.price = price;
+        this.unit_of_messuremeant = unit_of_messuremeant;
+        this.percentage = percentage;
+        this.trueImageUrl = trueImageUrl;
+        this.promotion = promotion;
+        this.end_date = end_date;
     }
 
     public Product(String consumables, String imageUrl) {

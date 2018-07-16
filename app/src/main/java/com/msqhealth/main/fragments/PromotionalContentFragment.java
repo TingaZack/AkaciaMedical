@@ -23,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,8 +91,14 @@ public class PromotionalContentFragment extends Fragment {
                         System.out.println("Count: " + snapshot.getChildrenCount());
                         System.out.println("PROMO VALUE: " + snapshot.child("PROMO").getValue());
 
-                        Product product = new Product(((String) snapshot.child("CODE").getValue()), ((String) snapshot.child("CONSUMABLES").getValue()), (String) snapshot.child("DESCRIPTION").getValue(), Double.parseDouble(snapshot.child("PRICING").getValue().toString()), (String) snapshot.child("PRICING_UNIT").getValue(), (String) snapshot.child("PERCENTAGE").getValue(), (String) snapshot.child("True Image").getValue(), (boolean) snapshot.child("PROMO").getValue());
+                        String percentage = (String) snapshot.child("PERCENTAGE").getValue();
+                        String pricing = (String) snapshot.child("PRICING").getValue();
+                        double final_price = (Double.parseDouble(pricing) - (Double.parseDouble(percentage )/ 100) * Double.parseDouble(pricing));
+                        DecimalFormat df = new DecimalFormat("##.00");
 
+                        System.out.println("FINAL PRICE: " + df.format(final_price));
+
+                        Product product = new Product(((String) snapshot.child("CODE").getValue()), ((String) snapshot.child("CONSUMABLES").getValue()), (String) snapshot.child("DESCRIPTION").getValue(), Double.parseDouble(df.format(final_price)), (String) snapshot.child("PRICING_UNIT").getValue(), percentage, (String) snapshot.child("True Image").getValue(), (boolean) snapshot.child("PROMO").getValue(), (String) snapshot.child("END").getValue());
                         productList.add(product);
                     }
                     pDialog.dismiss();
