@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.TextView;
 
 import com.msqhealth.main.R;
 import com.msqhealth.main.adapters.PromotionalContentRecyclerViewAdapter;
@@ -46,6 +47,8 @@ public class PromotionalContentFragment extends Fragment {
     private ProgressDialog pDialog;
     private Query mQueryCurrentUser;
 
+    private TextView mPromoTextView;
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -68,6 +71,9 @@ public class PromotionalContentFragment extends Fragment {
         mPromotionsDatabase.keepSynced(true);
 
         mDatabase = FirebaseDatabase.getInstance().getReference().child("products");
+        mDatabase.keepSynced(true);
+
+        mPromoTextView = rootView.findViewById(R.id.promo_textview);
 
         productList = new ArrayList<>();
         // Set the adapter
@@ -86,19 +92,34 @@ public class PromotionalContentFragment extends Fragment {
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
                     System.out.println("CHI<D~: " + dataSnapshot.getChildrenCount());
+                    if (!dataSnapshot.exists()) {
+                        mPromoTextView.setVisibility(View.VISIBLE);
+                        System.out.println("HELLO COUNT");
+                    }
 
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         System.out.println("Count: " + snapshot.getChildrenCount());
                         System.out.println("PROMO VALUE: " + snapshot.child("PROMO").getValue());
 
+                        if (!snapshot.exists()) {
+                            mPromoTextView.setVisibility(View.VISIBLE);
+                            System.out.println("HELLO COUNT");
+                        }
+
                         String percentage = (String) snapshot.child("PERCENTAGE").getValue();
                         String pricing = (String) snapshot.child("PRICING").getValue();
-                        double final_price = (Double.parseDouble(pricing) - (Double.parseDouble(percentage )/ 100) * Double.parseDouble(pricing));
+                        double final_price = (Double.parseDouble(pricing) - (Double.parseDouble(percentage) / 100) * Double.parseDouble(pricing));
                         DecimalFormat df = new DecimalFormat("##.00");
 
                         System.out.println("FINAL PRICE: " + df.format(final_price));
 
-                        Product product = new Product(((String) snapshot.child("CODE").getValue()), ((String) snapshot.child("CONSUMABLES").getValue()), (String) snapshot.child("DESCRIPTION").getValue(), Double.parseDouble(df.format(final_price)), (String) snapshot.child("PRICING_UNIT").getValue(), percentage, (String) snapshot.child("True Image").getValue(), (boolean) snapshot.child("PROMO").getValue(), (String) snapshot.child("END").getValue());
+                        Product product = new Product(((String) snapshot.child("CODE").getValue()),
+                                ((String) snapshot.child("CONSUMABLES").getValue()),
+                                (String) snapshot.child("DESCRIPTION").getValue(),
+                                Double.parseDouble(df.format(final_price)),
+                                (String) snapshot.child("PRICING_UNIT").getValue(),
+                                percentage, (String) snapshot.child("True Image").getValue(),
+                                (boolean) snapshot.child("PROMO").getValue(), (String) snapshot.child("END").getValue());
                         productList.add(product);
                     }
                     pDialog.dismiss();
@@ -114,5 +135,17 @@ public class PromotionalContentFragment extends Fragment {
         }
 
         return rootView;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        pDialog.dismiss();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        pDialog.dismiss();
     }
 }

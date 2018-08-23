@@ -1,11 +1,14 @@
 package com.msqhealth.main.activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -18,15 +21,21 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.github.johnpersano.supertoasts.library.Style;
+import com.github.johnpersano.supertoasts.library.SuperActivityToast;
+import com.github.johnpersano.supertoasts.library.utils.PaletteUtils;
 import com.msqhealth.main.R;
+import com.msqhealth.main.activities.authentication.NewPracticeRegistration;
 import com.msqhealth.main.dialogs.CartDialogs;
 import com.msqhealth.main.fragments.ProductFragment;
 import com.msqhealth.main.fragments.PromotionalContentFragment;
@@ -81,7 +90,9 @@ public class MainActivity extends AppCompatActivity {
 
     private RelativeLayout mCartRelativeLayout;
 
-    ImageButton btnCart;
+    private ImageButton btnCart;
+    private Button mLoginRegister;
+    private Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,7 +120,6 @@ public class MainActivity extends AppCompatActivity {
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -122,11 +132,18 @@ public class MainActivity extends AppCompatActivity {
 
         mCartCountTextView = findViewById(R.id.actionbar_notifcation_textview);
         mCartRelativeLayout = findViewById(R.id.cart_layout);
+        mLoginRegister = findViewById(R.id.btn_login_register);
+
+        prefManager = new PrefManager(getApplicationContext());
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         mAuth = FirebaseAuth.getInstance();
 
         if (user != null) {
+            btnCart.setVisibility(View.VISIBLE);
+            mLoginRegister.setVisibility(View.GONE);
+            mCartCountTextView.setVisibility(View.VISIBLE);
+            System.out.println("YUID: " + user.getUid());
             mDatabaseUsers.child(user.getUid()).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -163,11 +180,39 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             });
+            checkIfUserRegistered();
+
+//            SuperActivityToast.create((MainActivity.this), new Style(), Style.TYPE_BUTTON)
+//                    .setButtonText("UNDO")
+//                    .setButtonIconResource(R.drawable.ic_x_button)
+////                    .setOnButtonClickListener("good_tag_name", null, onButtonClickListener)
+//                    .setProgressBarColor(Color.WHITE)
+//                    .setText("Email deleted")
+//                    .setDuration(Style.DURATION_LONG)
+//                    .setFrame(Style.FRAME_LOLLIPOP)
+//                    .setColor(PaletteUtils.getSolidColor(PaletteUtils.MATERIAL_PURPLE))
+//                    .setAnimations(Style.ANIMATIONS_POP).show();
+        } else {
+            checkUserBrowsingState();
+            btnCart.setVisibility(View.GONE);
+            mLoginRegister.setVisibility(View.VISIBLE);
+            mCartCountTextView.setVisibility(View.GONE);
+            System.out.println("It Is: " + prefManager.isBrowseCatalogue());
+
+            mLoginRegister.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(getApplicationContext(), OnBoardingActivity.class));
+                    finish();
+
+                    prefManager.setToBrowseCatalogue(false);
+                }
+            });
         }
 
         if (!isNetworkAvailable()) {
 
-            Snackbar snack = Snackbar.make(findViewById(R.id.linear), "No Connection Available, please check your internet settings and try again.",
+            Snackbar snack = Snackbar.make(findViewById(R.id.linear), getApplicationContext().getString(R.string.no_connection),
                     Snackbar.LENGTH_INDEFINITE).setDuration(5000);
             snack.getView().setBackgroundColor(ContextCompat.getColor(getApplicationContext(), android.R.color.holo_red_dark));
             View view = snack.getView();
@@ -176,17 +221,41 @@ public class MainActivity extends AppCompatActivity {
             view.setLayoutParams(params);
             snack.show();
         }
+    }
 
+    protected void onPreExecute() {
+        new CountDownTimer(30000, 1000) {
 
+            public void onTick(long millisUntilFinished) {
+                System.out.println("seconds remaining: " + millisUntilFinished / 1000);
+            }
 
-
+            public void onFinish() {
+                Snackbar snack = Snackbar.make(findViewById(R.id.linear), getApplicationContext().getString(R.string.login_register),
+                        Snackbar.LENGTH_SHORT);
+                snack.getView().setBackgroundColor(ContextCompat.getColor(getApplicationContext(), android.R.color.holo_red_dark));
+                View view = snack.getView();
+                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
+                params.gravity = Gravity.BOTTOM;
+                view.setLayoutParams(params);
+                snack.show();
+            }
+        }.start();
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        if (user == null) {
+            getMenuInflater().inflate(R.menu.menu_main, menu);
+            for (int i = 0; i < menu.size(); i++)
+                menu.getItem(i).setVisible(false);
+        } else {
+            getMenuInflater().inflate(R.menu.menu_main, menu);
+        }
+
 
         return true;
     }
@@ -215,7 +284,7 @@ public class MainActivity extends AppCompatActivity {
 //        }
         if (id == R.id.action_log_out) {
             FirebaseAuth.getInstance().signOut();
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            Intent intent = new Intent(MainActivity.this, OnBoardingActivity.class);
             startActivity(intent);
             finish();
             return true;
@@ -275,18 +344,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     *
      * @param ip
      * @param userName
      * @param pass
      */
-    public void connnectingwithFTP(final String ip, final String userName, final String pass)  {
+    public void connnectingwithFTP(final String ip, final String userName, final String pass) {
 
         Thread thread = new Thread(new Runnable() {
 
             @Override
             public void run() {
-                try  {
+                try {
                     //Your code goes here
                     boolean status = false;
                     try {
@@ -315,4 +383,37 @@ public class MainActivity extends AppCompatActivity {
         });
         thread.start();
     }
+
+    /*
+    * Check whether the user browsing state is true or not. If the state is true, the user will
+    * remain here on MainActivity and if it's false, the user will be re-directed to OnBoardingActivity.
+    * */
+    public void checkUserBrowsingState() {
+        if (!prefManager.isBrowseCatalogue()) {
+            System.out.println("NOT: " + prefManager.isBrowseCatalogue());
+            startActivity(new Intent(getApplicationContext(), OnBoardingActivity.class));
+            finish();
+        }
+    }
+
+    /*
+     * Check if user is registered and if not, re-direct them to Account Setup page
+     * */
+    public void checkIfUserRegistered() {
+        FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists()) {
+                    startActivity(new Intent(getApplicationContext(), NewPracticeRegistration.class));
+                    finish();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 }

@@ -2,8 +2,13 @@
 <resources>
     <color name="colorPrimary">#006EA5</color>
     <color name="colorPrimaryDark">#005681</color>
-    <color name="colorAccent">#E1880C</color>
+    <color name="colorAccent">#02b29d</color>
     <color name="white">#fff</color>
+    <color name="trans_white">#cecece</color>
+    <color name="trans_grey">#73cecece</color>
+    <color name="dark_grey">#838282</color>
+
+    <color name="toq_color">#02b29d</color>
 
     <!-- Screens background color-->
     <color name="bg_screen1">#f64c73</color>

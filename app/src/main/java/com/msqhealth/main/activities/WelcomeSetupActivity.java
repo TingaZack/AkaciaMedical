@@ -246,39 +246,39 @@ public class WelcomeSetupActivity extends AppCompatActivity {
 //        }
 //    }
 
-    private void showDialog() {
-        View mView = LayoutInflater.from(WelcomeSetupActivity.this).inflate(R.layout.deleted_custom_dialog, null);
-
-        TextView successView = mView.findViewById(R.id.tv_success);
-        ImageButton imageButton = mView.findViewById(R.id.dialogDone);
-        android.support.v7.app.AlertDialog.Builder aBuilder = new android.support.v7.app.AlertDialog.Builder(WelcomeSetupActivity.this, R.style.CustomDialog);
-        aBuilder.setView(mView);
-
-        successView.setText("Practice Number Already Exist");
-
-        final android.support.v7.app.AlertDialog alert = aBuilder.create();
-        alert.show();
-
-        // Hide after some seconds
-        final Handler handler  = new Handler();
-        final Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                if (alert.isShowing()) {
-                    alert.dismiss();
-                }
-            }
-        };
-        alert.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                handler.removeCallbacks(runnable);
-            }
-        });
-
-        handler.postDelayed(runnable, 1000);
-
-    }
+//    private void showDialog() {
+//        View mView = LayoutInflater.from(WelcomeSetupActivity.this).inflate(R.layout.deleted_custom_dialog, null);
+//
+//        TextView successView = mView.findViewById(R.id.tv_success);
+//        ImageButton imageButton = mView.findViewById(R.id.dialogDone);
+//        android.support.v7.app.AlertDialog.Builder aBuilder = new android.support.v7.app.AlertDialog.Builder(WelcomeSetupActivity.this, R.style.CustomDialog);
+//        aBuilder.setView(mView);
+//
+//        successView.setText("Practice Number Already Exist");
+//
+//        final android.support.v7.app.AlertDialog alert = aBuilder.create();
+//        alert.show();
+//
+//        // Hide after some seconds
+//        final Handler handler  = new Handler();
+//        final Runnable runnable = new Runnable() {
+//            @Override
+//            public void run() {
+//                if (alert.isShowing()) {
+//                    alert.dismiss();
+//                }
+//            }
+//        };
+//        alert.setOnDismissListener(new DialogInterface.OnDismissListener() {
+//            @Override
+//            public void onDismiss(DialogInterface dialog) {
+//                handler.removeCallbacks(runnable);
+//            }
+//        });
+//
+//        handler.postDelayed(runnable, 1000);
+//
+//    }
 
 
     public void checkEmailVerification() {

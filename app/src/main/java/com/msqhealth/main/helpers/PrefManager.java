@@ -18,7 +18,7 @@ public class PrefManager {
     // Shared preferences file name
     private static final String PREF_NAME = "msq-health-onboarding";
 
-    private static final String IS_FIRST_TIME_LAUNCH = "IsFirstTimeSignUp";
+    private static final String BROWSE_CATALOGUE_LAUNCH = "isBrowseCatalogue";
 
     public PrefManager(Context context) {
         this._context = context;
@@ -26,13 +26,13 @@ public class PrefManager {
         editor = pref.edit();
     }
 
-    public void setFirstTimeSignUp(boolean isFirstTime) {
-        editor.putBoolean(IS_FIRST_TIME_LAUNCH, isFirstTime);
+    public void setToBrowseCatalogue(boolean browseCatalogue) {
+        editor.putBoolean(BROWSE_CATALOGUE_LAUNCH, browseCatalogue);
         editor.commit();
     }
 
-    public boolean isFirstTimeSignup() {
-        return pref.getBoolean(IS_FIRST_TIME_LAUNCH, true);
+    public boolean isBrowseCatalogue() {
+        return pref.getBoolean(BROWSE_CATALOGUE_LAUNCH, true);
     }
 
 }

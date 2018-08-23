@@ -170,7 +170,7 @@ public class SignUpFragment extends Fragment {
                                     Toast.makeText(getActivity(), task.getException().getMessage(),
                                             Toast.LENGTH_SHORT).show();
                                 } else {
-                                    prefManager.setFirstTimeSignUp(false);
+//                                    prefManager.setFirstTimeSignUp(false);
                                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
 

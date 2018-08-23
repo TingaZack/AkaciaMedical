@@ -3,7 +3,7 @@
 
     <item android:state_pressed="true">
         <shape>
-            <solid android:color="@color/colorAccent" />
+            <solid android:color="@color/toq_color" />
 
             <corners android:radius="50dp" />
 
@@ -12,7 +12,7 @@
     </item>
     <item android:state_enabled="false">
         <shape>
-            <solid android:color="#501D1D1B" />
+            <solid android:color="#02b29d" />
 
             <corners android:radius="50dp" />
 
@@ -22,7 +22,7 @@
     </item>
     <item>
         <shape>
-            <solid android:color="@color/colorPrimaryDark" />
+            <solid android:color="@color/toq_color" />
 
             <corners android:radius="50dp" />
 

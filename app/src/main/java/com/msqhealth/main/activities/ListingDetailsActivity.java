@@ -88,7 +88,12 @@ public class ListingDetailsActivity extends AppCompatActivity {
                     productList.clear();
                     for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                         if (postSnapshot.child("CONSUMABLES").getValue().toString().equals(title)) {
-                            Product products = new Product(((String) postSnapshot.child("CODE").getValue()), (String) postSnapshot.child("CONSUMABLES").getValue(), (String) postSnapshot.child("DESCRIPTION").getValue(), Double.parseDouble(postSnapshot.child("PRICING").getValue().toString().replace(",", ".")), postSnapshot.child("PRICING_UNIT").getValue().toString(), (String) postSnapshot.child("True Image").getValue());
+                            Product products = new Product(((String) postSnapshot.child("CODE").getValue()),
+                                    (String) postSnapshot.child("CONSUMABLES").getValue(),
+                                    (String) postSnapshot.child("DESCRIPTION").getValue(),
+                                    Double.parseDouble(postSnapshot.child("PRICING").getValue().toString().replace(",", ".")),
+                                    postSnapshot.child("PRICING_UNIT").getValue().toString(),
+                                    (String) postSnapshot.child("True Image").getValue());
                             productList.add(products);
                         }
                         if (productList.size() > 0)

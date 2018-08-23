@@ -208,38 +208,38 @@ public class CartDialogListAdapter extends RecyclerView.Adapter<CartDialogListAd
         }
     }
 
-    private void showDialog() {
-        View mView = LayoutInflater.from(activity).inflate(R.layout.deleted_custom_dialog, null);
-
-        TextView successView = mView.findViewById(R.id.tv_success);
-        android.support.v7.app.AlertDialog.Builder aBuilder = new android.support.v7.app.AlertDialog.Builder(activity, R.style.CustomDialog);
-        aBuilder.setView(mView);
-
-        successView.setText("Successfully Removed!");
-
-        final android.support.v7.app.AlertDialog alert = aBuilder.create();
-        alert.show();
-
-        // Hide after some seconds
-        final Handler handler = new Handler();
-        final Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                if (alert.isShowing()) {
-                    alert.dismiss();
-                }
-            }
-        };
-        alert.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                handler.removeCallbacks(runnable);
-            }
-        });
-
-        handler.postDelayed(runnable, 1000);
-
-    }
+//    private void showDialog() {
+//        View mView = LayoutInflater.from(activity).inflate(R.layout.deleted_custom_dialog, null);
+//
+//        TextView successView = mView.findViewById(R.id.tv_success);
+//        android.support.v7.app.AlertDialog.Builder aBuilder = new android.support.v7.app.AlertDialog.Builder(activity, R.style.CustomDialog);
+//        aBuilder.setView(mView);
+//
+//        successView.setText("Successfully Removed!");
+//
+//        final android.support.v7.app.AlertDialog alert = aBuilder.create();
+//        alert.show();
+//
+//        // Hide after some seconds
+//        final Handler handler = new Handler();
+//        final Runnable runnable = new Runnable() {
+//            @Override
+//            public void run() {
+//                if (alert.isShowing()) {
+//                    alert.dismiss();
+//                }
+//            }
+//        };
+//        alert.setOnDismissListener(new DialogInterface.OnDismissListener() {
+//            @Override
+//            public void onDismiss(DialogInterface dialog) {
+//                handler.removeCallbacks(runnable);
+//            }
+//        });
+//
+//        handler.postDelayed(runnable, 1000);
+//
+//    }
 
     public double countCart(TextView textViewPrice) {
         double sum = Double.parseDouble(textViewPrice.getText().toString());

@@ -1,6 +1,8 @@
 package com.msqhealth.main.app;
 
 import android.app.Application;
+import android.content.Context;
+import android.support.multidex.MultiDex;
 
 import com.msqhealth.main.model.Cart;
 import com.msqhealth.main.model.Product;
@@ -38,5 +40,11 @@ public class AppController extends Application {
 
     public int getProductArraylistsize() {
         return myproducts.size();
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 }

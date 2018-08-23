@@ -25,6 +25,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import es.dmoral.toasty.Toasty;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -101,7 +103,7 @@ public class ForgotPasswordFragment extends Fragment {
         pDialog.setMessage("Sending reset link");
         pDialog.setCancelable(false);
 
-        view.findViewById(R.id.login).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.reset_password).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getFragmentManager().popBackStack();
@@ -124,15 +126,16 @@ public class ForgotPasswordFragment extends Fragment {
                                 if (task.isSuccessful()) {
                                     getFragmentManager().popBackStack();
                                     Log.d("Email Sent", "Email sent.");
-                                    Toast.makeText(getActivity(), "A Password reset link has been sent to your email.", Toast.LENGTH_LONG).show();
+                                    Toasty.success(getActivity(), getString(R.string.email_sent), Toast.LENGTH_SHORT).show();
                                 } else {
                                     //Please try again
+//                                    Toasty.success(getActivity(), getString(R.string.try_again), Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getActivity(), "Email address not found.", Toast.LENGTH_SHORT).show();
+                        Toasty.error(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
             }

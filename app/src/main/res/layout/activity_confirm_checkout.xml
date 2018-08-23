@@ -138,7 +138,6 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-condensed"
                 android:textSize="8sp"
-
                 android:text="By Confirming Delivery Details, you agree to the "
                 android:textColor="@color/colorPrimaryDark" />
 

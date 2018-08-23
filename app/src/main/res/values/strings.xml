@@ -22,6 +22,10 @@
 
     <string name="slide_4_title">World Travel</string>
     <string name="slide_4_desc">Book tickets of any transportation and travel the world!</string>
+    <string name="quantity">Please add a quantity</string>
+    <string name="added_product_error">Please add a quantity</string>
+    <string name="added_product_">Product added to cart</string>
+    <string name="added_product_success">Successfully Added to Cart!</string>
 
     <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear data</string>
     <string name="play_again">Play Again</string>
@@ -122,10 +126,13 @@
         Our team will get back to you shortly.</string>
 
     <string name="msq_slogan">"Want to learn more about our services?
-Please get in touch, we'd love to hear from you!"</string>
+        Please get in touch, we'd love to hear from you!"</string>
 
     <string name="empty_cart">Look at this shiny new trolley, just waiting to be filled.\n
         Start shopping now!</string>
+
+    <string name="welcome_msg">Akacia™ Medical manufactures, markets and distributes a wide range of medical and surgical equipment,
+        and related consumables incorporating the brands of GRS and Hiline.</string>
 
     <string-array name="hasPractice">
         <item>---Select---</item>
@@ -137,6 +144,8 @@ Please get in touch, we'd love to hear from you!"</string>
     <string name="meet_the_team">We have more than 400 staff members that are well experienced with pharmaceutical production, wholesale, retail and export for almost three decades. A world class management team of healthcare and innovation professionals with combined experience of more than 100 years in local &amp; international commercialization, innovation, financing and policy.\n\n We boast an international Advisory Board of global experts who have been inventors of record leading drugs and devices. We have successfully led R&amp;D and innovation teams in product development and intellectual property acquisitions that are local and international We have built and ran significant commercial entities locally</string>
     <string name="msq_bee">MSQ matches the highest standards of BEE, an essential requirement for those wishing to invest in South Africa. Some of the MSQ Executives have worked at the highest level of government and business and have an unparalleled understanding of the political and regulatory environment. MSQ is familiar with the BEE principles and objectives detailed in various government Acts and codes of good practice and has the expertise to ensure full compliance.</string>
     <string name="title_activity_about_us">AboutUs</string>
+    <string name="no_connection">No Connection Available, please check your internet settings and try again.</string>
+    <string name="login_register">Please Create an Account or Login to Add to Cart and Checkout</string>
     <string name="sender_email">mosecoza@gmail.com</string>
     <string name="sender">moses@357</string>
     <string name="receiver">info@buildhealth.co.za</string>
@@ -145,12 +154,35 @@ Please get in touch, we'd love to hear from you!"</string>
     <string name="order_pass">!App_4MSQ-FtP$</string>
     <string name="the_key">4832706E-29E4-4591-8574-70A371AD3C70</string>
     <string name="the_id">E112445E-A003-416F-8EBE-73A6969D16D4</string>
-    <string name="rand">R</string>
-    <string name="percentage">% off</string>
-    <string name="promo_days"> days left</string>
-
-    <string name="welcome_messages">Hello, %1$s! You have %2$d new messages.</string>
-
+    <string name="rand">R %1$s</string>
+    <string name="percentage">%1$s %% off</string>
+    <string name="promo_days"> %1$s days left</string>
 
     <string name="click_terms">By clicking \'Search\', you agree to the </string>
+    <string name="msq_health">MSQ Health</string>
+    <string name="login">Sign in</string>
+    <string name="account_unverified">We are still verifying your account. You may only add to cart and checkout once it has been. \n\n Sorry for any inconvenience.</string>
+    <string name="browse_catalogue">Browse Catalogue</string>
+    <string name="view_price">View Price</string>
+    <string name="add_to_cart">Add to Cart</string>
+    <string name="akacia_medical">Akacia Medical</string>
+    <string name="to_view_price">Login/Register to View Price, Add to Cart, Checkout and Experience great Akacia Medical customer in-app products offering.</string>
+    <string name="okay">Okay</string>
+    <string name="not_now">Not Now</string>
+    <string name="product_added">Product added to cart</string>
+    <string name="password">Password</string>
+    <string name="sign_in">Sign in</string>
+    <string name="email">Email</string>
+    <string name="by_signing">By Signing in, you agree to the &#x20;</string>
+    <string name="terms_and_conditions">Terms and Conditions.</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="register">Register</string>
+    <string name="reset_password">Reset password</string>
+    <string name="email_sent">A Password reset link has been sent to your email.</string>
+    <string name="try_again">Please try again later.</string>
+    <string name="please_complete">Akacia Client Registration</string>
+    <string name="checkout_error">A minimum order of R1000.00 is required to Checkout.</string>
+    <string name="checkout">Checkout</string>
+    <!--<string name="please_complete">Please complete the below form and we will contact you</string>-->
+
 </resources>

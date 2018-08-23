@@ -143,6 +143,7 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
+                        android:id="@+id/add_minus_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
@@ -196,7 +197,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/square_blue_button"
                         android:fontFamily="sans-serif"
-                        android:text="Add to Cart"
+                        android:text="@string/add_to_cart"
                         android:textColor="#fff"
                         android:textColorHint="@color/colorPrimary" />
 

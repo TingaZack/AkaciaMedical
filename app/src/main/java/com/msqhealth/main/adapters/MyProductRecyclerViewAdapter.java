@@ -37,6 +37,7 @@ public class MyProductRecyclerViewAdapter extends RecyclerView.Adapter<MyProduct
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.mContentView.setText(mValues.get(position).title);
         Glide.with(activity).load(mValues.get(position).image_url).into(holder.mProductImage);
+
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

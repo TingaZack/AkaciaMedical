@@ -67,12 +67,7 @@ public class PromotionalContentRecyclerViewAdapter extends RecyclerView.Adapter<
         holder.mItem = mValues.get(position);
         holder.mConsumableView.setText(mValues.get(position).consumables);
         holder.mDescriptionView.setText(mValues.get(position).description.toLowerCase());
-        holder.mPercentageView.setText(mValues.get(position).percentage + activity.getString(R.string.percentage));
-
-        double percentage = Double.parseDouble(mValues.get(position).percentage);
-        double price = Double.parseDouble(String.valueOf(mValues.get(position).price));
-//        double final_price = (price - (percentage / 100) * price);
-
+        holder.mPercentageView.setText(activity.getString(R.string.percentage, mValues.get(position).percentage));
         holder.mEndDate.setText(mValues.get(position).end_date);
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -85,7 +80,7 @@ public class PromotionalContentRecyclerViewAdapter extends RecyclerView.Adapter<
             final_difference = diffaddone + 1;
             System.out.println("PRINT: " + final_difference);
 
-            holder.mEndDate.setText(final_difference +""+ activity.getString(R.string.promo_days));
+            holder.mEndDate.setText(activity.getString(R.string.promo_days, final_difference));
 
         } catch (ParseException e) {
             e.printStackTrace();
@@ -93,7 +88,7 @@ public class PromotionalContentRecyclerViewAdapter extends RecyclerView.Adapter<
 
         DecimalFormat df = new DecimalFormat("##.00");
 
-        holder.mPriceView.setText(activity.getString(R.string.rand) + String.valueOf(df.format(mValues.get(position).price)));
+        holder.mPriceView.setText(activity.getString(R.string.rand, String.valueOf(df.format(mValues.get(position).price))));
         holder.mCodeView.setText(mValues.get(position).code);
         holder.mPricingUnitView.setText(String.valueOf(mValues.get(position).unit_of_messuremeant.toLowerCase()));
         Glide.with(activity).load(mValues.get(position).trueImageUrl).into(holder.mProductImage);
@@ -101,6 +96,7 @@ public class PromotionalContentRecyclerViewAdapter extends RecyclerView.Adapter<
         System.out.println("PR___"+ String.valueOf(mValues.get(position).price));
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
         if (user != null) {
             DatabaseReference mCheckReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("cart");
 //            mCheckReference.child("cart-items").child(mValues.get(position).getCode()).addValueEventListener(new ValueEventListener() {
@@ -193,7 +189,7 @@ public class PromotionalContentRecyclerViewAdapter extends RecyclerView.Adapter<
                             @Override
                             public void onClick(View v) {
                                 if (holder.mQuantity.getText().toString() == "") {
-                                    holder.mQuantity.setError("Please add quantity...");
+                                    holder.mQuantity.setError(activity.getString(R.string.added_product_error));
                                     return;
                                 }
 
@@ -206,7 +202,7 @@ public class PromotionalContentRecyclerViewAdapter extends RecyclerView.Adapter<
                                         return;
                                     }
                                 } catch (Exception ex) {
-                                    holder.mQuantity.setError("Please add a quantity");
+                                    holder.mQuantity.setError(activity.getString(R.string.added_product_error));
                                     return;
                                 }
                                 Map<String, Object> postValues = item.toMap();
@@ -217,7 +213,7 @@ public class PromotionalContentRecyclerViewAdapter extends RecyclerView.Adapter<
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
-                                            Snackbar snack = Snackbar.make(holder.mRelativeLayout, "Product added to cart",
+                                            Snackbar snack = Snackbar.make(holder.mRelativeLayout, activity.getString(R.string.added_product_),
                                                     Snackbar.LENGTH_INDEFINITE).setDuration(2000);
                                             snack.getView().setBackgroundColor(ContextCompat.getColor(activity, android.R.color.holo_green_dark));
                                             View view = snack.getView();
@@ -239,7 +235,7 @@ public class PromotionalContentRecyclerViewAdapter extends RecyclerView.Adapter<
                             public void onClick(View v) {
 
                                 if (holder.mQuantity.getText().toString() == "") {
-                                    holder.mQuantity.setError("Please add quantity...");
+                                    holder.mQuantity.setError(activity.getString(R.string.added_product_error));
                                     return;
                                 }
                                 CartItem cartItem = new CartItem();
@@ -254,7 +250,7 @@ public class PromotionalContentRecyclerViewAdapter extends RecyclerView.Adapter<
                                         cartItem.setQuantity(1);
                                     }
                                 } catch (Exception ex) {
-                                    holder.mQuantity.setError("Please add a quantity");
+                                    holder.mQuantity.setError(activity.getString(R.string.added_product_error));
                                     return;
                                 }
 
@@ -271,7 +267,7 @@ public class PromotionalContentRecyclerViewAdapter extends RecyclerView.Adapter<
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
-                                                Snackbar snack = Snackbar.make(holder.mRelativeLayout, "Product added to cart",
+                                                Snackbar snack = Snackbar.make(holder.mRelativeLayout, activity.getString(R.string.added_product_),
                                                         Snackbar.LENGTH_INDEFINITE).setDuration(2000);
                                                 snack.getView().setBackgroundColor(ContextCompat.getColor(activity, android.R.color.holo_green_dark));
                                                 View view = snack.getView();
@@ -286,7 +282,7 @@ public class PromotionalContentRecyclerViewAdapter extends RecyclerView.Adapter<
                                         }
                                     });
                                 } else if (!isNetworkAvailable()) {
-                                    Snackbar snack = Snackbar.make(holder.mRelativeLayout, "No Connection Available, please check your internet settings and try again.",
+                                    Snackbar snack = Snackbar.make(holder.mRelativeLayout, activity.getString(R.string.no_connection),
                                             Snackbar.LENGTH_INDEFINITE).setDuration(1000);
                                     snack.getView().setBackgroundColor(ContextCompat.getColor(activity, android.R.color.holo_red_dark));
                                     View view = snack.getView();

@@ -98,6 +98,8 @@ public class PaymentGatewayWebView extends AppCompatActivity {
         getURLPostData();
         generateInvoiceNumber();
 
+
+
     }
 
     public void generateInvoiceNumber() {
@@ -225,86 +227,92 @@ public class PaymentGatewayWebView extends AppCompatActivity {
                 FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("carts").child("pending").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(final DataSnapshot dataSnapshot) {
-                        if (dataSnapshot != null) {
+                        if (dataSnapshot.exists()) {
+                            if (dataSnapshot != null) {
 
-                            double total = 0;
-                            int i = 1;
-                            double _amount = 0;
-                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                double total = 0;
+                                int i = 1;
+                                double _amount = 0;
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
-                                System.out.println("Break Point 2 :  Items in cart : " + dataSnapshot.getChildrenCount());
-                                CartItem cartItem = new CartItem();
-                                cartItem.setQuantity(Integer.parseInt(snapshot.child("quantity").getValue().toString()));
-                                _amount = _amount + ((Double.parseDouble(String.valueOf(snapshot.child("product").child("price").getValue()))) * (Integer.parseInt(snapshot.child("quantity").getValue().toString())));
-                                Product product = new Product();
-                                product.setCode(snapshot.child("product").child("code").getValue().toString());
-                                product.setConsumables(snapshot.child("product").child("consumables").getValue().toString());
-                                product.setDescription(snapshot.child("product").child("description").getValue().toString());
-                                product.setPrice(Double.parseDouble(snapshot.child("product").child("price").getValue().toString()));
-                                product.setTrueImageUrl(snapshot.child("product").child("trueImageUrl").getValue().toString());
-                                product.setUnit_of_messuremeant(snapshot.child("product").child("unit_of_messuremeant").getValue().toString());
-                                cartItem.setProduct(product);
+                                    if (snapshot.exists()) {
 
-                                System.out.println(cartItem.toMap().toString());
+                                        System.out.println("Break Point 2 :  Items in cart : " + dataSnapshot.getChildrenCount());
+                                        CartItem cartItem = new CartItem();
+                                        cartItem.setQuantity(Integer.parseInt(snapshot.child("quantity").getValue().toString()));
+                                        _amount = _amount + ((Double.parseDouble(String.valueOf(snapshot.child("product").child("price").getValue()))) * (Integer.parseInt(snapshot.child("quantity").getValue().toString())));
+                                        Product product = new Product();
+                                        product.setCode((String) snapshot.child("product").child("code").getValue());
+                                        product.setConsumables((String) snapshot.child("product").child("consumables").getValue());
+                                        product.setDescription((String) snapshot.child("product").child("description").getValue());
+                                        product.setPrice(Double.parseDouble(String.valueOf(snapshot.child("product").child("price").getValue())));
+                                        product.setTrueImageUrl((String) snapshot.child("product").child("trueImageUrl").getValue());
+                                        product.setUnit_of_messuremeant((String) snapshot.child("product").child("unit_of_messuremeant").getValue());
+                                        cartItem.setProduct(product);
 
-                                items.add(cartItem.toMap());
+                                        System.out.println(cartItem.toMap().toString());
 
+                                        items.add(cartItem.toMap());
 
-                                Calendar c = Calendar.getInstance();
-                                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");// HH:mm:ss");
-
-                                c.add(Calendar.DATE, 5);  // number of days to add
-                                String end_date = df.format(c.getTime());
+                                    }
 
 
-                                xml.put_Tag("OrderLine");
-                                xml.UpdateAttribute("LineNo", String.valueOf(i));
-                                xml.UpdateAttrAt("Item", true, "code", snapshot.child("product").child("code").getValue().toString());
+                                    Calendar c = Calendar.getInstance();
+                                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");// HH:mm:ss");
+
+                                    c.add(Calendar.DATE, 5);  // number of days to add
+                                    String end_date = df.format(c.getTime());
+
+
+                                    xml.put_Tag("OrderLine");
+                                    xml.UpdateAttribute("LineNo", String.valueOf(i));
+                                    xml.UpdateAttrAt("Item", true, "code", snapshot.child("product").child("code").getValue().toString());
 //                                xml.UpdateAttribute("code", snapshot.child("product").child("code").getValue().toString());
-                                xml.NewChild("Quantity", snapshot.child("quantity").getValue().toString());
-                                xml.NewChild("Delivery|Date", end_date);
+                                    xml.NewChild("Quantity", String.valueOf(Long.parseLong(String.valueOf(snapshot.child("quantity").getValue()))));
+                                    xml.NewChild("Delivery|Date", end_date);
 //                                xml.NewChild("Total Rand Price", String.valueOf(_amount));
-                                orderXML.AddChildTree(xml);
-                                xml.Clear();
-                                ordersXML.AddChildTree(orderXML);
-                                sendXml.AddChildTree(ordersXML);
+                                    orderXML.AddChildTree(xml);
+                                    xml.Clear();
+                                    ordersXML.AddChildTree(orderXML);
+                                    sendXml.AddChildTree(ordersXML);
 
-                                i++;
-                            }
+                                    i++;
+                                }
 
-                            System.out.println("Break Point 2 :  Items in cart : " + items.size());
+                                System.out.println("Break Point 2 :  Items in cart : " + items.size());
 
 
 //                            sendXml.NewChild("Total", String.valueOf(total));
 
 
-                            final double amount = _amount;
+                                final double amount = _amount;
 
-                            String key = FirebaseDatabase.getInstance().getReference().child("carts").push().getKey();
+                                String key = FirebaseDatabase.getInstance().getReference().child("carts").push().getKey();
 
-                            final Cart cart = new Cart();
-                            cart.setItems(items);
-                            cart.setSubtotal(amount);
-                            cart.setInvoice_number("MSQ-00-" + String.valueOf(invoice_number_total));
-                            cart.setUserID(user.getUid());
+                                final Cart cart = new Cart();
+                                cart.setItems(items);
+                                cart.setSubtotal(amount);
+                                cart.setInvoice_number("MSQ-00-" + String.valueOf(invoice_number_total));
+                                cart.setUserID(user.getUid());
 
-                            System.out.println("CART PRINT: " + cart.toMap().toString());
+                                System.out.println("CART PRINT: " + cart.toMap().toString());
 
-                            final Map<String, Object> postValues = cart.toMap();
+                                final Map<String, Object> postValues = cart.toMap();
 
-                            Map<String, Object> childUpdates = new HashMap<>();
-                            childUpdates.put("/carts/checked-out/" + user.getUid() + "/" + key, postValues);
-                            childUpdates.put("/users/" + user.getUid() + "/carts/completed/" + key, postValues);
+                                Map<String, Object> childUpdates = new HashMap<>();
+                                childUpdates.put("/carts/checked-out/" + user.getUid() + "/" + key, postValues);
+                                childUpdates.put("/users/" + user.getUid() + "/carts/completed/" + key, postValues);
 
-                            createxmlFile();
-                            FirebaseDatabase.getInstance().getReference().updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        new SendEmail(dataSnapshot).execute();
+                                createxmlFile();
+                                FirebaseDatabase.getInstance().getReference().updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            new SendEmail(dataSnapshot).execute();
+                                        }
                                     }
-                                }
-                            });
+                                });
+                            }
                         }
                     }
 
@@ -439,6 +447,8 @@ public class PaymentGatewayWebView extends AppCompatActivity {
     }
 
     /**
+     * b
+     *
      * @param ftpClient    FTPclient object
      * @param downloadFile local file which need to be uploaded.
      */
@@ -448,7 +458,7 @@ public class PaymentGatewayWebView extends AppCompatActivity {
         try {
 //            FileInputStream inputStream = getApplicationContext().openFileInput("invoice.xml");
 //            FileInputStream srcFileStream = new FileInputStream(inputStream);
-            boolean status = ftpClient.storeFile("remote ftp path",
+            boolean status = ftpClient.storeFile(m_id + ".xml",
                     downloadFile);
             Log.e("Status", String.valueOf(status));
             downloadFile.close();

@@ -11,54 +11,102 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin">
 
+
+
     <android.support.v7.widget.CardView
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:layout_centerHorizontal="true"
         android:layout_centerInParent="true"
-        android:layout_centerVertical="true"
-        app:cardCornerRadius="50dp"
-        app:cardElevation="0dp"
-        app:cardMaxElevation="0dp">
+        android:layout_centerVertical="true">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scaleType="fitXY"
-            android:src="@drawable/msq_background" />
+        <!--<ImageView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:scaleType="fitXY"-->
+        <!--android:src="@drawable/msq_background" />-->
+
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:orientation="vertical"
-            android:weightSum="1">
+            android:orientation="vertical">
 
-
-            <ImageButton
-                android:id="@+id/dialogDone"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_below="@+id/lny1"
-                android:layout_gravity="center"
-                android:layout_marginLeft="80dp"
-                android:layout_marginRight="80dp"
-                android:layout_weight="0.18"
-                android:background="@drawable/ic_checked"
-                android:gravity="center"
-                android:padding="16dp"
-                android:text="Okay"
-                android:textColor="@android:color/white" />
-
-            <TextView
-                android:id="@+id/tv_success"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:gravity="center"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                tools:text="Successfully" />
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/white">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/health_care_pattern" />
+
+                <!--<ImageView-->
+                    <!--android:layout_width="100dp"-->
+                    <!--android:layout_height="100dp"-->
+                    <!--android:layout_centerHorizontal="true"-->
+                    <!--android:layout_marginTop="16dp"-->
+                    <!--android:src="@drawable/ic_leader"-->
+                    <!--android:layout_centerInParent="true"/>-->
+
+
+            </RelativeLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Account Unverified"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_success"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center"
+                    android:text="@string/account_unverified" />
+
+
+            </LinearLayout>
+
+
+            <!--<ImageButton-->
+            <!--android:id="@+id/dialogDone"-->
+            <!--android:layout_width="80dp"-->
+            <!--android:layout_height="80dp"-->
+            <!--android:layout_below="@+id/lny1"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_marginLeft="80dp"-->
+            <!--android:layout_marginRight="80dp"-->
+            <!--android:layout_weight="0.18"-->
+            <!--android:background="@drawable/ic_checked"-->
+            <!--android:gravity="center"-->
+            <!--android:padding="16dp"-->
+            <!--android:textColor="@android:color/white" />-->
+
+            <!--<TextView-->
+            <!--android:id="@+id/tv_success"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="16dp"-->
+            <!--android:gravity="center"-->
+            <!--android:textColor="@android:color/white"-->
+            <!--android:textStyle="bold"-->
+            <!--android:text="We are still verifying your account, and you may only add to cart and checkout once it has been.\n\n Sorry for any inconvenience." />-->
 
         </LinearLayout>
 

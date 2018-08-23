@@ -136,7 +136,7 @@ public class ConfirmCheckoutActivity extends AppCompatActivity {
 
                             if (!TextUtils.isEmpty(cell_number)) {
 
-                                mProgressDialog.setMessage("Updating Billing Information ...");
+                                mProgressDialog.setMessage("Updating Delivery Information ...");
                                 mProgressDialog.show();
 
                                 mDatabase.child("billing_infomation").child("full_names").setValue(full_names);
@@ -164,7 +164,7 @@ public class ConfirmCheckoutActivity extends AppCompatActivity {
             });
         }else if (!isNetworkAvailable()) {
 
-                Snackbar snack = Snackbar.make(findViewById(R.id.relative_layout), "No Connection Available, please check your internet settings and try again.", Snackbar.LENGTH_INDEFINITE).setDuration(10000);
+                Snackbar snack = Snackbar.make(findViewById(R.id.relative_layout), getApplicationContext().getString(R.string.no_connection), Snackbar.LENGTH_INDEFINITE).setDuration(10000);
                 snack.getView().setBackgroundColor(ContextCompat.getColor(getApplicationContext(), android.R.color.holo_red_dark));
                 View view = snack.getView();
                 FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();

@@ -20,22 +20,46 @@
             android:layout_height="wrap_content"
             android:gravity="center">
 
-            <TextView
+            <ImageView
+                android:id="@+id/logo_img"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:text="MSQ Health"
-                android:textColor="@android:color/white"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:src="@mipmap/ic_launcher" />
+
 
             <RelativeLayout
                 android:id="@+id/cart_layout"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true">
+                android:layout_centerInParent="true"
+                android:layout_toRightOf="@id/logo_img">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:text="@string/msq_health"
+                    android:textColor="@android:color/white"
+                    android:layout_marginLeft="16dp"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+
+                <Button
+                    android:id="@+id/btn_login_register"
+                    android:text="Login/Register"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center|right"
+                    android:textColor="@android:color/white"
+                    android:layout_marginRight="16dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_shopping_cart_white"
+                    android:visibility="gone"/>
 
                 <ImageButton
                     android:id="@+id/cart"
@@ -45,7 +69,8 @@
                     android:layout_centerInParent="true"
                     android:layout_gravity="center|right"
                     android:background="@android:color/transparent"
-                    android:src="@drawable/ic_shopping_cart_white" />
+                    android:src="@drawable/ic_shopping_cart_white"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/actionbar_notifcation_textview"

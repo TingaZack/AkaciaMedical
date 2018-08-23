@@ -59,6 +59,7 @@ public class CartDialogs extends DialogFragment {
     CartDialogListAdapter adapter;
 
     ProgressDialog mProgressDialog;
+    private double amount;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -105,7 +106,7 @@ public class CartDialogs extends DialogFragment {
                         }
                     }
                     DecimalFormat df = new DecimalFormat("##.##");
-                    final double amount = _amount;
+                    amount = _amount;
                     mCartItemCount.setText("R" + String.valueOf(df.format(amount)).replace(",", "."));
 
 
@@ -195,8 +196,19 @@ public class CartDialogs extends DialogFragment {
                                             public void onDataChange(DataSnapshot dataSnapshot) {
                                                 try {
                                                     if (dataSnapshot.exists()) {
-                                                        startActivity(new Intent(getActivity(), ConfirmCheckoutActivity.class));
-                                                        dismiss();
+                                                        if (amount >= 1000) {
+                                                            startActivity(new Intent(getActivity(), ConfirmCheckoutActivity.class));
+                                                        } else {
+                                                            Snackbar snack = Snackbar.make(view.findViewById(R.id.relative_layout), R.string.checkout_error,
+                                                                    Snackbar.LENGTH_INDEFINITE).setDuration(5000);
+                                                            snack.getView().setBackgroundColor(ContextCompat.getColor(getActivity(), android.R.color.holo_red_dark));
+                                                            View view = snack.getView();
+                                                            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
+                                                            params.gravity = Gravity.TOP;
+                                                            view.setLayoutParams(params);
+                                                            snack.show();
+                                                        }
+//                                                        dismiss();
                                                     } else {
                                                     }
                                                 } catch (Exception e) {
@@ -269,6 +281,5 @@ public class CartDialogs extends DialogFragment {
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
-
 
 }

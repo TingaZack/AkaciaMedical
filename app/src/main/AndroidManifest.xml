@@ -5,6 +5,12 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+    <supports-screens
+        android:smallScreens="true"
+        android:normalScreens="true"
+        android:largeScreens="true"
+        android:xlargeScreens="true"/>
+
     <application
         android:name=".app.AppController"
         android:allowBackup="true"
@@ -18,14 +24,8 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
         </activity>
-
         <activity
             android:name=".activities.SplashScreen"
             android:screenOrientation="portrait" />
@@ -55,57 +55,76 @@
         <activity
             android:name=".activities.ViewProfileActivity"
             android:screenOrientation="portrait" />
-
         <activity android:name=".activities.EditProfileActivity" />
-
         <activity
             android:name=".activities.ListingDetailsActivity"
             android:label="@string/title_activity_listing_details"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activities.PaymentGatewayWebView"
             android:label="@string/title_activity_listing_details"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activities.FeaturedItemDetails"
             android:label="@string/title_activity_featured_item_details"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activities.ContactUsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity android:name=".activities.EditProfileActivityUpdated" />
 
-        <activity android:name=".activities.ConfirmCheckoutActivity"
+        <activity
+            android:name=".activities.ConfirmCheckoutActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"  />
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        <activity android:name=".activities.WelcomeSetupActivity" />
+        <activity android:name=".activities.WelcomeSetupActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
         <activity
             android:name=".activities.ProfileActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
         <activity
             android:name=".activities.AboutUs"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
         <activity
             android:name=".activities.TermsAndCondtionsActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".activities.OrdersActivitty"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity
             android:name=".activities.ViewOrdersActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".activities.orders.ActivityOrdersView"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity android:name=".activities.OnBoardingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".activities.authentication.NewPracticeRegistration"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

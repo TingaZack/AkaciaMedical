@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.msqhealth.main.R;
 import com.msqhealth.main.activities.MainActivity;
 import com.msqhealth.main.activities.TermsAndCondtionsActivity;
@@ -32,6 +33,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.msqhealth.main.app.AppController;
+
+import es.dmoral.toasty.Toasty;
 
 public class LoginFragment extends Fragment {
 
@@ -115,15 +118,6 @@ public class LoginFragment extends Fragment {
         pDialog.setMessage("Signing in...");
         pDialog.setCancelable(false);
 
-
-        view.findViewById(R.id.new_user).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), RegistrationActivity.class));
-
-            }
-        });
-
         view.findViewById(R.id.reset_password).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -147,15 +141,18 @@ public class LoginFragment extends Fragment {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 pDialog.dismiss();
-                                if (!task.isSuccessful()) {
-                                    Toast.makeText(getActivity(), "Incorrect login credentials",
-                                            Toast.LENGTH_SHORT).show();
-                                } else {
-                                    getActivity().finish();
+                                if (task.isSuccessful()) {
                                     getActivity().startActivity(new Intent(getActivity(), MainActivity.class));
+                                    getActivity().finish();
                                 }
+
                             }
-                        });
+                        }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toasty.error(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
             }
         });
 
