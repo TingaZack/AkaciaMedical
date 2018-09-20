@@ -13,6 +13,7 @@ import com.msqhealth.main.R;
 import com.msqhealth.main.activities.ListingDetailsActivity;
 import com.msqhealth.main.model.Category;
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -36,7 +37,9 @@ public class MyProductRecyclerViewAdapter extends RecyclerView.Adapter<MyProduct
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.mContentView.setText(mValues.get(position).title);
-        Glide.with(activity).load(mValues.get(position).image_url).into(holder.mProductImage);
+//        Picasso.with(activity).load(mValues.get(position).image_url).into(holder.mProductImage);
+
+        Picasso.get().load(mValues.get(position).image_url).placeholder(R.drawable.ic_google_drive_image).into(holder.mProductImage);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

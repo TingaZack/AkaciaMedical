@@ -31,6 +31,10 @@ import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class ProfileActivity extends AppCompatActivity {
 
     private static final int GALLERY_REQUEST_CODE = 1;
@@ -97,7 +101,9 @@ public class ProfileActivity extends AppCompatActivity {
                     mSuburbEditText.setText((String) dataSnapshot.child("Suburb").getValue());
                     mTelephoneEditText.setText((String) dataSnapshot.child("Telephone").getValue());
                     mEmailTextView.setText((String) dataSnapshot.child("Email").getValue());
-                    mPracticeNumberTextView.setText((String) dataSnapshot.child("Practice_Number").getValue());
+                    String practice_number = (String) dataSnapshot.child("Practice_Number").getValue();
+                    String repl = practice_number.replaceAll("..(?!$)", "$0 ");
+                    mPracticeNumberTextView.setText(Arrays.toString(splitToNChar(practice_number, 3)));
 
                     System.out.println("IMAGEVIEW: " + dataSnapshot.child("Display_Image").getValue());
 
@@ -181,6 +187,16 @@ public class ProfileActivity extends AppCompatActivity {
             snack.show();
         }
 
+    }
+
+    private static String[] splitToNChar(String text, int size) {
+        List<String> parts = new ArrayList<>();
+
+        int length = text.length();
+        for (int i = 0; i < length; i += size) {
+            parts.add(text.substring(i, Math.min(length, i + size)));
+        }
+        return parts.toArray(new String[0]);
     }
 
     @Override

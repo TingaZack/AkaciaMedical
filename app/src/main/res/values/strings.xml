@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">MSQ Health</string>
-    <string name="action_settings">Settings</string>
+    <string name="app_name">Akacia Medical</string>
+    <string name="action_ts">Terms  &amp; Conditions</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="practice_number_not_found">Practice Number not found. Would you like to contact MSQ Health and register your practice?</string>
 
@@ -31,18 +31,17 @@
     <string name="play_again">Play Again</string>
     <string name="title_activity_listing_details">ListingDetailsActivity</string>
     <string name="large_text">
-        "Material is the metaphor.\n\n"
+        About Akacia™ Medical\n\n"
 
-        "A material metaphor is the unifying theory of a rationalized space and a system of motion."
-        "The material is grounded in tactile reality, inspired by the study of paper and ink, yet "
-        "technologically advanced and open to imagination and magic.\n"
-        "Surfaces and edges of the material provide visual cues that are grounded in reality. The "
-        "use of familiar tactile attributes helps users quickly understand affordances. Yet the "
-        "flexibility of the material creates new affordances that supercede those in the physical "
-        "world, without breaking the rules of physics.\n"
-        "The fundamentals of light, surface, and movement are key to conveying how objects move, "
-        "interact, and exist in space and in relation to each other. Realistic lighting shows "
-        "seams, divides space, and indicates moving parts.\n\n"
+        Akacia™ Medical (Pty) Ltd is dedicated to providing a comprehensive range of quality medical products to the healthcare industry specialising in urology, respiratory, surgical disposables and specialized emergency equipment.\n\n
+
+        We manufacture, market and distribute medical and surgical equipment and related
+        consumables. Our customers include hospitals, wholesalers and retail pharmacies. We
+        also operate in niche market segments such as emergency medicine, critical care, anaesthesia
+        and capital equipment. Additional focus areas include cardiology surgical devices and
+        laparoscopic instrumentation. These speciality areas are marketed by a separate division,
+        Akacia™ Surgical.
+        \n\n"
 
         "Bold, graphic, intentional.\n\n"
 
@@ -122,8 +121,8 @@
 
     <string name="title_activity_featured_item_details">FeaturedItemDetails</string>
 
-    <string name="message_sent_message">Thank You for contacting us.
-        Our team will get back to you shortly.</string>
+    <string name="message_sent_message"> <b>Thank You for contacting us!</b>
+        \n\nOur dedicated team will get back to you shortly.</string>
 
     <string name="msq_slogan">"Want to learn more about our services?
         Please get in touch, we'd love to hear from you!"</string>
@@ -159,7 +158,7 @@
     <string name="promo_days"> %1$s days left</string>
 
     <string name="click_terms">By clicking \'Search\', you agree to the </string>
-    <string name="msq_health">MSQ Health</string>
+    <string name="msq_health">Akacia Medical</string>
     <string name="login">Sign in</string>
     <string name="account_unverified">We are still verifying your account. You may only add to cart and checkout once it has been. \n\n Sorry for any inconvenience.</string>
     <string name="browse_catalogue">Browse Catalogue</string>
@@ -172,6 +171,7 @@
     <string name="product_added">Product added to cart</string>
     <string name="password">Password</string>
     <string name="sign_in">Sign in</string>
+    <string name="send_msg">Send Message</string>
     <string name="email">Email</string>
     <string name="by_signing">By Signing in, you agree to the &#x20;</string>
     <string name="terms_and_conditions">Terms and Conditions.</string>
@@ -181,8 +181,44 @@
     <string name="email_sent">A Password reset link has been sent to your email.</string>
     <string name="try_again">Please try again later.</string>
     <string name="please_complete">Akacia Client Registration</string>
+    <!--<string name="please_complete">Akacia Client Registration</string>-->
     <string name="checkout_error">A minimum order of R1000.00 is required to Checkout.</string>
     <string name="checkout">Checkout</string>
+    <string name="learn_more">Learn More</string>
+    <string name="practice_number">Practice Number (e.g. 140 000 890 097)</string>
+    <string name="full_names">Full Names (e.g. Dr BN Simpson)</string>
+    <string name="delivery_address">Delivery Address</string>
+    <string name="contact_number">Contact Number</string>
+    <string name="create_account">Create Account</string>
+    <string name="with_us">Open an Account With us \nToday</string>
+    <string name="slogan_akacia">Akacia™ Surgical is dedicated to providing a comprehensive range of quality surgical
+        products to the healthcare industry specialising in laparoscopic instrumentation and Woman’s Health Products.</string>
+    <string name="f_password">Don\'t worry, it happens to the best of us but we always have you covered. \n\nEnter your email below and a reset link will be sent to your email address with password reset instructions</string>
+    <string name="epsum">Li Europan lingues es membres del sam familie. Lor separat existentie es un myth. Por scientie, musica, sport etc, litot Europa usa li sam vocabular. Li lingues differe solmen in li grammatica, li pronunciation e li plu commun vocabules. \n\nOmnicos directe al desirabilite de un nov lingua franca: On refusa continuar payar custosi traductores. At solmen va esser necessi far uniform grammatica, pronunciation e plu sommun paroles. Ma quande lingues coalesce, li grammatica del resultant lingue es plu simplic e regulari quam ti del coalescent lingues. \n\nLi nov lingua franca va esser plu simplic e regulari quam li existent Europan lingues. It va esser tam simplic quam Occidental in fact, it va esser Occidental. A un Angleso it va semblar un simplificat Angles, quam un skeptic Cambridge amico dit me que Occidental es.Li Europan lingues es membres del sam familie. Lor separat existentie es un myth. Por scientie, musica, sport etc, litot Europa usa li sam vocabular. Li lingues differe solmen in li grammatica, li pronunciation e li plu commun vocabules. \nOmnicos directe al desirabilite de un nov lingua franca: On refusa continuar payar custosi traductores. At solmen va esser necessi far uniform grammatica, pronunciation e plu sommun paroles.</string>
+    <string name="t_s_c_s">T\'s &amp; C\'s</string>
+    <string name="contact_us">Contact Us</string>
+
+    <string name="about_akacia">About Akacia™ Medical</string>
+    <string name="about_akacia_text">Akacia™ Medical (Pty) Ltd is dedicated to providing a comprehensive
+        range of quality medical products to the healthcare industry specialising in urology, respiratory,
+        surgical disposables and specialized emergency equipment.
+        \n\nWe manufacture, market and distribute medical and surgical equipment and related consumables.
+        Our customers include hospitals, wholesalers and retail pharmacies. We also operate in
+        niche market segments such as emergency medicine, critical care, anaesthesia and capital equipment.
+        Additional focus areas include cardiology surgical devices and laparoscopic instrumentation.
+        These speciality areas are marketed by a separate division, Akacia™ Surgical.
+    </string>
+
+    <string name="about_akacia_mission">Mission Statement</string>
+    <string name="about_akacia_mission_text">Akacia™ Medical Pty Ltd constantly strives to focus on quality in all our
+        services and sustain business relationships through honesty, integrity and sound business ethics.
+        Our objective is to act in partnership with healthcare organizations in the care and recovery of
+        the patient by providing cost effective products, personalized service and superior technical knowledge and
+        support. \n\nWe continually search for improvements, developments and the most technologically advanced
+        product to suit the need of our partners as to provide the latest and most cost effective treatment available.</string>
+    <string name="akacia_website">http://www.akaciamedical.co.za/about</string>
+    <string name="type_your_message_here_max_150">type your message here. (Max. 150)</string>
+
     <!--<string name="please_complete">Please complete the below form and we will contact you</string>-->
 
 </resources>

@@ -115,15 +115,15 @@ public class ContactUsActivity extends AppCompatActivity {
                                         android.support.v7.app.AlertDialog.Builder aBuilder = new android.support.v7.app.AlertDialog.Builder(ContactUsActivity.this, R.style.CustomDialog);
                                         aBuilder.setView(mView);
 
-                                        mOkayButton = (Button) mView.findViewById(R.id.dialogDone);
-
-                                        mOkayButton.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View view) {
-                                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                                                finish();
-                                            }
-                                        });
+//                                        mOkayButton = (Button) mView.findViewById(R.id.dialogDone);
+//
+//                                        mOkayButton.setOnClickListener(new View.OnClickListener() {
+//                                            @Override
+//                                            public void onClick(View view) {
+//                                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+//                                                finish();
+//                                            }
+//                                        });
                                         android.support.v7.app.AlertDialog alert = aBuilder.create();
                                         alert.show();
                                     }
@@ -137,7 +137,7 @@ public class ContactUsActivity extends AppCompatActivity {
             }
         } else if (!isNetworkAvailable()) {
 
-            Snackbar snack = Snackbar.make(findViewById(R.id.relative_layout), "No Connection Available, please check your internet settings and try again.", Snackbar.LENGTH_INDEFINITE)
+            Snackbar snack = Snackbar.make(findViewById(R.id.relative_layout), getApplicationContext().getString(R.string.no_connection), Snackbar.LENGTH_INDEFINITE)
                     .setDuration(5000);
 
             snack.getView().setBackgroundColor(ContextCompat.getColor(getApplicationContext(), android.R.color.holo_red_dark));

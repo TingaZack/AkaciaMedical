@@ -27,7 +27,6 @@
 
         </LinearLayout>
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -37,45 +36,32 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!--<android.support.design.widget.TextInputLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content">-->
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_email_envelope_outline"
+                android:drawablePadding="8dp"
+                android:fontFamily="sans-serif"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:paddingTop="16dp"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
-                <android.support.v7.widget.AppCompatEditText
-                    android:id="@+id/email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif"
-                    android:drawableLeft="@drawable/ic_email_black_24dp"
-                    android:drawablePadding="8dp"
-                    android:hint="@string/email"
-                    android:inputType="textEmailAddress"
-                    android:paddingTop="16dp"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
-
-            <!--</android.support.design.widget.TextInputLayout>-->
-
-            <!--<android.support.design.widget.TextInputLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginTop="4dp">-->
-
-                <android.support.v7.widget.AppCompatEditText
-                    android:id="@+id/password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_lock_outline_black_24dp"
-                    android:drawablePadding="8dp"
-                    android:layout_marginTop="16dp"
-                    android:fontFamily="sans-serif"
-                    android:hint="@string/password"
-                    android:inputType="textPassword"
-                    android:paddingTop="16dp"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
-
-            <!--</android.support.design.widget.TextInputLayout>-->
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:drawableLeft="@drawable/ic_key"
+                android:drawablePadding="8dp"
+                android:fontFamily="sans-serif"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:paddingTop="16dp"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
 

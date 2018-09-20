@@ -5,13 +5,6 @@
     android:theme="@style/AppTheme.NoActionBar"
     tools:context="com.msqhealth.main.activities.authentication.NewPracticeRegistration">
 
-
-    <!--<ImageView-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:scaleType="centerCrop"-->
-    <!--android:src="@drawable/bg_sc" />-->
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -20,8 +13,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorPrimaryDark"
             android:layout_weight="1.9"
+            android:background="@color/colorPrimaryDark"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -31,8 +24,8 @@
                 android:layout_gravity="center_horizontal"
                 android:fontFamily="sans-serif-condensed"
                 android:gravity="center"
-                android:textAppearance="?android:textAppearanceMedium"
                 android:text="@string/please_complete"
+                android:textAppearance="?android:textAppearanceMedium"
                 android:textColor="@android:color/white" />
 
             <TextView
@@ -41,7 +34,7 @@
                 android:layout_gravity="center_horizontal"
                 android:fontFamily="sans-serif-condensed"
                 android:gravity="center"
-                android:text="Learn More"
+                android:text="@string/learn_more"
                 android:textColor="@color/colorAccent" />
 
         </LinearLayout>
@@ -67,9 +60,9 @@
                     android:drawableLeft="@drawable/ic_first_aid_kit"
                     android:drawablePadding="8dp"
                     android:fontFamily="sans-serif"
-                    android:hint="Practice Number (e.g. 140 000 890 097)"
-                    android:maxLength="12"
+                    android:hint="@string/practice_number"
                     android:inputType="number"
+                    android:maxLength="12"
                     android:paddingTop="16dp"
                     android:textSize="12sp"
                     android:textStyle="bold" />
@@ -82,8 +75,8 @@
                     android:drawableLeft="@drawable/ic_doctor_names"
                     android:drawablePadding="8dp"
                     android:fontFamily="sans-serif"
-                    android:hint="Full Names (e.g. Dr BN Simpson)"
-                    android:inputType="textEmailAddress"
+                    android:hint="@string/full_names"
+                    android:inputType="textCapWords"
                     android:paddingTop="16dp"
                     android:textSize="12sp"
                     android:textStyle="bold" />
@@ -96,7 +89,7 @@
                     android:drawableLeft="@drawable/ic_sign_post"
                     android:drawablePadding="8dp"
                     android:fontFamily="sans-serif"
-                    android:hint="Delivery Address"
+                    android:hint="@string/delivery_address"
                     android:inputType="textPostalAddress|textMultiLine"
                     android:paddingTop="16dp"
                     android:textSize="12sp"
@@ -110,9 +103,9 @@
                     android:drawableLeft="@drawable/ic_phone_call"
                     android:drawablePadding="8dp"
                     android:fontFamily="sans-serif"
-                    android:hint="Cellphone Number"
-                    android:maxLength="10"
+                    android:hint="@string/contact_number"
                     android:inputType="phone"
+                    android:maxLength="10"
                     android:paddingTop="16dp"
                     android:textSize="12sp"
                     android:textStyle="bold" />
@@ -139,216 +132,18 @@
 
         </LinearLayout>
 
-
-
         <Button
             android:id="@+id/save"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:layout_marginLeft="64dp"
             android:layout_marginRight="64dp"
             android:background="@drawable/round_blue_button"
-            android:text="Complete Registration"
-            android:textColor="@android:color/white"
             android:fontFamily="sans-serif-condensed"
-            android:layout_marginBottom="16dp" />
+            android:text="@string/create_account"
+            android:textColor="@android:color/white" />
 
     </LinearLayout>
-
-    <!--<LinearLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:orientation="vertical"-->
-    <!--android:paddingLeft="8dp"-->
-    <!--android:paddingRight="16dp"-->
-    <!--android:paddingTop="16dp">-->
-
-    <!--<LinearLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:gravity="center"-->
-    <!--android:orientation="vertical"-->
-    <!--android:padding="16dp">-->
-
-    <!--<TextView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_gravity="center_horizontal"-->
-    <!--android:layout_margin="16dp"-->
-    <!--android:gravity="center"-->
-    <!--android:text="Please complete below form and we will contact you"-->
-    <!--android:textColor="@color/colorPrimaryDark" />-->
-
-    <!--</LinearLayout>-->
-
-    <!--<android.support.design.widget.TextInputLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginLeft="16dp"-->
-    <!--android:layout_marginRight="16dp"-->
-    <!--android:layout_marginTop="16dp"-->
-    <!--android:textColorHint="@color/colorPrimaryDark">-->
-
-    <!--<EditText-->
-    <!--android:id="@+id/practice_number"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:hint="Practice Number"-->
-    <!--android:inputType="number"-->
-    <!--android:maxLength="12"-->
-    <!--android:textColor="@color/colorPrimaryDark"-->
-    <!--android:textSize="12sp"-->
-    <!--android:textStyle="bold" />-->
-
-
-    <!--</android.support.design.widget.TextInputLayout>-->
-
-    <!--<TextView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_gravity="right"-->
-    <!--android:layout_marginRight="16dp"-->
-    <!--android:text="Please provide the full 12 digits"-->
-    <!--android:textColor="@color/colorPrimaryDark"-->
-    <!--android:textSize="11sp" />-->
-
-
-    <!--<android.support.design.widget.TextInputLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginLeft="16dp"-->
-    <!--android:layout_marginRight="16dp"-->
-    <!--android:layout_marginTop="16dp"-->
-    <!--android:textColorHint="@color/colorPrimaryDark">-->
-
-    <!--<EditText-->
-    <!--android:id="@+id/firstname"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:hint="First name"-->
-    <!--android:inputType="textCapWords|textPersonName"-->
-    <!--android:textColor="@color/colorPrimaryDark"-->
-    <!--android:textSize="12sp"-->
-    <!--android:textStyle="bold" />-->
-
-    <!--</android.support.design.widget.TextInputLayout>-->
-
-
-    <!--<android.support.design.widget.TextInputLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginLeft="16dp"-->
-    <!--android:layout_marginRight="16dp"-->
-    <!--android:layout_marginTop="16dp"-->
-    <!--android:textColorHint="@color/colorPrimaryDark">-->
-
-    <!--<EditText-->
-    <!--android:id="@+id/lastname"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:hint="Last name"-->
-    <!--android:inputType="textCapWords|textPersonName"-->
-    <!--android:textColor="@color/colorPrimaryDark"-->
-    <!--android:textSize="12sp"-->
-    <!--android:textStyle="bold" />-->
-
-    <!--</android.support.design.widget.TextInputLayout>-->
-
-    <!--<Spinner-->
-    <!--android:id="@+id/spinner"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginTop="16dp"-->
-    <!--android:padding="16dp"-->
-    <!--android:layout_marginLeft="16dp"-->
-    <!--android:layout_marginRight="16dp">-->
-
-    <!--</Spinner>-->
-
-    <!--<android.support.design.widget.TextInputLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginLeft="16dp"-->
-    <!--android:layout_marginRight="16dp"-->
-    <!--android:layout_marginTop="16dp"-->
-    <!--android:textColorHint="@color/colorPrimaryDark">-->
-
-    <!--<EditText-->
-    <!--android:id="@+id/address_field_1"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:hint="Delivery Address"-->
-    <!--android:inputType="textPostalAddress"-->
-    <!--android:textColor="@color/colorPrimaryDark"-->
-    <!--android:textSize="12sp"-->
-    <!--android:textStyle="bold" />-->
-
-    <!--</android.support.design.widget.TextInputLayout>-->
-
-    <!--<android.support.design.widget.TextInputLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginLeft="16dp"-->
-    <!--android:layout_marginRight="16dp"-->
-    <!--android:layout_marginTop="16dp"-->
-    <!--android:textColorHint="@color/colorPrimaryDark">-->
-
-    <!--<EditText-->
-    <!--android:id="@+id/cellphone"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:hint="Cellphone Number"-->
-    <!--android:inputType="phone"-->
-    <!--android:maxLength="10"-->
-    <!--android:textColor="@color/colorPrimaryDark"-->
-    <!--android:textSize="12sp"-->
-    <!--android:textStyle="bold" />-->
-
-    <!--</android.support.design.widget.TextInputLayout>-->
-
-
-    <!--&lt;!&ndash;<android.support.design.widget.TextInputLayout&ndash;&gt;-->
-    <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
-    <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
-    <!--&lt;!&ndash;android:layout_marginLeft="16dp"&ndash;&gt;-->
-    <!--&lt;!&ndash;android:layout_marginRight="16dp"&ndash;&gt;-->
-    <!--&lt;!&ndash;android:layout_marginTop="16dp"&ndash;&gt;-->
-    <!--&lt;!&ndash;android:textColorHint="@color/colorPrimaryDark">&ndash;&gt;-->
-
-    <!--&lt;!&ndash;<EditText&ndash;&gt;-->
-    <!--&lt;!&ndash;android:id="@+id/telephone"&ndash;&gt;-->
-    <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
-    <!--&lt;!&ndash;android:layout_height="match_parent"&ndash;&gt;-->
-    <!--&lt;!&ndash;android:hint="Office Number"&ndash;&gt;-->
-    <!--&lt;!&ndash;android:inputType="phone"&ndash;&gt;-->
-    <!--&lt;!&ndash;android:maxLength="10"&ndash;&gt;-->
-    <!--&lt;!&ndash;android:textColor="@color/colorPrimaryDark"&ndash;&gt;-->
-    <!--&lt;!&ndash;android:textSize="12sp"&ndash;&gt;-->
-    <!--&lt;!&ndash;android:textStyle="bold" />&ndash;&gt;-->
-
-    <!--&lt;!&ndash;</android.support.design.widget.TextInputLayout>&ndash;&gt;-->
-
-    <!--<LinearLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:gravity="center"-->
-    <!--android:orientation="vertical">-->
-
-    <!--<Button-->
-    <!--android:id="@+id/save"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_margin="16dp"-->
-    <!--android:background="@drawable/round_orange_button"-->
-    <!--android:paddingLeft="16dp"-->
-    <!--android:paddingRight="16dp"-->
-    <!--android:text="Complete Regisration"-->
-    <!--android:textAllCaps="false"-->
-    <!--android:textColor="#fff"-->
-    <!--android:textStyle="bold" />-->
-
-    <!--</LinearLayout>-->
-
-    <!--</LinearLayout>-->
 
 </RelativeLayout>
