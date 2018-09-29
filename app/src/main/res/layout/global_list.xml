@@ -1,22 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/promo_textview"
-        android:text="No promotions available"
+    <LinearLayout
+        android:id="@+id/no_promo_linear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:visibility="gone"
-        android:gravity="center"/>
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/no_promo_imageview"
+            android:layout_above="@id/promo_textview"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/ic_sad"/>
+
+        <TextView
+            android:id="@+id/promo_textview"
+            android:text="@string/no_promotions_available"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-condensed"
+            android:visibility="visible"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/promo_textview_not_available"
+            android:text="@string/no_promotions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/promo_textview"
+            android:fontFamily="sans-serif-condensed"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:visibility="visible"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/no_user_linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:layout_marginBottom="16dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/no_promo_user_imageview"
+            android:layout_above="@id/promo_textview"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/ic_doctor_names"/>
+
+        <TextView
+            android:id="@+id/promo_textview_no_user"
+            android:text="@string/guest_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-condensed"
+            android:visibility="visible"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/promo_textview_no_user_large_text"
+            android:text="@string/no_user_large_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/promo_textview"
+            android:fontFamily="sans-serif-condensed"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:visibility="visible"
+            android:gravity="center"/>
+
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/promotion_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp" />
+        android:layout_height="match_parent" />
 
 </RelativeLayout>

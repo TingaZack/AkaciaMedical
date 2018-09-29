@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,11 +68,6 @@ public class ListingDetailsActivity extends AppCompatActivity {
 
         title = intent.getStringExtra("title");
 
-        collapsingToolbarLayout.setTitle(title);
-        collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.white));
-        collapsingToolbarLayout.setCollapsedTitleTextColor(getResources().getColor(android.R.color.white));
-        collapsingToolbarLayout.setScrimsShown(true);
-
         productList = new ArrayList<>();
 
         adapter = new MyListingDetailsAdapter(productList, this);
@@ -80,8 +76,44 @@ public class ListingDetailsActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setAdapter(adapter);
 
-            mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
+        if (title.equals("A to Z")) {
+            collapsingToolbarLayout.setTitle("A - Z (All Products)");
+            collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.white));
+            collapsingToolbarLayout.setCollapsedTitleTextColor(getResources().getColor(android.R.color.white));
+            collapsingToolbarLayout.setScrimsShown(true);
+            mDatabase.child("products").orderByChild("CONSUMABLES").addValueEventListener(new ValueEventListener() {
+                public void onDataChange(DataSnapshot snapshot) {
+                    productList.clear();
+                    for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                        Product products = new Product(((String) postSnapshot.child("CODE").getValue()),
+                                (String) postSnapshot.child("CONSUMABLES").getValue(),
+                                (String) postSnapshot.child("DESCRIPTION").getValue(),
+                                Double.parseDouble(postSnapshot.child("PRICING").getValue().toString().replace(",", ".")),
+                                postSnapshot.child("PRICING_UNIT").getValue().toString(),
+                                (String) postSnapshot.child("True Image").getValue());
+                        Picasso.get().load(R.drawable.a_z).placeholder(R.drawable.ic_google_drive_image).into(((ImageView) findViewById(R.id.image)));
+
+                        productList.add(products);
+//                        if (productList.size() > 0)
+                    }
+                    pDialog.dismiss();
+                    adapter.notifyDataSetChanged();
+                    System.out.println(adapter.getItemCount() + " in adapter");
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    System.out.println(databaseError.getMessage());
+                }
+            });
+
+        } else {
+            collapsingToolbarLayout.setTitle(title);
+            collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.white));
+            collapsingToolbarLayout.setCollapsedTitleTextColor(getResources().getColor(android.R.color.white));
+            collapsingToolbarLayout.setScrimsShown(true);
 
             mDatabase.child("products").addValueEventListener(new ValueEventListener() {
                 public void onDataChange(DataSnapshot snapshot) {
@@ -109,6 +141,7 @@ public class ListingDetailsActivity extends AppCompatActivity {
                     System.out.println(databaseError.getMessage());
                 }
             });
+        }
     }
 
 }

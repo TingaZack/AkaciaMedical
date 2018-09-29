@@ -54,11 +54,16 @@ public class AboutUs extends AppCompatActivity /*implements View.OnClickListener
 
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
+    private String termsLink = "";
+    private String akaciaAboutLink = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.about_us_layout);
+
+        termsLink = "https://msq-health.firebaseapp.com";
+        akaciaAboutLink = getApplicationContext().getString(R.string.akacia_website);
 
         final Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -75,9 +80,13 @@ public class AboutUs extends AppCompatActivity /*implements View.OnClickListener
         TsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Uri uri = Uri.parse(getString(R.string.akacia_website));
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(intent);
+//                Uri uri = Uri.parse(getString(R.string.akacia_website));
+//                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+//                startActivity(intent);
+
+                Intent termsIntent = new Intent(getApplicationContext(), TermsAndCondtionsActivity.class);
+                termsIntent.putExtra("link", akaciaAboutLink);
+                startActivity(new Intent(termsIntent));
             }
         });
 
@@ -153,6 +162,9 @@ public class AboutUs extends AppCompatActivity /*implements View.OnClickListener
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_ts) {
+            Intent termsIntent = new Intent(getApplicationContext(), TermsAndCondtionsActivity.class);
+            termsIntent.putExtra("link", termsLink);
+            startActivity(new Intent(termsIntent));
             return true;
         } else if (id == R.id.action_info) {
             return true;

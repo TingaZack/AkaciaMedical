@@ -343,8 +343,8 @@ public class NewPracticeRegistration extends AppCompatActivity {
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
-                        finish();
                         startActivity(new Intent(NewPracticeRegistration.this, MainActivity.class));
+                        finish();
                     }
                 });
         // Create the AlertDialog object and return it

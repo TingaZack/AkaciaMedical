@@ -155,7 +155,10 @@
     <string name="the_id">E112445E-A003-416F-8EBE-73A6969D16D4</string>
     <string name="rand">R %1$s</string>
     <string name="percentage">%1$s %% off</string>
+
     <string name="promo_days"> %1$s days left</string>
+    <string name="promo_one_day"> %1$s day left</string>
+    <string name="promo_zero_day">This promotion has expired</string>
 
     <string name="click_terms">By clicking \'Search\', you agree to the </string>
     <string name="msq_health">Akacia Medical</string>
@@ -186,7 +189,7 @@
     <string name="checkout">Checkout</string>
     <string name="learn_more">Learn More</string>
     <string name="practice_number">Practice Number (e.g. 140 000 890 097)</string>
-    <string name="full_names">Full Names (e.g. Dr BN Simpson)</string>
+    <string name="full_names">Full Names</string>
     <string name="delivery_address">Delivery Address</string>
     <string name="contact_number">Contact Number</string>
     <string name="create_account">Create Account</string>
@@ -218,6 +221,20 @@
         product to suit the need of our partners as to provide the latest and most cost effective treatment available.</string>
     <string name="akacia_website">http://www.akaciamedical.co.za/about</string>
     <string name="type_your_message_here_max_150">type your message here. (Max. 150)</string>
+    <string name="no_promotions">Unfortunately the specials are not available yet. Keep checking again soon for more great Akacia Medical specials.</string>
+    <string name="no_promotions_available">No Specials Available</string>
+    <string name="delivery_information">Delivery Information</string>
+    <string name="delivery_confirm">Please confirm the information below for conviniency in delivery and great Akacia Medical services</string>
+    <string name="confirm">Confirm Delivery</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="no_user_large_text">Unfortunately as a guest user, you are not eligible to see, add to cart and place an order to specials. \n\nPlease login/register to enjoy great Akacia Medical services.</string>
+    <string name="account_unverified_title">Account Unverified</string>
+    <string name="guest_user">Guest User</string>
+    <string name="clear_cart_msg">Are you sure you want to clear your cart?</string>
+    <string name="clearing_cart">Clearing Cart ...</string>
+    <string name="i_sure">I\'m sure</string>
+    <string name="i_cancel">Cancel</string>
+    <string name="cart_msg_title">Cart Message</string>
 
     <!--<string name="please_complete">Please complete the below form and we will contact you</string>-->
 

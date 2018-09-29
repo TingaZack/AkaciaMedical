@@ -1,8 +1,10 @@
 package com.msqhealth.main.dialogs;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -105,9 +107,9 @@ public class CartDialogs extends DialogFragment {
                             e.getMessage();
                         }
                     }
-                    DecimalFormat df = new DecimalFormat("##.##");
+                    DecimalFormat df = new DecimalFormat("##.00");
                     amount = _amount;
-                    mCartItemCount.setText("R" + String.valueOf(df.format(amount)).replace(",", "."));
+                    mCartItemCount.setText("Total: R" + String.valueOf(df.format(amount)).replace(",", "."));
 
 
                 }
@@ -191,7 +193,7 @@ public class CartDialogs extends DialogFragment {
                                 @Override
                                 public void onClick(View v) {
                                     if (isNetworkAvailable()) {
-                                        mCheckDatabase.addValueEventListener(new ValueEventListener() {
+                                        mCheckDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(DataSnapshot dataSnapshot) {
                                                 try {
@@ -224,7 +226,7 @@ public class CartDialogs extends DialogFragment {
 
                                     } else if (!isNetworkAvailable()) {
 
-                                        Snackbar snack = Snackbar.make(view.findViewById(R.id.relative_layout), "No Connection Available, please check your internet settings and try again.",
+                                        Snackbar snack = Snackbar.make(view.findViewById(R.id.relative_layout), getActivity().getString(R.string.no_connection),
                                                 Snackbar.LENGTH_INDEFINITE).setDuration(1000);
                                         snack.getView().setBackgroundColor(ContextCompat.getColor(getActivity(), android.R.color.holo_red_dark));
                                         View view = snack.getView();
@@ -239,24 +241,37 @@ public class CartDialogs extends DialogFragment {
                             btnClearAll.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    mProgressDialog.setMessage("Clearing Cart ...");
-                                    mProgressDialog.show();
-                                    dataSnapshot.getRef().removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isComplete()) {
-                                                if (task.isSuccessful()) {
-                                                    mProgressDialog.dismiss();
-                                                    dismiss();
-                                                } else {
-                                                    mProgressDialog.dismiss();
+
+                                    AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+                                    dialog.setTitle(R.string.cart_msg_title)
+//                                            .setIcon(R.drawable.)
+                                            .setMessage(R.string.clear_cart_msg)
+                                            .setNegativeButton(R.string.i_cancel, new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialoginterface, int i) {
+                                                    dialoginterface.cancel();
                                                 }
-                                            } else {
-                                                Toast.makeText(getContext(), "Please check internet connection", Toast.LENGTH_SHORT).show();
-                                                mProgressDialog.dismiss();
-                                            }
-                                        }
-                                    });
+                                            })
+                                            .setPositiveButton(R.string.i_sure, new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialoginterface, int i) {
+                                                    mProgressDialog.setMessage(getString(R.string.clearing_cart));
+                                                    mProgressDialog.show();
+                                                    dataSnapshot.getRef().removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            if (task.isComplete()) {
+                                                                if (task.isSuccessful()) {
+                                                                    mProgressDialog.dismiss();
+                                                                    dismiss();
+                                                                } else {
+                                                                    mProgressDialog.dismiss();
+                                                                }
+                                                            } else {
+                                                                mProgressDialog.dismiss();
+                                                            }
+                                                        }
+                                                    });
+                                                }
+                                            }).show();
                                 }
                             });
 

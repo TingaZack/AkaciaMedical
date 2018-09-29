@@ -12,96 +12,143 @@
         android:layout_gravity="center"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:paddingLeft="32dp"
-        android:paddingRight="32dp"
         tools:context="com.msqhealth.main.activities.EditProfileActivity">
 
         <ImageView
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:src="@drawable/msq_truck" />
+            android:src="@drawable/akacia_medical_truck" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Delivery Information"
-            android:textColor="@color/colorPrimaryDark"
+            android:text="@string/delivery_information"
             android:textAppearance="?android:textAppearanceLarge"
-            android:fontFamily="casual"
+            android:fontFamily="sans-serif-condensed"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Please confirm the  information below for  conviniency in delivery and great MSQ Health service"
+            android:text="@string/delivery_confirm"
             android:textAlignment="center"
-            android:textColor="@color/colorPrimaryDark"
+            android:fontFamily="sans-serif-condensed"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:textSize="12sp" />
 
-
-        <android.support.design.widget.TextInputLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
             android:layout_marginTop="16dp"
-            android:textColorHint="@color/colorPrimaryDark">
+            android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/et_name"
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="8dp"
+                android:src="@drawable/ic_doctor_names" />
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
-                android:hint="Contact Person Name"
-                android:inputType="textCapWords"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="15sp"
-                android:textStyle="bold" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_weight="1"
+                android:orientation="vertical">
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/full_names"
+                    android:textStyle="bold" />
 
-        <android.support.design.widget.TextInputLayout
+                <EditText
+                    android:id="@+id/et_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Dr Shenzi Ale"
+                    android:textAppearance="?android:textAppearanceSmall" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
             android:layout_marginTop="16dp"
-            android:textColorHint="@color/colorPrimaryDark">
+            android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/et_billing_address"
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="8dp"
+                android:src="@drawable/ic_sign_post" />
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
-                android:hint="Delivery Address"
-                android:inputType="textCapWords"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="15sp"
-                android:textStyle="bold" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_weight="1"
+                android:orientation="vertical">
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/delivery_address"
+                    android:textStyle="bold" />
 
-        <android.support.design.widget.TextInputLayout
+                <EditText
+                    android:id="@+id/et_billing_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="123 XXXX, XXXX, XXXX, Johannesburg, 2000"
+                    android:textAppearance="?android:textAppearanceSmall" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
             android:layout_marginTop="16dp"
-            android:textColorHint="@color/colorPrimaryDark">
+            android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/et_cell"
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="8dp"
+                android:src="@drawable/ic_phone_call" />
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
-                android:hint="Phone Number(Contact Person)"
-                android:inputType="phone"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-        </android.support.design.widget.TextInputLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/phone_number"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/et_cell"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="000 0000 000"
+                    android:textAppearance="?android:textAppearanceSmall" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -112,15 +159,16 @@
 
             <Button
                 android:id="@+id/save"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/round_orange_button"
+                android:background="@drawable/toq_add_cart_btn"
                 android:fontFamily="sans-serif-condensed"
                 android:paddingLeft="64dp"
                 android:paddingRight="64dp"
-                android:text="Confirm"
-                android:textAllCaps="false"
+                android:text="@string/confirm"
                 android:textColor="@color/white"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -129,31 +177,33 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingTop="16dp">
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-condensed"
-                android:textSize="8sp"
-                android:text="By Confirming Delivery Details, you agree to the "
-                android:textColor="@color/colorPrimaryDark" />
+                android:text="@string/by_signing"
+                android:textColor="@color/colorPrimary"
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/confirm_tc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Terms and Conditions."
-                android:textSize="8sp"
-                android:focusable="true"
                 android:clickable="true"
+                android:focusable="true"
                 android:fontFamily="sans-serif-condensed"
+                android:paddingLeft="4dp"
+                android:text="@string/terms_and_conditions"
                 android:textColor="@color/colorAccent"
+                android:textSize="12sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
+
 
     </LinearLayout>
 

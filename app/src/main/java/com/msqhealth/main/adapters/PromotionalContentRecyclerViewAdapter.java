@@ -2,9 +2,11 @@ package com.msqhealth.main.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -49,6 +51,7 @@ public class PromotionalContentRecyclerViewAdapter extends RecyclerView.Adapter<
     private final List<Product> mValues;
     private Activity activity;
     private int final_difference;
+    private DataSnapshot snap;
 
     public PromotionalContentRecyclerViewAdapter(List<Product> items, Activity activity) {
         mValues = items;
@@ -80,7 +83,14 @@ public class PromotionalContentRecyclerViewAdapter extends RecyclerView.Adapter<
             final_difference = diffaddone + 1;
             System.out.println("PRINT: " + final_difference);
 
-            holder.mEndDate.setText(activity.getString(R.string.promo_days, final_difference));
+            if (final_difference == 1) {
+                holder.mEndDate.setText(activity.getString(R.string.promo_one_day, final_difference));
+                holder.mEndDate.setTextColor(Color.RED);
+            } else if (final_difference == 0){
+                holder.mEndDate.setText(R.string.promo_zero_day);
+            } else {
+                holder.mEndDate.setText(activity.getString(R.string.promo_days, final_difference));
+            }
 
         } catch (ParseException e) {
             e.printStackTrace();
@@ -93,7 +103,7 @@ public class PromotionalContentRecyclerViewAdapter extends RecyclerView.Adapter<
         holder.mPricingUnitView.setText(String.valueOf(mValues.get(position).unit_of_messuremeant.toLowerCase()));
         Glide.with(activity).load(mValues.get(position).trueImageUrl).into(holder.mProductImage);
 
-        System.out.println("PR___"+ String.valueOf(mValues.get(position).price));
+        System.out.println("PR___" + String.valueOf(mValues.get(position).price));
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -121,6 +131,18 @@ public class PromotionalContentRecyclerViewAdapter extends RecyclerView.Adapter<
 //                }
 //            });
 
+            FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    snap = dataSnapshot;
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
             final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("cart").child("cart-items");
 
             //Button to decrement the items in the cart
@@ -131,7 +153,7 @@ public class PromotionalContentRecyclerViewAdapter extends RecyclerView.Adapter<
 //                quant[0] = (long) dataSnapshot.child("quantity").getValue();
                     int quantity = Integer.parseInt(holder.mQuantity.getText().toString());
 
-                    if (quantity >= 2){
+                    if (quantity >= 2) {
                         quantity--;
                         System.out.println("GET QUANTITY: " + quantity);
                         holder.mQuantity.setText(String.valueOf(quantity));
@@ -188,81 +210,31 @@ public class PromotionalContentRecyclerViewAdapter extends RecyclerView.Adapter<
                         holder.btnAddToCart.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                if (holder.mQuantity.getText().toString() == "") {
-                                    holder.mQuantity.setError(activity.getString(R.string.added_product_error));
-                                    return;
-                                }
 
-                                CartItem item = dataSnapshot.getValue(CartItem.class);
-                                try {
-                                    if (holder.mQuantity.getText() != null) {
-                                        item.setQuantity(item.getQuantity() + Integer.parseInt(holder.mQuantity.getText().toString()));
-                                    } else {
-                                        item.setQuantity(item.getQuantity() + 1);
+                                //Check if the account has been verified by checking if the debtors code exists.
+                                if (snap.hasChild("debtorCode")) {
+
+                                    if (holder.mQuantity.getText().toString() == "") {
+                                        holder.mQuantity.setError(activity.getString(R.string.added_product_error));
                                         return;
                                     }
-                                } catch (Exception ex) {
-                                    holder.mQuantity.setError(activity.getString(R.string.added_product_error));
-                                    return;
-                                }
-                                Map<String, Object> postValues = item.toMap();
 
-                                Map<String, Object> childUpdates = new HashMap<>();
-                                childUpdates.put("/carts/pending/" + mValues.get(position).getCode(), postValues);
-                                FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            Snackbar snack = Snackbar.make(holder.mRelativeLayout, activity.getString(R.string.added_product_),
-                                                    Snackbar.LENGTH_INDEFINITE).setDuration(2000);
-                                            snack.getView().setBackgroundColor(ContextCompat.getColor(activity, android.R.color.holo_green_dark));
-                                            View view = snack.getView();
-                                            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
-                                            params.gravity = Gravity.BOTTOM;
-                                            view.setLayoutParams(params);
-                                            snack.show();
-//                                            Toast.makeText(activity, "Item added to cart", Toast.LENGTH_SHORT).show();
+                                    CartItem item = dataSnapshot.getValue(CartItem.class);
+                                    try {
+                                        if (holder.mQuantity.getText() != null) {
+                                            item.setQuantity(item.getQuantity() + Integer.parseInt(holder.mQuantity.getText().toString()));
                                         } else {
-                                            task.getException().printStackTrace();
+                                            item.setQuantity(item.getQuantity() + 1);
+                                            return;
                                         }
+                                    } catch (Exception ex) {
+                                        holder.mQuantity.setError(activity.getString(R.string.added_product_error));
+                                        return;
                                     }
-                                });
-                            }
-                        });
-                    } else {
-                        holder.btnAddToCart.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
+                                    Map<String, Object> postValues = item.toMap();
 
-                                if (holder.mQuantity.getText().toString() == "") {
-                                    holder.mQuantity.setError(activity.getString(R.string.added_product_error));
-                                    return;
-                                }
-                                CartItem cartItem = new CartItem();
-                                cartItem.setOwner_id(user.getUid());
-                                cartItem.setProduct(holder.mItem);
-                                cartItem.setQuantity(1);
-
-                                try {
-                                    if (holder.mQuantity.getText() != null) {
-                                        cartItem.setQuantity(Integer.parseInt(holder.mQuantity.getText().toString()));
-                                    } else {
-                                        cartItem.setQuantity(1);
-                                    }
-                                } catch (Exception ex) {
-                                    holder.mQuantity.setError(activity.getString(R.string.added_product_error));
-                                    return;
-                                }
-
-                                Map<String, Object> postValues = cartItem.toMap();
-
-                                String key = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("cart").push().getKey();
-
-
-                                if (isNetworkAvailable()) {
                                     Map<String, Object> childUpdates = new HashMap<>();
                                     childUpdates.put("/carts/pending/" + mValues.get(position).getCode(), postValues);
-
                                     FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
@@ -271,25 +243,88 @@ public class PromotionalContentRecyclerViewAdapter extends RecyclerView.Adapter<
                                                         Snackbar.LENGTH_INDEFINITE).setDuration(2000);
                                                 snack.getView().setBackgroundColor(ContextCompat.getColor(activity, android.R.color.holo_green_dark));
                                                 View view = snack.getView();
-                                                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
+                                                CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) view.getLayoutParams();
                                                 params.gravity = Gravity.BOTTOM;
                                                 view.setLayoutParams(params);
                                                 snack.show();
-//                                                Toast.makeText(activity, "Item added to cart", Toast.LENGTH_SHORT).show();
+//                                            Toast.makeText(activity, "Item added to cart", Toast.LENGTH_SHORT).show();
                                             } else {
                                                 task.getException().printStackTrace();
                                             }
                                         }
                                     });
-                                } else if (!isNetworkAvailable()) {
-                                    Snackbar snack = Snackbar.make(holder.mRelativeLayout, activity.getString(R.string.no_connection),
-                                            Snackbar.LENGTH_INDEFINITE).setDuration(1000);
-                                    snack.getView().setBackgroundColor(ContextCompat.getColor(activity, android.R.color.holo_red_dark));
-                                    View view = snack.getView();
-                                    FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
-                                    params.gravity = Gravity.TOP;
-                                    view.setLayoutParams(params);
-                                    snack.show();
+                                } else {
+                                    //if the account is not verified, show a popup that says so.
+                                    showDialog();
+                                }
+                            }
+                        });
+                    } else {
+                        holder.btnAddToCart.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                //Check if the account has been verified by checking if the debtors code exists.
+                                if (snap.hasChild("debtorCode")) {
+                                    if (holder.mQuantity.getText().toString() == "") {
+                                        holder.mQuantity.setError(activity.getString(R.string.added_product_error));
+                                        return;
+                                    }
+                                    CartItem cartItem = new CartItem();
+                                    cartItem.setOwner_id(user.getUid());
+                                    cartItem.setProduct(holder.mItem);
+                                    cartItem.setQuantity(1);
+
+                                    try {
+                                        if (holder.mQuantity.getText() != null) {
+                                            cartItem.setQuantity(Integer.parseInt(holder.mQuantity.getText().toString()));
+                                        } else {
+                                            cartItem.setQuantity(1);
+                                        }
+                                    } catch (Exception ex) {
+                                        holder.mQuantity.setError(activity.getString(R.string.added_product_error));
+                                        return;
+                                    }
+
+                                    Map<String, Object> postValues = cartItem.toMap();
+
+                                    String key = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("cart").push().getKey();
+
+
+                                    if (isNetworkAvailable()) {
+                                        Map<String, Object> childUpdates = new HashMap<>();
+                                        childUpdates.put("/carts/pending/" + mValues.get(position).getCode(), postValues);
+
+                                        FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    Snackbar snack = Snackbar.make(holder.mRelativeLayout, activity.getString(R.string.added_product_),
+                                                            Snackbar.LENGTH_INDEFINITE).setDuration(2000);
+                                                    snack.getView().setBackgroundColor(ContextCompat.getColor(activity, android.R.color.holo_green_dark));
+                                                    View view = snack.getView();
+                                                    CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) view.getLayoutParams();
+                                                    params.gravity = Gravity.BOTTOM;
+                                                    view.setLayoutParams(params);
+                                                    snack.show();
+//                                                Toast.makeText(activity, "Item added to cart", Toast.LENGTH_SHORT).show();
+                                                } else {
+                                                    task.getException().printStackTrace();
+                                                }
+                                            }
+                                        });
+                                    } else if (!isNetworkAvailable()) {
+                                        Snackbar snack = Snackbar.make(holder.mRelativeLayout, activity.getString(R.string.no_connection),
+                                                Snackbar.LENGTH_INDEFINITE).setDuration(1000);
+                                        snack.getView().setBackgroundColor(ContextCompat.getColor(activity, android.R.color.holo_red_dark));
+                                        View view = snack.getView();
+                                        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
+                                        params.gravity = Gravity.TOP;
+                                        view.setLayoutParams(params);
+                                        snack.show();
+                                    }
+                                } else {
+                                    //if the account is not verified, show a popup that says so.
+                                    showDialog();
                                 }
                             }
                         });
@@ -316,6 +351,13 @@ public class PromotionalContentRecyclerViewAdapter extends RecyclerView.Adapter<
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
+    public void showDialog() {
+        View mView = LayoutInflater.from(activity).inflate(R.layout.deleted_custom_dialog, null);
+        android.support.v7.app.AlertDialog.Builder aBuilder = new android.support.v7.app.AlertDialog.Builder(activity, R.style.CustomDialog);
+        aBuilder.setView(mView);
+        android.support.v7.app.AlertDialog alert = aBuilder.create();
+        alert.show();
+    }
 
     @Override
     public int getItemCount() {

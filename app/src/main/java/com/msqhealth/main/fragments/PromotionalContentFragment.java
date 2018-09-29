@@ -12,8 +12,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.msqhealth.main.R;
 import com.msqhealth.main.adapters.PromotionalContentRecyclerViewAdapter;
 import com.msqhealth.main.model.Product;
@@ -46,8 +50,11 @@ public class PromotionalContentFragment extends Fragment {
 
     private ProgressDialog pDialog;
     private Query mQueryCurrentUser;
+    private FirebaseUser mUser;
 
-    private TextView mPromoTextView;
+    private TextView mPromoTextView, mNoPromoTextView;
+    private ImageView mNoPromoAvailableImageView;
+    private LinearLayout mNoPromoLinearLayout, mNoUserLinearLayout;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -55,7 +62,6 @@ public class PromotionalContentFragment extends Fragment {
      */
     public PromotionalContentFragment() {
     }
-
 
     @Nullable
     @Override
@@ -67,24 +73,30 @@ public class PromotionalContentFragment extends Fragment {
         pDialog.setMessage("Just a second...");
         pDialog.show();
 
-        mPromotionsDatabase = FirebaseDatabase.getInstance().getReference().child("products");
-        mPromotionsDatabase.keepSynced(true);
+        mNoUserLinearLayout = rootView.findViewById(R.id.no_user_linear);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("products");
-        mDatabase.keepSynced(true);
+        mUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        mPromoTextView = rootView.findViewById(R.id.promo_textview);
+        if (mUser != null) {
 
-        productList = new ArrayList<>();
-        // Set the adapter
-        if (rootView instanceof RecyclerView) {
-            Context context = rootView.getContext();
-            final RecyclerView recyclerView = (RecyclerView) rootView;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            }
+            mRecyclerView = rootView.findViewById(R.id.promotion_list);
+            mRecyclerView.setHasFixedSize(true);
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+            mPromotionsDatabase = FirebaseDatabase.getInstance().getReference().child("products");
+            mPromotionsDatabase.keepSynced(true);
+
+            mDatabase = FirebaseDatabase.getInstance().getReference().child("products");
+            mDatabase.keepSynced(true);
+
+            mPromoTextView = rootView.findViewById(R.id.promo_textview);
+            mNoPromoTextView = rootView.findViewById(R.id.promo_textview_not_available);
+            mNoPromoAvailableImageView = rootView.findViewById(R.id.no_promo_imageview);
+
+            mNoPromoLinearLayout = rootView.findViewById(R.id.no_promo_linear);
+
+            productList = new ArrayList<>();
+            // Set the adapter
 
             Query query = mDatabase.orderByChild("PROMO").equalTo(true);
             query.addValueEventListener(new ValueEventListener() {
@@ -93,18 +105,14 @@ public class PromotionalContentFragment extends Fragment {
 
                     System.out.println("CHI<D~: " + dataSnapshot.getChildrenCount());
                     if (!dataSnapshot.exists()) {
-                        mPromoTextView.setVisibility(View.VISIBLE);
-                        System.out.println("HELLO COUNT");
+                        mNoPromoLinearLayout.setVisibility(View.VISIBLE);
+                    } else {
+                        mNoPromoLinearLayout.setVisibility(View.GONE);
                     }
 
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         System.out.println("Count: " + snapshot.getChildrenCount());
                         System.out.println("PROMO VALUE: " + snapshot.child("PROMO").getValue());
-
-                        if (!snapshot.exists()) {
-                            mPromoTextView.setVisibility(View.VISIBLE);
-                            System.out.println("HELLO COUNT");
-                        }
 
                         String percentage = (String) snapshot.child("PERCENTAGE").getValue();
                         String pricing = (String) snapshot.child("PRICING").getValue();
@@ -123,7 +131,7 @@ public class PromotionalContentFragment extends Fragment {
                         productList.add(product);
                     }
                     pDialog.dismiss();
-                    recyclerView.setAdapter(new PromotionalContentRecyclerViewAdapter(productList, getActivity()));
+                    mRecyclerView.setAdapter(new PromotionalContentRecyclerViewAdapter(productList, getActivity()));
 
                 }
 
@@ -132,7 +140,11 @@ public class PromotionalContentFragment extends Fragment {
 
                 }
             });
+        } else {
+            pDialog.dismiss();
+            mNoUserLinearLayout.setVisibility(View.VISIBLE);
         }
+
 
         return rootView;
     }

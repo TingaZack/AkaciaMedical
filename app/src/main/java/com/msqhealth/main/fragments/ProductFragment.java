@@ -73,6 +73,13 @@ public class ProductFragment extends Fragment {
 
             mDatabase.child("categories").addValueEventListener(new ValueEventListener() {
                 public void onDataChange(DataSnapshot snapshot) {
+                    System.out.println(" CHI<D~: " + snapshot.getChildrenCount());
+                    if (!snapshot.exists()) {
+//                        mPromoTextView.setVisibility(View.VISIBLE);
+                        System.out.println("HELLO COUNT");
+                    } else {
+                        System.out.println("BYE COUNT");
+                    }
                     categoryList.clear();
                     for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                         Category category = new Category(((String) postSnapshot.child("Category").getValue()), (String) postSnapshot.child("image").getValue());

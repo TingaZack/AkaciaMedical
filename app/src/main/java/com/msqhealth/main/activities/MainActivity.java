@@ -284,6 +284,7 @@ public class MainActivity extends AppCompatActivity {
 //        }
         if (id == R.id.action_log_out) {
             FirebaseAuth.getInstance().signOut();
+            prefManager.setToBrowseCatalogue(false);
             Intent intent = new Intent(MainActivity.this, OnBoardingActivity.class);
             startActivity(intent);
             finish();

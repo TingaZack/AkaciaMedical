@@ -99,7 +99,6 @@ public class PaymentGatewayWebView extends AppCompatActivity {
         generateInvoiceNumber();
 
 
-
     }
 
     public void generateInvoiceNumber() {
@@ -388,6 +387,13 @@ public class PaymentGatewayWebView extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+    }
+
 
     public AlertDialog orderCompleted() {
         AlertDialog.Builder builder = new AlertDialog.Builder(PaymentGatewayWebView.this);
@@ -395,7 +401,9 @@ public class PaymentGatewayWebView extends AppCompatActivity {
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // FIRE ZE MISSILES!
+
                         finish();
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     }
                 });
         // Create the AlertDialog object and return it
