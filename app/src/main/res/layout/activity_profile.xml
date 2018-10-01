@@ -87,12 +87,12 @@
 
             </LinearLayout>
 
-            <ImageButton
-                android:id="@+id/name_edit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@android:color/transparent" />
+            <!--<ImageButton-->
+                <!--android:id="@+id/name_edit"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:background="@android:color/transparent" />-->
 
         </LinearLayout>
 
@@ -133,12 +133,57 @@
 
             </LinearLayout>
 
-            <ImageButton
-                android:id="@+id/speciality_edit"
+            <!--<ImageButton-->
+                <!--android:id="@+id/speciality_edit"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:background="@android:color/transparent" />-->
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:background="@android:color/transparent" />
+                android:padding="8dp"
+                android:src="@drawable/ic_phone_call" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Contact Number"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/profile_telephone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:enabled="false"
+                    android:hint="Contact Number"
+                    android:textAppearance="?android:textAppearanceSmall" />
+
+            </LinearLayout>
+
+            <!--<ImageButton-->
+                <!--android:id="@+id/telephone_edit"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:background="@android:color/transparent" />-->
 
         </LinearLayout>
 
@@ -186,52 +231,6 @@
                 android:background="@android:color/transparent"/>
 
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="8dp"
-                android:src="@drawable/ic_phone_call" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Contact Number"
-                    android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/profile_telephone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:enabled="false"
-                    android:hint="Contact Number"
-                    android:textAppearance="?android:textAppearanceSmall" />
-
-            </LinearLayout>
-
-            <ImageButton
-                android:id="@+id/telephone_edit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@android:color/transparent" />
-
-        </LinearLayout>
-
 
     </LinearLayout>
 

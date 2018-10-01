@@ -28,6 +28,7 @@ dependencies {
     })
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
     // https://mvnrepository.com/artifact/org.apache.httpcomponents/httpcore
+    implementation 'com.github.reinaldoarrosi:maskededittext:1.1.0'
     implementation group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.3.2'
     implementation 'com.android.support:appcompat-v7:27.0.0'
     implementation 'com.android.support:mediarouter-v7:27.0.0'

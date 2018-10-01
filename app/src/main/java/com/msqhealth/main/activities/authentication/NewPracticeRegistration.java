@@ -7,11 +7,16 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.PhoneNumberFormattingTextWatcher;
+import android.telephony.PhoneNumberUtils;
 import android.text.Editable;
+import android.text.Selection;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -23,7 +28,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.github.reinaldoarrosi.maskededittext.MaskedEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -36,12 +43,15 @@ import com.msqhealth.main.helpers.GMailSender;
 import java.util.Date;
 import java.util.regex.Pattern;
 
+import es.dmoral.toasty.Toasty;
+
 /**
  * A simple {@link Fragment} subclass.
  */
 public class NewPracticeRegistration extends AppCompatActivity {
 
-    private EditText ePracticeNumber, eFirstName, eLastName, eAddressLine1, eCellphone;
+    private EditText ePracticeNumber, eFirstName, eLastName, eAddressLine1;
+    EditText eCellphone;
     ProgressDialog pDialog;
 
     Button btnSubmit;
@@ -53,6 +63,8 @@ public class NewPracticeRegistration extends AppCompatActivity {
 
     private Spinner spinner;
     ArrayAdapter<String> adapter;
+    private int textlength = 0;
+
     final String[] paths = {"Select Speciality", "Dentist", "General Practitioner", "Medical Officer",
             "Nurse Assistance/Auxillary", "Paramedic", "Veterinary Surgeon"};
 
@@ -110,7 +122,9 @@ public class NewPracticeRegistration extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (i == 1) {
+                if (i == 0){
+                  speciality = "Select Speciality";
+                } else if (i == 1) {
                     speciality = "Dentist";
                 } else if (i == 2) {
                     speciality = "General Practitioner";
@@ -131,13 +145,97 @@ public class NewPracticeRegistration extends AppCompatActivity {
             }
         });
 
+        eCellphone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+
+                String text = eCellphone.getText().toString();
+                textlength = eCellphone.getText().length();
+
+                if (text.endsWith(" "))
+                    return;
+
+                if (textlength == 1) {
+                    if (!text.contains("(")) {
+                        eCellphone.setText(new StringBuilder(text).insert(text.length() - 1, "(").toString());
+                        eCellphone.setSelection(eCellphone.getText().length());
+                    }
+
+                } else if (textlength == 5) {
+
+                    if (!text.contains(")")) {
+                        eCellphone.setText(new StringBuilder(text).insert(text.length() - 1, ")").toString());
+                        eCellphone.setSelection(eCellphone.getText().length());
+                    }
+
+                } else if (textlength == 6 || textlength == 10) {
+                    eCellphone.setText(new StringBuilder(text).insert(text.length() - 1, " ").toString());
+                    eCellphone.setSelection(eCellphone.getText().length());
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
+
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View view) {
 
-                if (!TextUtils.isEmpty(speciality)) {
-                    new SendEmail().execute();
+//                eCellphone.addTextChangedListener(new PhoneNumberFormattingTextWatcher("+27"));
+//                PhoneNumberUtils.formatNumber(eCellphone.getText().toString());
+
+                if (ePracticeNumber.getText().length() >= 5) {
+                    if (eFirstName.getText().length() >= 7) {
+                        String mString = ePracticeNumber.getText().toString().substring(0, 5);
+                        if (mString.equals("14000")) {
+                            if (ePracticeNumber.getText().length() == 12) {
+                                if (!TextUtils.isEmpty(eCellphone.getText().toString().trim()) &&
+                                        eCellphone.getText().length() == 14) {
+                                    if (eCellphone.getText().length() >= 1) {
+                                        String mStringNumber = eCellphone.getText().toString().substring(0, 2);
+                                        if (mStringNumber.equals("(0")) {
+                                            if (eCellphone.getText().length() == 14) {
+                                                if (eAddressLine1.getText().length() >= 10) {
+                                                    if (!speciality.equals("Select Speciality")) {
+                                                        new SendEmail().execute();
+                                                        finish();
+                                                    } else {
+                                                        Toasty.error(getApplicationContext(), "Please select your speciality", Toast.LENGTH_LONG).show();
+                                                    }
+                                                } else {
+                                                    eAddressLine1.setError(getString(R.string.address_error));
+                                                }
+                                            } else {
+                                                eCellphone.setError(getString(R.string.invalid_phone));
+                                            }
+                                        } else {
+                                            eCellphone.setError(getString(R.string.invalid_phone));
+                                        }
+                                    }
+                                } else {
+                                    eCellphone.setError(getString(R.string.invalid_phone));
+                                }
+                            } else {
+                                ePracticeNumber.setError(getString(R.string.invalid_practice_number));
+                            }
+                        } else {
+                            ePracticeNumber.setError(getString(R.string.invalid_practice_number));
+                        }
+                    } else {
+                        eFirstName.setError(getString(R.string.valid_names));
+                    }
+                } else {
+                    ePracticeNumber.setError(getString(R.string.invalid_practice_number));
                 }
             }
         });
@@ -148,6 +246,7 @@ public class NewPracticeRegistration extends AppCompatActivity {
         pDialog.setMessage("Saving information...");
 
         checkFieldsForEmptyValues();
+        setDefaulttext();
     }
 
     public void checkIfUserExist() {
@@ -155,89 +254,6 @@ public class NewPracticeRegistration extends AppCompatActivity {
             startActivity(new Intent(getApplicationContext(), OnBoardingActivity.class));
         }
     }
-
-    /*
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_new_practice_registration, container, false);
-
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference();
-        mDatabaseReference.keepSynced(true);
-
-        mUser = FirebaseAuth.getInstance().getCurrentUser();
-
-        ePracticeNumber = view.findViewById(R.id.practice_number);
-        eFirstName = view.findViewById(R.id.firstname);
-        eLastName = view.findViewById(R.id.lastname);
-        eAddressLine1 = view.findViewById(R.id.address_field_1);
-//        eAddressLine2 = view.findViewById(R.id.address_field_2);
-//        eAddressLineSuburb = view.findViewById(R.id.address_field_suburb);
-//        eTelephone = view.findViewById(R.id.telephone);
-        eCellphone = view.findViewById(R.id.cellphone);
-
-        btnSubmit = view.findViewById(R.id.save);
-
-
-        ePracticeNumber.addTextChangedListener(mTextWatcher);
-        eFirstName.addTextChangedListener(mTextWatcher);
-        eLastName.addTextChangedListener(mTextWatcher);
-        eAddressLine1.addTextChangedListener(mTextWatcher);
-//        eAddressLine2.addTextChangedListener(mTextWatcher);
-//        eAddressLineSuburb.addTextChangedListener(mTextWatcher);
-        eCellphone.addTextChangedListener(mTextWatcher);
-//        eTelephone.addTextChangedListener(mTextWatcher);
-
-        spinner = (Spinner) view.findViewById(R.id.spinner);
-        adapter = new ArrayAdapter<String>(getActivity(),
-                R.layout.spinner_item, paths);
-
-//        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (i == 1) {
-                    speciality = "Dentist";
-                } else if (i == 2) {
-                    speciality = "General Practitioner";
-                } else if (i == 3) {
-                    speciality = "Medical Officer";
-                } else if (i == 4) {
-                    speciality = "Nurse Assistance/Auxillary";
-                } else if (i == 5) {
-                    speciality = "Paramedic";
-                } else if (i == 6) {
-                    speciality = "Veterinary Surgeon";
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-
-        btnSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new SendEmail().execute();
-            }
-        });
-
-
-        pDialog = new ProgressDialog(getActivity());
-        pDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        pDialog.setMessage("Saving information...");
-
-        checkFieldsForEmptyValues();
-
-        return view;
-    }
-    */
 
     protected void checkFieldsForEmptyValues() {
         // TODO Auto-generated method stub
@@ -290,6 +306,38 @@ public class NewPracticeRegistration extends AppCompatActivity {
         }
     };
 
+    public void setDefaulttext(){
+        eFirstName.setText("Dr ");
+        Selection.setSelection(eFirstName.getText(), eFirstName.getText().length());
+
+
+        eFirstName.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(!s.toString().startsWith("Dr ")){
+                    eFirstName.setText("Dr ");
+                    Selection.setSelection(eFirstName.getText(), eFirstName.getText().length());
+
+                }
+
+            }
+        });
+    }
+
     public class SendEmail extends AsyncTask<Void, Void, Boolean> {
 
 
@@ -302,7 +350,6 @@ public class NewPracticeRegistration extends AppCompatActivity {
         protected Boolean doInBackground(Void... voids) {
 
             try {
-
                 GMailSender sender = new GMailSender(getString(R.string.sender_email), getString(R.string.sender));
                 sender.sendMail("New Practice Number Registration",
                         "First Name : " + eFirstName.getText().toString() + "\n\n"

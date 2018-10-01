@@ -188,7 +188,7 @@
     <string name="checkout_error">A minimum order of R1000.00 is required to Checkout.</string>
     <string name="checkout">Checkout</string>
     <string name="learn_more">Learn More</string>
-    <string name="practice_number">Practice Number (e.g. 140 000 890 097)</string>
+    <string name="practice_number">Practice Number (e.g. 140000890097)</string>
     <string name="full_names">Full Names</string>
     <string name="delivery_address">Delivery Address</string>
     <string name="contact_number">Contact Number</string>
@@ -235,6 +235,10 @@
     <string name="i_sure">I\'m sure</string>
     <string name="i_cancel">Cancel</string>
     <string name="cart_msg_title">Cart Message</string>
+    <string name="invalid_practice_number">please insert a valid practice number</string>
+    <string name="invalid_phone">please insert a valid phone</string>
+    <string name="address_error">address incomplete ...</string>
+    <string name="valid_names">please insert valid names</string>
 
     <!--<string name="please_complete">Please complete the below form and we will contact you</string>-->
 
