@@ -109,8 +109,8 @@ public class CartDialogs extends DialogFragment {
                     }
                     DecimalFormat df = new DecimalFormat("##.00");
                     amount = _amount;
+                    System.out.println("AME: " + amount);
                     mCartItemCount.setText("Total: R" + String.valueOf(df.format(amount)).replace(",", "."));
-
 
                 }
 

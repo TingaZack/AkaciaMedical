@@ -177,7 +177,9 @@
     <string name="send_msg">Send Message</string>
     <string name="email">Email</string>
     <string name="by_signing">By Signing in, you agree to the &#x20;</string>
+    <string name="by_checking">By Checking out, you agree to the &#x20;</string>
     <string name="terms_and_conditions">Terms and Conditions.</string>
+    <string name="terms_of_payment">Terms of Payment</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="register">Register</string>
     <string name="reset_password">Reset password</string>

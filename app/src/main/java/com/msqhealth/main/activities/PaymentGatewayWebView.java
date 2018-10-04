@@ -149,10 +149,12 @@ public class PaymentGatewayWebView extends AppCompatActivity {
                 }
 
 
-                DecimalFormat df = new DecimalFormat("##.##");
+                DecimalFormat df = new DecimalFormat("##.00");
                 String finalAmount = String.valueOf(df.format(_amount).replace(",", "."));
+                System.out.println("ZEr`o: " + finalAmount);
 
                 String sent_amount = finalAmount.replace(".", "");
+                System.out.println(" F ZEr`o: " + sent_amount);
                 m_id = "MSQ" + new Date().getTime();
                 webView.loadUrl("file:///android_asset/gateway.html?merchantid=" + m_id + "&amount=" + sent_amount + "&thekey=" + getString(R.string.the_key) + "&theid=" + getString(R.string.the_id) + "");
 
