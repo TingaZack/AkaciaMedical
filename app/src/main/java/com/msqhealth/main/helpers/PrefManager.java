@@ -19,6 +19,7 @@ public class PrefManager {
     private static final String PREF_NAME = "msq-health-onboarding";
 
     private static final String BROWSE_CATALOGUE_LAUNCH = "isBrowseCatalogue";
+    private static final String FIRST_TIME_LAUNCH = "isFirstTimeRegister";
 
     public PrefManager(Context context) {
         this._context = context;
@@ -33,6 +34,15 @@ public class PrefManager {
 
     public boolean isBrowseCatalogue() {
         return pref.getBoolean(BROWSE_CATALOGUE_LAUNCH, true);
+    }
+
+    public void setToFirstTimeRegister(boolean browseCatalogue) {
+        editor.putBoolean(FIRST_TIME_LAUNCH, browseCatalogue);
+        editor.commit();
+    }
+
+    public boolean isFirstTimeRegister() {
+        return pref.getBoolean(FIRST_TIME_LAUNCH, true);
     }
 
 }

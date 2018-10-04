@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
@@ -31,6 +32,9 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.github.reinaldoarrosi.maskededittext.MaskedEditText;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -39,6 +43,7 @@ import com.msqhealth.main.R;
 import com.msqhealth.main.activities.MainActivity;
 import com.msqhealth.main.activities.OnBoardingActivity;
 import com.msqhealth.main.helpers.GMailSender;
+import com.msqhealth.main.helpers.PrefManager;
 
 import java.util.Date;
 import java.util.regex.Pattern;
@@ -79,6 +84,8 @@ public class NewPracticeRegistration extends AppCompatActivity {
 //    public NewPracticeRegistration() {
 //        // Required empty public constructor
 //    }
+
+    private PrefManager prefManager;
 
 
     @Override
@@ -122,8 +129,8 @@ public class NewPracticeRegistration extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (i == 0){
-                  speciality = "Select Speciality";
+                if (i == 0) {
+                    speciality = "Select Speciality";
                 } else if (i == 1) {
                     speciality = "Dentist";
                 } else if (i == 2) {
@@ -206,9 +213,11 @@ public class NewPracticeRegistration extends AppCompatActivity {
                                         if (mStringNumber.equals("(0")) {
                                             if (eCellphone.getText().length() == 14) {
                                                 if (eAddressLine1.getText().length() >= 10) {
+
                                                     if (!speciality.equals("Select Speciality")) {
-                                                        new SendEmail().execute();
-                                                        finish();
+//                                                        new SendEmail().execute();
+//                                                        finish();
+                                                        saveUserInfo();
                                                     } else {
                                                         Toasty.error(getApplicationContext(), "Please select your speciality", Toast.LENGTH_LONG).show();
                                                     }
@@ -247,6 +256,15 @@ public class NewPracticeRegistration extends AppCompatActivity {
 
         checkFieldsForEmptyValues();
         setDefaulttext();
+    }
+
+    private void saveUserInfo() {
+        pDialog.setMessage("Registering ...");
+        pDialog.show();
+        pDialog.setCancelable(false);
+        registerNewUser(mUser.getEmail(), eFirstName.getText().toString(),
+                ePracticeNumber.getText().toString(), eAddressLine1.getText().toString(),
+                eCellphone.getText().toString(), speciality);
     }
 
     public void checkIfUserExist() {
@@ -306,7 +324,7 @@ public class NewPracticeRegistration extends AppCompatActivity {
         }
     };
 
-    public void setDefaulttext(){
+    public void setDefaulttext() {
         eFirstName.setText("Dr ");
         Selection.setSelection(eFirstName.getText(), eFirstName.getText().length());
 
@@ -328,7 +346,7 @@ public class NewPracticeRegistration extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(!s.toString().startsWith("Dr ")){
+                if (!s.toString().startsWith("Dr ")) {
                     eFirstName.setText("Dr ");
                     Selection.setSelection(eFirstName.getText(), eFirstName.getText().length());
 
@@ -338,48 +356,50 @@ public class NewPracticeRegistration extends AppCompatActivity {
         });
     }
 
-    public class SendEmail extends AsyncTask<Void, Void, Boolean> {
-
-
-        @Override
-        protected void onPreExecute() {
-            pDialog.show();
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... voids) {
-
-            try {
-                GMailSender sender = new GMailSender(getString(R.string.sender_email), getString(R.string.sender));
-                sender.sendMail("New Practice Number Registration",
-                        "First Name : " + eFirstName.getText().toString() + "\n\n"
-                                + "Practice Number : " + ePracticeNumber.getText().toString() + "\n\n"
-                                + "Address : " + eAddressLine1.getText().toString() + ", " + "\n\n"
-                                + "Cellphone number : " + eCellphone.getText().toString() + "\n\n"
-//                                + "Telephone Number : " + eTelephone.getText().toString() + "\n\n"
-                        ,
-                        getString(R.string.sender_email),
-                        "info@buildhealth.co.za", "no attachment");
-                registerNewUser(mUser.getEmail(), eFirstName.getText().toString(),
-                        ePracticeNumber.getText().toString(), eAddressLine1.getText().toString(),
-                        eCellphone.getText().toString(), speciality);
-                return true;
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                return false;
-            }
-
-        }
-
-        @Override
-        protected void onPostExecute(Boolean emailSent) {
-            super.onPostExecute(emailSent);
-            pDialog.dismiss();
-            if (emailSent) {
-                orderCompleted().show();
-            }
-        }
-    }
+//    public class SendEmail extends AsyncTask<Void, Void, Boolean> {
+//
+//
+//        @Override
+//        protected void onPreExecute() {
+//            pDialog.show();
+//        }
+//
+//        @Override
+//        protected Boolean doInBackground(Void... voids) {
+//
+//            try {
+//                GMailSender sender = new GMailSender(getString(R.string.sender_email), getString(R.string.sender));
+//                sender.sendMail("New Practice Number Registration",
+//                        "First Name : " + eFirstName.getText().toString() + "\n\n"
+//                                + "Practice Number : " + ePracticeNumber.getText().toString() + "\n\n"
+//                                + "Address : " + eAddressLine1.getText().toString() + ", " + "\n\n"
+//                                + "Cellphone number : " + eCellphone.getText().toString() + "\n\n"
+////                                + "Telephone Number : " + eTelephone.getText().toString() + "\n\n"
+//                        ,
+//                        getString(R.string.sender_email),
+//                        "info@buildhealth.co.za", "no attachment");
+//                return true;
+//            } catch (Exception ex) {
+//                ex.printStackTrace();
+//                return false;
+//            }
+//
+//        }
+//
+//        @Override
+//        protected void onPostExecute(Boolean emailSent) {
+//            super.onPostExecute(emailSent);
+//            pDialog.dismiss();
+//            if (emailSent) {
+//                prefManager = new PrefManager(getApplicationContext());
+//                if (prefManager.isFirstTimeRegister()) {
+//                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+//                    finish();
+//                }
+//
+//            }
+//        }
+//    }
 
     public AlertDialog orderCompleted() {
         AlertDialog.Builder builder = new AlertDialog.Builder(NewPracticeRegistration.this);
@@ -398,7 +418,7 @@ public class NewPracticeRegistration extends AppCompatActivity {
         return builder.create();
     }
 
-    public void registerNewUser(String email, String first_name,
+    public void registerNewUser(String email, final String first_name,
                                 String practice_number, String address, String phone, String speciality) {
 
         DatabaseReference mDatabaseUsers = mDatabaseReference.child("users").child(mUser.getUid());
@@ -409,7 +429,25 @@ public class NewPracticeRegistration extends AppCompatActivity {
         mDatabaseUsers.child("Suburb").setValue(address);
         mDatabaseUsers.child("Email").setValue(email);
         mDatabaseUsers.child("verified").setValue(false);
-        mDatabaseUsers.child("Timestamp").setValue(new Date().getTime());
+        mDatabaseUsers.child("Timestamp").setValue(new Date().getTime()).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                pDialog.dismiss();
+                prefManager = new PrefManager(getApplicationContext());
+                prefManager.setToFirstTimeRegister(false);
+                System.out.println("FISRT TIME: " + prefManager.isFirstTimeRegister());
+                Intent registerIntent = new Intent(getApplicationContext(), MainActivity.class);
+                registerIntent.putExtra("dr_name", first_name);
+                startActivity(registerIntent);
+                finish();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                pDialog.dismiss();
+                Toast.makeText(NewPracticeRegistration.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 

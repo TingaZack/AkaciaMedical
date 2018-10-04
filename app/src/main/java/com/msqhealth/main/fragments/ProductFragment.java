@@ -1,5 +1,6 @@
 package com.msqhealth.main.fragments;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -7,13 +8,19 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
+import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.msqhealth.main.R;
 import com.msqhealth.main.adapters.MyProductRecyclerViewAdapter;
+import com.msqhealth.main.helpers.PrefManager;
 import com.msqhealth.main.model.Category;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,6 +41,11 @@ public class ProductFragment extends Fragment {
     private List<Category> categoryList;
 
     private ProgressDialog pDialog;
+    private Activity activity;
+    private PrefManager prefManager;
+    private String dr_name;
+
+    private FirebaseUser mUser;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -54,6 +66,11 @@ public class ProductFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_product_list, container, false);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        prefManager = new PrefManager(getContext());
+
+        dr_name = getActivity().getIntent().getStringExtra("dr_name");
+
+        mUser = FirebaseAuth.getInstance().getCurrentUser();
 
         pDialog = new ProgressDialog(getActivity());
         pDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -85,8 +102,10 @@ public class ProductFragment extends Fragment {
                         Category category = new Category(((String) postSnapshot.child("Category").getValue()), (String) postSnapshot.child("image").getValue());
                         categoryList.add(category);
                     }
-                    pDialog.dismiss();
                     recyclerView.setAdapter(new MyProductRecyclerViewAdapter(categoryList, getActivity()));
+                    pDialog.dismiss();
+                    checkUserRegistration();
+
                 }
 
                 @Override
@@ -96,6 +115,62 @@ public class ProductFragment extends Fragment {
             });
         }
         return view;
+    }
+
+    /*
+     * Check whether the user was registering or not( the state should be true or false). If the state is true, the user will
+     * see a popup welcoming them to the app here on MainActivity and if it's false, the will never see that welcome pop-up
+     * until they register again.
+     * */
+    public void checkUserRegistration() {
+        if (!prefManager.isFirstTimeRegister()) {
+            System.out.println("YES 1: " + prefManager.isFirstTimeRegister());
+            showWelcomeDialog();
+        }
+    }
+
+    public void showWelcomeDialog() {
+        final View mView = LayoutInflater.from(getContext()).inflate(R.layout.welcome_dialog, null);
+
+        final Button mWelcomeDone = mView.findViewById(R.id.btn_welcome_done);
+        final TextView mWelcomeTextView = mView.findViewById(R.id.tv_welcome);
+
+        final android.support.v7.app.AlertDialog.Builder aBuilder = new android.support.v7.app.AlertDialog.Builder(getContext(), R.style.CustomDialog);
+        aBuilder.setView(mView);
+        aBuilder.setCancelable(false);
+
+        final android.support.v7.app.AlertDialog alert = aBuilder.create();
+
+        FirebaseDatabase.getInstance().getReference().child("users").child(mUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                System.out.println("CECK NAME" + dataSnapshot.child("Name").getValue());
+
+                if (TextUtils.isEmpty(dr_name)) {
+                    mWelcomeTextView.setText("Welcome " + dataSnapshot.child("Name").getValue());
+                } else {
+                    mWelcomeTextView.setText("Welcome " + dr_name);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        mWelcomeDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alert.dismiss();
+                prefManager.setToFirstTimeRegister(true);
+                System.out.println("YES 2: " + prefManager.isFirstTimeRegister());
+            }
+        });
+
+        alert.show();
     }
 
 }

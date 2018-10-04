@@ -27,6 +27,7 @@ import android.widget.Toast;
 import android.app.AlertDialog;
 
 import com.msqhealth.main.R;
+import com.msqhealth.main.activities.MainActivity;
 import com.msqhealth.main.activities.OnBoardingActivity;
 import com.msqhealth.main.helpers.PrefManager;
 import com.msqhealth.main.model.CartItem;

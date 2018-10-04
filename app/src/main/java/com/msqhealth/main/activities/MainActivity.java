@@ -20,6 +20,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -386,9 +387,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /*
-    * Check whether the user browsing state is true or not. If the state is true, the user will
-    * remain here on MainActivity and if it's false, the user will be re-directed to OnBoardingActivity.
-    * */
+     * Check whether the user browsing state is true or not. If the state is true, the user will
+     * remain here on MainActivity and if it's false, the user will be re-directed to OnBoardingActivity.
+     * */
     public void checkUserBrowsingState() {
         if (!prefManager.isBrowseCatalogue()) {
             System.out.println("NOT: " + prefManager.isBrowseCatalogue());

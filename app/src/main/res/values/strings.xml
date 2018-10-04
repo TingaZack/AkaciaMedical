@@ -239,6 +239,8 @@
     <string name="invalid_phone">please insert a valid phone</string>
     <string name="address_error">address incomplete ...</string>
     <string name="valid_names">please insert valid names</string>
+    <string name="welcome_messsage">Thank you for choosing Akacia Medical for all your surgical equipment. You will receive an email within the next 24 hours after we have verified your details to allow you to start placing orders.\n\nIn the meantime you may browse our product catalogue until your account is verified.</string>
+    <string name="done">Done</string>
 
     <!--<string name="please_complete">Please complete the below form and we will contact you</string>-->
 
