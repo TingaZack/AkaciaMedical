@@ -108,12 +108,14 @@ public class PromotionalContentRecyclerViewAdapter extends RecyclerView.Adapter<
 
         user = FirebaseAuth.getInstance().getCurrentUser();
 
-        FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                snap = dataSnapshot;
-                if (user != null && dataSnapshot.hasChild("debtorCode")) {
-                    DatabaseReference mCheckReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("cart");
+        if (user != null) {
+
+            FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    snap = dataSnapshot;
+                    if (dataSnapshot.hasChild("debtorCode")) {
+                        DatabaseReference mCheckReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("cart");
 //            mCheckReference.child("cart-items").child(mValues.get(position).getCode()).addValueEventListener(new ValueEventListener() {
 //                @Override
 //                public void onDataChange(DataSnapshot dataSnapshot) {
@@ -137,47 +139,47 @@ public class PromotionalContentRecyclerViewAdapter extends RecyclerView.Adapter<
 //            });
 
 
-                    final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("cart").child("cart-items");
+                        final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("cart").child("cart-items");
 
-                    //Button to decrement the items in the cart
-                    holder.mDecrementButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
+                        //Button to decrement the items in the cart
+                        holder.mDecrementButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
 
 //                quant[0] = (long) dataSnapshot.child("quantity").getValue();
-                            int quantity = Integer.parseInt(holder.mQuantity.getText().toString());
+                                int quantity = Integer.parseInt(holder.mQuantity.getText().toString());
 
-                            if (quantity >= 2) {
-                                quantity--;
-                                System.out.println("GET QUANTITY: " + quantity);
-                                holder.mQuantity.setText(String.valueOf(quantity));
+                                if (quantity >= 2) {
+                                    quantity--;
+                                    System.out.println("GET QUANTITY: " + quantity);
+                                    holder.mQuantity.setText(String.valueOf(quantity));
+                                }
                             }
-                        }
-                    });
+                        });
 
-                    //Button to increment the items in the cart
-                    holder.mIncrementButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            final int[][] quantity = {{Integer.parseInt(holder.mQuantity.getText().toString())}};
-                            quantity[0][0]++;
-                            System.out.println("GET QUANTITY: " + quantity[0][0]);
-                            holder.mQuantity.setText(String.valueOf(quantity[0][0]));
-                        }
-                    });
-
-                    mDatabase.child(mValues.get(position).getCode()).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            long quant = 0;
-                            if (dataSnapshot.exists()) {
-                                quant = (long) dataSnapshot.child("quantity").getValue();
+                        //Button to increment the items in the cart
+                        holder.mIncrementButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
                                 final int[][] quantity = {{Integer.parseInt(holder.mQuantity.getText().toString())}};
-                                System.out.println("NEW : " + quant);
+                                quantity[0][0]++;
+                                System.out.println("GET QUANTITY: " + quantity[0][0]);
+                                holder.mQuantity.setText(String.valueOf(quantity[0][0]));
+                            }
+                        });
 
-                                holder.mQuantity.setText(String.valueOf(quant));
+                        mDatabase.child(mValues.get(position).getCode()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                long quant = 0;
+                                if (dataSnapshot.exists()) {
+                                    quant = (long) dataSnapshot.child("quantity").getValue();
+                                    final int[][] quantity = {{Integer.parseInt(holder.mQuantity.getText().toString())}};
+                                    System.out.println("NEW : " + quant);
 
-                                //Button to decrement the items in the cart
+                                    holder.mQuantity.setText(String.valueOf(quant));
+
+                                    //Button to decrement the items in the cart
 //                    holder.mIncrementButton.setOnClickListener(new View.OnClickListener() {
 //                        @Override
 //                        public void onClick(View view) {
@@ -186,108 +188,49 @@ public class PromotionalContentRecyclerViewAdapter extends RecyclerView.Adapter<
 //                            holder.mQuantity.setText(String.valueOf(quantity[0][0]));
 //                        }
 //                    });
+                                }
                             }
-                        }
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
 
-                        }
-                    });
+                            }
+                        });
 
-                    DatabaseReference mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("carts").child("pending").child(mValues.get(position).code);
+                        DatabaseReference mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("carts").child("pending").child(mValues.get(position).code);
 
-                    mDatabaseReference.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(final DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.getValue() != null) {
-                                holder.btnAddToCart.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
+                        mDatabaseReference.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(final DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.getValue() != null) {
+                                    holder.btnAddToCart.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
 
-                                        //Check if the account has been verified by checking if the debtors code exists.
-                                        if (snap.hasChild("debtorCode")) {
+                                            //Check if the account has been verified by checking if the debtors code exists.
+                                            if (snap.hasChild("debtorCode")) {
 
-                                            if (holder.mQuantity.getText().toString() == "") {
-                                                holder.mQuantity.setError(activity.getString(R.string.added_product_error));
-                                                return;
-                                            }
-
-                                            CartItem item = dataSnapshot.getValue(CartItem.class);
-                                            try {
-                                                if (holder.mQuantity.getText() != null) {
-                                                    item.setQuantity(item.getQuantity() + Integer.parseInt(holder.mQuantity.getText().toString()));
-                                                } else {
-                                                    item.setQuantity(item.getQuantity() + 1);
+                                                if (holder.mQuantity.getText().toString() == "") {
+                                                    holder.mQuantity.setError(activity.getString(R.string.added_product_error));
                                                     return;
                                                 }
-                                            } catch (Exception ex) {
-                                                holder.mQuantity.setError(activity.getString(R.string.added_product_error));
-                                                return;
-                                            }
-                                            Map<String, Object> postValues = item.toMap();
 
-                                            Map<String, Object> childUpdates = new HashMap<>();
-                                            childUpdates.put("/carts/pending/" + mValues.get(position).getCode(), postValues);
-                                            FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    if (task.isSuccessful()) {
-                                                        Snackbar snack = Snackbar.make(holder.mRelativeLayout, activity.getString(R.string.added_product_),
-                                                                Snackbar.LENGTH_INDEFINITE).setDuration(2000);
-                                                        snack.getView().setBackgroundColor(ContextCompat.getColor(activity, android.R.color.holo_green_dark));
-                                                        View view = snack.getView();
-                                                        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) view.getLayoutParams();
-                                                        params.gravity = Gravity.BOTTOM;
-                                                        view.setLayoutParams(params);
-                                                        snack.show();
-//                                            Toast.makeText(activity, "Item added to cart", Toast.LENGTH_SHORT).show();
+                                                CartItem item = dataSnapshot.getValue(CartItem.class);
+                                                try {
+                                                    if (holder.mQuantity.getText() != null) {
+                                                        item.setQuantity(item.getQuantity() + Integer.parseInt(holder.mQuantity.getText().toString()));
                                                     } else {
-                                                        task.getException().printStackTrace();
+                                                        item.setQuantity(item.getQuantity() + 1);
+                                                        return;
                                                     }
+                                                } catch (Exception ex) {
+                                                    holder.mQuantity.setError(activity.getString(R.string.added_product_error));
+                                                    return;
                                                 }
-                                            });
-                                        } else {
-                                            //if the account is not verified, show a popup that says so.
-                                            showDialog();
-                                        }
-                                    }
-                                });
-                            } else {
-                                holder.btnAddToCart.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        //Check if the account has been verified by checking if the debtors code exists.
-                                        if (snap.hasChild("debtorCode")) {
-                                            if (holder.mQuantity.getText().toString() == "") {
-                                                holder.mQuantity.setError(activity.getString(R.string.added_product_error));
-                                                return;
-                                            }
-                                            CartItem cartItem = new CartItem();
-                                            cartItem.setOwner_id(user.getUid());
-                                            cartItem.setProduct(holder.mItem);
-                                            cartItem.setQuantity(1);
+                                                Map<String, Object> postValues = item.toMap();
 
-                                            try {
-                                                if (holder.mQuantity.getText() != null) {
-                                                    cartItem.setQuantity(Integer.parseInt(holder.mQuantity.getText().toString()));
-                                                } else {
-                                                    cartItem.setQuantity(1);
-                                                }
-                                            } catch (Exception ex) {
-                                                holder.mQuantity.setError(activity.getString(R.string.added_product_error));
-                                                return;
-                                            }
-
-                                            Map<String, Object> postValues = cartItem.toMap();
-
-                                            String key = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("cart").push().getKey();
-
-
-                                            if (isNetworkAvailable()) {
                                                 Map<String, Object> childUpdates = new HashMap<>();
                                                 childUpdates.put("/carts/pending/" + mValues.get(position).getCode(), postValues);
-
                                                 FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
@@ -300,49 +243,109 @@ public class PromotionalContentRecyclerViewAdapter extends RecyclerView.Adapter<
                                                             params.gravity = Gravity.BOTTOM;
                                                             view.setLayoutParams(params);
                                                             snack.show();
-//                                                Toast.makeText(activity, "Item added to cart", Toast.LENGTH_SHORT).show();
+//                                            Toast.makeText(activity, "Item added to cart", Toast.LENGTH_SHORT).show();
                                                         } else {
                                                             task.getException().printStackTrace();
                                                         }
                                                     }
                                                 });
-                                            } else if (!isNetworkAvailable()) {
-                                                Snackbar snack = Snackbar.make(holder.mRelativeLayout, activity.getString(R.string.no_connection),
-                                                        Snackbar.LENGTH_INDEFINITE).setDuration(1000);
-                                                snack.getView().setBackgroundColor(ContextCompat.getColor(activity, android.R.color.holo_red_dark));
-                                                View view = snack.getView();
-                                                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
-                                                params.gravity = Gravity.TOP;
-                                                view.setLayoutParams(params);
-                                                snack.show();
+                                            } else {
+                                                //if the account is not verified, show a popup that says so.
+                                                showDialog();
                                             }
-                                        } else {
-                                            //if the account is not verified, show a popup that says so.
-                                            showDialog();
                                         }
-                                    }
-                                });
+                                    });
+                                } else {
+                                    holder.btnAddToCart.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            //Check if the account has been verified by checking if the debtors code exists.
+                                            if (snap.hasChild("debtorCode")) {
+                                                if (holder.mQuantity.getText().toString() == "") {
+                                                    holder.mQuantity.setError(activity.getString(R.string.added_product_error));
+                                                    return;
+                                                }
+                                                CartItem cartItem = new CartItem();
+                                                cartItem.setOwner_id(user.getUid());
+                                                cartItem.setProduct(holder.mItem);
+                                                cartItem.setQuantity(1);
 
-                            }
-                        }
+                                                try {
+                                                    if (holder.mQuantity.getText() != null) {
+                                                        cartItem.setQuantity(Integer.parseInt(holder.mQuantity.getText().toString()));
+                                                    } else {
+                                                        cartItem.setQuantity(1);
+                                                    }
+                                                } catch (Exception ex) {
+                                                    holder.mQuantity.setError(activity.getString(R.string.added_product_error));
+                                                    return;
+                                                }
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                            if (databaseError != null) {
-                                databaseError.toException().printStackTrace();
-                                Toast.makeText(activity, databaseError.getMessage(), Toast.LENGTH_LONG).show();
+                                                Map<String, Object> postValues = cartItem.toMap();
+
+                                                String key = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("cart").push().getKey();
+
+
+                                                if (isNetworkAvailable()) {
+                                                    Map<String, Object> childUpdates = new HashMap<>();
+                                                    childUpdates.put("/carts/pending/" + mValues.get(position).getCode(), postValues);
+
+                                                    FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            if (task.isSuccessful()) {
+                                                                Snackbar snack = Snackbar.make(holder.mRelativeLayout, activity.getString(R.string.added_product_),
+                                                                        Snackbar.LENGTH_INDEFINITE).setDuration(2000);
+                                                                snack.getView().setBackgroundColor(ContextCompat.getColor(activity, android.R.color.holo_green_dark));
+                                                                View view = snack.getView();
+                                                                CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) view.getLayoutParams();
+                                                                params.gravity = Gravity.BOTTOM;
+                                                                view.setLayoutParams(params);
+                                                                snack.show();
+//                                                Toast.makeText(activity, "Item added to cart", Toast.LENGTH_SHORT).show();
+                                                            } else {
+                                                                task.getException().printStackTrace();
+                                                            }
+                                                        }
+                                                    });
+                                                } else if (!isNetworkAvailable()) {
+                                                    Snackbar snack = Snackbar.make(holder.mRelativeLayout, activity.getString(R.string.no_connection),
+                                                            Snackbar.LENGTH_INDEFINITE).setDuration(1000);
+                                                    snack.getView().setBackgroundColor(ContextCompat.getColor(activity, android.R.color.holo_red_dark));
+                                                    View view = snack.getView();
+                                                    FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
+                                                    params.gravity = Gravity.TOP;
+                                                    view.setLayoutParams(params);
+                                                    snack.show();
+                                                }
+                                            } else {
+                                                //if the account is not verified, show a popup that says so.
+                                                showDialog();
+                                            }
+                                        }
+                                    });
+
+                                }
                             }
-                        }
-                    });
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                if (databaseError != null) {
+                                    databaseError.toException().printStackTrace();
+                                    Toast.makeText(activity, databaseError.getMessage(), Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+                    }
+
                 }
 
-            }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+                }
+            });
+        }
     }
 
     private boolean isNetworkAvailable() {

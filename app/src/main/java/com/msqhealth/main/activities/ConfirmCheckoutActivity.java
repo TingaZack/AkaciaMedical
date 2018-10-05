@@ -36,8 +36,8 @@ public class ConfirmCheckoutActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
-    TextView tvTC;
-    private String user_id, address, name, telephone;
+    private TextView tvTC;
+    private String user_id, address, name, telephone, termsLink;
     private ProgressDialog mProgressDialog;
 
     @Override
@@ -59,7 +59,7 @@ public class ConfirmCheckoutActivity extends AppCompatActivity {
 //        mUser = mAuth.getCurrentUser();
             user_id = mAuth.getCurrentUser().getUid();
 
-
+            termsLink = "https://msq-health.firebaseapp.com";
 
             mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user_id);
             mDatabase.keepSynced(true);
@@ -118,7 +118,9 @@ public class ConfirmCheckoutActivity extends AppCompatActivity {
             tvTC.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(getApplicationContext(), TermsAndCondtionsActivity.class));
+                    Intent termsIntent = new Intent(getApplicationContext(), TermsAndCondtionsActivity.class);
+                    termsIntent.putExtra("link", termsLink);
+                    startActivity(termsIntent);
                 }
             });
 
