@@ -117,7 +117,9 @@
             android:name=".activities.authentication.NewPracticeRegistration"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".EmailTestActivity"></activity>
+        <activity android:name=".EmailTestActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
