@@ -1,6 +1,7 @@
 package com.msqhealth.main.activities;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebSettings;
@@ -14,6 +15,8 @@ public class TermsAndCondtionsActivity extends Activity {
 
     private String link;
 
+    private ProgressDialog mProgressDialog;
+
     @Override
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,6 +24,9 @@ public class TermsAndCondtionsActivity extends Activity {
 
         link = getIntent().getStringExtra("link");
         System.out.println("LINK: " + link);
+
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.dismiss();
 
         wv1= findViewById(R.id.tc_webview);
 

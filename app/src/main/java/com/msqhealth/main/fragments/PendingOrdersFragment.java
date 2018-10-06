@@ -84,7 +84,9 @@ public class PendingOrdersFragment extends Fragment {
                         System.out.println("CHILDREN: " + dataSnapshot.getChildrenCount());
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             System.out.println("ASSIGN: " + snapshot.child("assign").getValue());
-                            Cart cart = new Cart(((long) snapshot.child("timeStamp").getValue()), ((String) snapshot.child("invoice_number").getValue()), ((double) snapshot.child("subtotal").getValue()));
+                            Cart cart = new Cart(((long) snapshot.child("timeStamp").getValue()),
+                                    ((String) snapshot.child("invoice_number").getValue()),
+                                    ((double) snapshot.child("subtotal").getValue()));
                             cartList.add(cart);
                         }
                         pDialog.dismiss();

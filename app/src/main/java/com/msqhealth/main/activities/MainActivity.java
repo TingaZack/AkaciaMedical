@@ -31,6 +31,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.johnpersano.supertoasts.library.Style;
 import com.github.johnpersano.supertoasts.library.SuperActivityToast;
@@ -83,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
     private PrefManager prefManager;
     private DatabaseReference mDatabase, mDatabaseUsers;
+    private ValueEventListener mValueEventListener;
     private FirebaseAuth mAuth;
     private int cart_count = 0;
     private int count_cart = 0;
@@ -402,7 +404,7 @@ public class MainActivity extends AppCompatActivity {
      * Check if user is registered and if not, re-direct them to Account Setup page
      * */
     public void checkIfUserRegistered() {
-        FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabaseUsers.child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.exists()) {
@@ -413,7 +415,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                Toast.makeText(getApplicationContext(), databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

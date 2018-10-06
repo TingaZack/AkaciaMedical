@@ -68,6 +68,8 @@ public class AboutUs extends AppCompatActivity /*implements View.OnClickListener
         final Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
+        mProgressDialog = new ProgressDialog(this);
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,10 +82,8 @@ public class AboutUs extends AppCompatActivity /*implements View.OnClickListener
         TsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Uri uri = Uri.parse(getString(R.string.akacia_website));
-//                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-//                startActivity(intent);
-
+                mProgressDialog.setMessage("Loading ...");
+                mProgressDialog.show();
                 Intent termsIntent = new Intent(getApplicationContext(), TermsAndCondtionsActivity.class);
                 termsIntent.putExtra("link", akaciaAboutLink);
                 startActivity(new Intent(termsIntent));
@@ -120,7 +120,7 @@ public class AboutUs extends AppCompatActivity /*implements View.OnClickListener
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         if (mUser != null) {
             System.out.println("UID: " + mUser.getUid());
-            mUsersDatabaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(mUser.getUid());
+            mUsersDatabaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(mUser.getUid()).child("profile");
             mUsersDatabaseReference.keepSynced(true);
             mMessagesDatabaseReference = FirebaseDatabase.getInstance().getReference().child("messages");
             mMessagesDatabaseReference.keepSynced(true);
@@ -167,6 +167,7 @@ public class AboutUs extends AppCompatActivity /*implements View.OnClickListener
             startActivity(new Intent(termsIntent));
             return true;
         } else if (id == R.id.action_info) {
+            showContactUsDialog();
             return true;
         }
 

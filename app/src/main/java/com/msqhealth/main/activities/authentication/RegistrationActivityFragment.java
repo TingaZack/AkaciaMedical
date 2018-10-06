@@ -167,6 +167,7 @@ public class RegistrationActivityFragment extends Fragment {
                                 if (task.isSuccessful()) {
 //                                    getFragmentManager().beginTransaction().replace(R.id.container, new NewPracticeRegistration()).commit();
                                     startActivity(new Intent(getActivity(), NewPracticeRegistration.class));
+                                    getActivity().finish();
                                 }
                             }
                         }).addOnFailureListener(new OnFailureListener() {

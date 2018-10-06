@@ -102,7 +102,7 @@ public class ProfileActivity extends AppCompatActivity {
 //                }
 //            });
 
-            mDatabaseUsers.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+            mDatabaseUsers.child(mAuth.getCurrentUser().getUid()).child("profile").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     mNameEditText.setText((String) dataSnapshot.child("Name").getValue());

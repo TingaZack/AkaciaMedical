@@ -116,7 +116,6 @@ public class LoginFragment extends Fragment {
         pDialog = new ProgressDialog(getActivity());
         pDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         pDialog.setMessage("Signing in...");
-        pDialog.setCancelable(false);
 
         view.findViewById(R.id.reset_password).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,6 +149,7 @@ public class LoginFragment extends Fragment {
                         }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+                        pDialog.dismiss();
                         Toasty.error(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });

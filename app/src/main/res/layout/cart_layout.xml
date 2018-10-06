@@ -30,8 +30,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/imgb_cart"
             android:layout_marginLeft="48dp"
-            android:layout_marginRight="48dp"
             android:layout_marginTop="16dp"
+            android:layout_marginRight="48dp"
             android:text="@string/empty_cart"
             android:textAlignment="center"
             android:visibility="gone" />
@@ -44,6 +44,7 @@
         android:orientation="vertical">
 
         <RelativeLayout
+            android:id="@+id/top_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/list"
@@ -55,9 +56,9 @@
                 android:id="@+id/clearAll"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
                 android:background="@android:color/transparent"
                 android:fontFamily="sans-serif"
                 android:text="Clear All"
@@ -70,8 +71,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/clearAll"
-                android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:layout_toLeftOf="@+id/clearAll"
                 android:fontFamily="sans-serif"
@@ -99,16 +100,53 @@
             android:id="@+id/checkout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
             android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
             android:background="@color/colorAccent"
             android:text="@string/checkout"
             android:textColor="#fff" />
 
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/account_unverified"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:padding="16dp">
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_centerHorizontal="true"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_user_still_verifying" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/account_unverified_title"
+            android:textAlignment="center"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/still_verifying"
+            android:textAlignment="center" />
+
+    </LinearLayout>
+
 
 </RelativeLayout><!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"--><!--xmlns:app="http://schemas.android.com/apk/res-auto"--><!--xmlns:tools="http://schemas.android.com/tools"--><!--android:id="@+id/relative_layout"--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent"--><!--android:orientation="vertical">-->
 

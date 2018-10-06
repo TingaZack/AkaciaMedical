@@ -63,7 +63,7 @@ public class ContactUsActivity extends AppCompatActivity {
 
             if (uid != null) {
                 System.out.println("UID: " + uid);
-                mUsersDatabaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(uid);
+                mUsersDatabaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("profile");
                 mUsersDatabaseReference.keepSynced(true);
                 mMessagesDatabaseReference = FirebaseDatabase.getInstance().getReference().child("messages");
                 mMessagesDatabaseReference.keepSynced(true);

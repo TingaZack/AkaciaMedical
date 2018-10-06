@@ -119,7 +119,11 @@ public class ListingDetailsActivity extends AppCompatActivity {
                 public void onDataChange(DataSnapshot snapshot) {
                     productList.clear();
                     for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                        if (postSnapshot.child("CONSUMABLES").getValue().toString().equals(title)) {
+
+                        if (postSnapshot.child("CONSUMABLES").getValue().toString().equals(title) && postSnapshot.child("PROMO").getValue() == null) {
+
+                            System.out.println("CHECJ TRU: " + postSnapshot.child("PROMO").getValue());
+
                             Product products = new Product(((String) postSnapshot.child("CODE").getValue()),
                                     (String) postSnapshot.child("CONSUMABLES").getValue(),
                                     (String) postSnapshot.child("DESCRIPTION").getValue(),

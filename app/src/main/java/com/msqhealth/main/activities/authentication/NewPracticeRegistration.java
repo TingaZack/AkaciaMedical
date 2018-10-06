@@ -29,6 +29,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.reinaldoarrosi.maskededittext.MaskedEditText;
@@ -37,8 +38,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.msqhealth.main.R;
 import com.msqhealth.main.activities.MainActivity;
 import com.msqhealth.main.activities.OnBoardingActivity;
@@ -56,10 +60,11 @@ import es.dmoral.toasty.Toasty;
 public class NewPracticeRegistration extends AppCompatActivity {
 
     private EditText ePracticeNumber, eFirstName, eLastName, eAddressLine1;
-    EditText eCellphone;
-    ProgressDialog pDialog;
+    private EditText eCellphone;
+    private ProgressDialog pDialog;
 
-    Button btnSubmit;
+    private Button btnSubmit;
+    private TextView mLearnMoreTextView;
 
     private DatabaseReference mDatabaseReference;
     private FirebaseAuth mAuth;
@@ -92,12 +97,14 @@ public class NewPracticeRegistration extends AppCompatActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_new_practice_registration);
+
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();
         mDatabaseReference.keepSynced(true);
 
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         checkIfUserExist();
 
+        mLearnMoreTextView = findViewById(R.id.tv_learn_more);
         ePracticeNumber = findViewById(R.id.practice_number);
         eFirstName = findViewById(R.id.firstname);
 //        eLastName = findViewById(R.id.lastname);
@@ -256,6 +263,23 @@ public class NewPracticeRegistration extends AppCompatActivity {
 
         checkFieldsForEmptyValues();
         setDefaulttext();
+        learMore();
+    }
+
+    public void learMore(){
+        mLearnMoreTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final View mView = LayoutInflater.from(NewPracticeRegistration.this).inflate(R.layout.learn_more, null);
+
+                final android.support.v7.app.AlertDialog.Builder aBuilder = new android.support.v7.app.AlertDialog.Builder(NewPracticeRegistration.this, R.style.CustomDialog);
+                aBuilder.setView(mView);
+
+                final android.support.v7.app.AlertDialog alert = aBuilder.create();
+
+                alert.show();
+            }
+        });
     }
 
     private void saveUserInfo() {
@@ -356,72 +380,10 @@ public class NewPracticeRegistration extends AppCompatActivity {
         });
     }
 
-//    public class SendEmail extends AsyncTask<Void, Void, Boolean> {
-//
-//
-//        @Override
-//        protected void onPreExecute() {
-//            pDialog.show();
-//        }
-//
-//        @Override
-//        protected Boolean doInBackground(Void... voids) {
-//
-//            try {
-//                GMailSender sender = new GMailSender(getString(R.string.sender_email), getString(R.string.sender));
-//                sender.sendMail("New Practice Number Registration",
-//                        "First Name : " + eFirstName.getText().toString() + "\n\n"
-//                                + "Practice Number : " + ePracticeNumber.getText().toString() + "\n\n"
-//                                + "Address : " + eAddressLine1.getText().toString() + ", " + "\n\n"
-//                                + "Cellphone number : " + eCellphone.getText().toString() + "\n\n"
-////                                + "Telephone Number : " + eTelephone.getText().toString() + "\n\n"
-//                        ,
-//                        getString(R.string.sender_email),
-//                        "info@buildhealth.co.za", "no attachment");
-//                return true;
-//            } catch (Exception ex) {
-//                ex.printStackTrace();
-//                return false;
-//            }
-//
-//        }
-//
-//        @Override
-//        protected void onPostExecute(Boolean emailSent) {
-//            super.onPostExecute(emailSent);
-//            pDialog.dismiss();
-//            if (emailSent) {
-//                prefManager = new PrefManager(getApplicationContext());
-//                if (prefManager.isFirstTimeRegister()) {
-//                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
-//                    finish();
-//                }
-//
-//            }
-//        }
-//    }
-
-    public AlertDialog orderCompleted() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(NewPracticeRegistration.this);
-        builder.setMessage("Thank you. You will receive an email within the next 24 hours after we have " +
-                "verified your details to allow you to start placing orders.\n\n" +
-                "In the meantime you may browse our product catalogue until your account is verified.")
-//        builder.setMessage("Thank you. A Customer Service Agent will call to verify your practice before you can sign up in the app.")
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                        startActivity(new Intent(NewPracticeRegistration.this, MainActivity.class));
-                        finish();
-                    }
-                });
-        // Create the AlertDialog object and return it
-        return builder.create();
-    }
-
     public void registerNewUser(String email, final String first_name,
                                 String practice_number, String address, String phone, String speciality) {
 
-        DatabaseReference mDatabaseUsers = mDatabaseReference.child("users").child(mUser.getUid());
+        DatabaseReference mDatabaseUsers = mDatabaseReference.child("users").child(mUser.getUid()).child("profile");
         mDatabaseUsers.child("Name").setValue(first_name);
         mDatabaseUsers.child("Practice_Number").setValue(practice_number);
         mDatabaseUsers.child("Speciality").setValue(speciality);

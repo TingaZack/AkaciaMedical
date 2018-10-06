@@ -99,7 +99,8 @@ public class ProductFragment extends Fragment {
                     }
                     categoryList.clear();
                     for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                        Category category = new Category(((String) postSnapshot.child("Category").getValue()), (String) postSnapshot.child("image").getValue());
+                        Category category = new Category(((String) postSnapshot.child("Category").getValue()),
+                                (String) postSnapshot.child("image").getValue());
                         categoryList.add(category);
                     }
                     recyclerView.setAdapter(new MyProductRecyclerViewAdapter(categoryList, getActivity()));
@@ -141,7 +142,7 @@ public class ProductFragment extends Fragment {
 
         final android.support.v7.app.AlertDialog alert = aBuilder.create();
 
-        FirebaseDatabase.getInstance().getReference().child("users").child(mUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("users").child(mUser.getUid()).child("profile").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 

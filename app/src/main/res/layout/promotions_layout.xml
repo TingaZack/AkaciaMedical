@@ -17,7 +17,9 @@
         card_view:cardElevation="1dp">
 
         <RelativeLayout
+            android:id="@+id/relative_card"
             android:layout_width="match_parent"
+            android:visibility="gone"
             android:layout_height="match_parent">
 
             <ImageView
@@ -39,6 +41,7 @@
                 android:maxLines="1"
                 android:rotation="46"
                 android:text="20% off"
+                android:textSize="12sp"
                 android:textColor="@android:color/white" />
 
             <LinearLayout
@@ -108,6 +111,7 @@
                                 android:layout_weight="1"
                                 android:gravity="right"
                                 android:text="R 3.62"
+                                android:visibility="gone"
                                 android:textAppearance="?android:textAppearanceMedium"
                                 android:textStyle="bold" />
 

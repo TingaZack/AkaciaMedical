@@ -10,7 +10,9 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -40,6 +42,8 @@ public class ConfirmCheckoutActivity extends AppCompatActivity {
     private String user_id, address, name, telephone, termsLink;
     private ProgressDialog mProgressDialog;
 
+    private int textlength = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +72,7 @@ public class ConfirmCheckoutActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (!dataSnapshot.exists()) {
-                        mDatabase.addValueEventListener(new ValueEventListener() {
+                        mDatabase.child("profile").addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 address = (String) dataSnapshot.child("Suburb").getValue();
@@ -134,7 +138,7 @@ public class ConfirmCheckoutActivity extends AppCompatActivity {
 
                     if (!TextUtils.isEmpty(full_names)) {
 
-                        if (!TextUtils.isEmpty(billing_address)) {
+                        if (!TextUtils.isEmpty(billing_address) && billing_address.length() >= 15) {
 
                             if (!TextUtils.isEmpty(cell_number)) {
 
@@ -164,16 +168,59 @@ public class ConfirmCheckoutActivity extends AppCompatActivity {
                     }
                 }
             });
-        }else if (!isNetworkAvailable()) {
+        } else if (!isNetworkAvailable()) {
 
-                Snackbar snack = Snackbar.make(findViewById(R.id.relative_layout), getApplicationContext().getString(R.string.no_connection), Snackbar.LENGTH_INDEFINITE).setDuration(10000);
-                snack.getView().setBackgroundColor(ContextCompat.getColor(getApplicationContext(), android.R.color.holo_red_dark));
-                View view = snack.getView();
-                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
-                params.gravity = Gravity.TOP;
-                view.setLayoutParams(params);
-                snack.show();
+            Snackbar snack = Snackbar.make(findViewById(R.id.relative_layout), getApplicationContext().getString(R.string.no_connection), Snackbar.LENGTH_INDEFINITE).setDuration(10000);
+            snack.getView().setBackgroundColor(ContextCompat.getColor(getApplicationContext(), android.R.color.holo_red_dark));
+            View view = snack.getView();
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
+            params.gravity = Gravity.TOP;
+            view.setLayoutParams(params);
+            snack.show();
+        }
+
+    }
+
+    public void phoneValidation() {
+        mPhoneNumberEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+
+                String text = mPhoneNumberEditText.getText().toString();
+                textlength = mPhoneNumberEditText.getText().length();
+
+                if (text.endsWith(" "))
+                    return;
+
+                if (textlength == 1) {
+                    if (!text.contains("(")) {
+                        mPhoneNumberEditText.setText(new StringBuilder(text).insert(text.length() - 1, "(").toString());
+                        mPhoneNumberEditText.setSelection(mPhoneNumberEditText.getText().length());
+                    }
+
+                } else if (textlength == 5) {
+
+                    if (!text.contains(")")) {
+                        mPhoneNumberEditText.setText(new StringBuilder(text).insert(text.length() - 1, ")").toString());
+                        mPhoneNumberEditText.setSelection(mPhoneNumberEditText.getText().length());
+                    }
+
+                } else if (textlength == 6 || textlength == 10) {
+                    mPhoneNumberEditText.setText(new StringBuilder(text).insert(text.length() - 1, " ").toString());
+                    mPhoneNumberEditText.setSelection(mPhoneNumberEditText.getText().length());
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
 
     }
 

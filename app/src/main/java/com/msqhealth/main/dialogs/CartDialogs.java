@@ -21,6 +21,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,6 +65,9 @@ public class CartDialogs extends DialogFragment {
     ProgressDialog mProgressDialog;
     private double amount;
 
+    private LinearLayout mLinearLayoutUnverfied;
+    private RelativeLayout mRelativeLayoutTopBar;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final Dialog view = super.onCreateDialog(savedInstanceState);
@@ -82,6 +87,8 @@ public class CartDialogs extends DialogFragment {
         mText_view = view.findViewById(R.id.text_view);
 
         mImageButtonEmptyCart = view.findViewById(R.id.imgb_cart);
+        mLinearLayoutUnverfied = view.findViewById(R.id.account_unverified);
+        mRelativeLayoutTopBar = view.findViewById(R.id.top_bar);
 
         mCartItemCount = (TextView) view.findViewById(R.id.cart_total_count);
         mList = (RecyclerView) view.findViewById(R.id.list);
@@ -93,56 +100,251 @@ public class CartDialogs extends DialogFragment {
         if (user != null) {
             final String uid = user.getUid();
 
-            FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("carts").child("pending").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(final DataSnapshot dataSnapshot) {
-                    double _amount = 0;
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        try {
-                            CartItem cartItem = new CartItem();
-                            cartItem.setQuantity(Integer.parseInt(snapshot.child("quantity").getValue().toString()));
-                            _amount = _amount + ((Double.parseDouble(String.valueOf(snapshot.child("product").child("price").getValue()))) * (Integer.parseInt(snapshot.child("quantity").getValue().toString())));
 
-                        } catch (Exception e) {
-                            e.getMessage();
-                        }
-                    }
-                    DecimalFormat df = new DecimalFormat("##.00");
-                    amount = _amount;
-                    System.out.println("AME: " + amount);
-                    mCartItemCount.setText("Total: R" + String.valueOf(df.format(amount)).replace(",", "."));
-
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-
-            FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("carts").child("pending").addValueEventListener(new ValueEventListener() {
+            FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("profile").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    System.out.println("SNAP: " + dataSnapshot.getChildrenCount());
-                    if (dataSnapshot.getChildrenCount() == 0) {
-                        btnClearAll.setVisibility(View.GONE);
-                        mCartItemCount.setVisibility(View.GONE);
-                        btnCheckOut.setText("Browse for Shopping!");
-                        mImageButtonEmptyCart.setVisibility(View.VISIBLE);
-                        mText_view.setVisibility(View.VISIBLE);
+
+                    if (dataSnapshot.hasChild("debtorCode")) {
+                        mLinearLayoutUnverfied.setVisibility(View.GONE);
+                        mRelativeLayoutTopBar.setVisibility(View.VISIBLE);
+                        FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("carts").child("pending").addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(final DataSnapshot dataSnapshot) {
+                                double _amount = 0;
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    try {
+                                        CartItem cartItem = new CartItem();
+                                        cartItem.setQuantity(Integer.parseInt(snapshot.child("quantity").getValue().toString()));
+                                        _amount = _amount + ((Double.parseDouble(String.valueOf(snapshot.child("product").child("price").getValue()))) * (Integer.parseInt(snapshot.child("quantity").getValue().toString())));
+
+                                    } catch (Exception e) {
+                                        e.getMessage();
+                                    }
+                                }
+                                DecimalFormat df = new DecimalFormat("##.00");
+                                amount = _amount;
+                                System.out.println("AME: " + amount);
+                                mCartItemCount.setText("Total: R" + String.valueOf(df.format(amount)).replace(",", "."));
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+                        FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("carts").child("pending").addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                System.out.println("SNAP: " + dataSnapshot.getChildrenCount());
+                                if (dataSnapshot.getChildrenCount() == 0) {
+                                    btnClearAll.setVisibility(View.GONE);
+                                    mCartItemCount.setVisibility(View.GONE);
+                                    btnCheckOut.setText("Browse for Shopping!");
+                                    mImageButtonEmptyCart.setVisibility(View.VISIBLE);
+                                    mText_view.setVisibility(View.VISIBLE);
+                                    btnCheckOut.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            dismiss();
+                                        }
+                                    });
+                                } else {
+                                    btnCheckOut.setText("Checkout");
+                                    btnClearAll.setVisibility(View.VISIBLE);
+                                    mCartItemCount.setVisibility(View.VISIBLE);
+                                    btnCheckOut.setEnabled(true);
+                                    mImageButtonEmptyCart.setVisibility(View.GONE);
+                                    mText_view.setVisibility(View.GONE);
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+                        mDatabase.child("users").child(user.getUid()).child("carts").child("pending").addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(final DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.getValue() != null) {
+                                    if (dataSnapshot.hasChildren()) {
+                                        items.clear();
+                                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                            //Create cart item and set initial values
+
+                                            try {
+//
+                                                if (snapshot.child("product").child("promotion").getValue().equals(true)) {
+//
+                                                    CartItem item = new CartItem();
+                                                    item.setQuantity(Integer.parseInt(String.valueOf((long) snapshot.child("quantity").getValue())));
+                                                    item.setOwner_id(uid);
+
+                                                    //Create and set product object
+                                                    Product product = new Product();
+                                                    product.setCode(snapshot.child("product").child("code").getValue().toString());
+                                                    product.setConsumables(snapshot.child("product").child("consumables").getValue().toString());
+                                                    product.setDescription(snapshot.child("product").child("description").getValue().toString());
+                                                    product.setPrice(Double.parseDouble(snapshot.child("product").child("price").getValue().toString()));
+                                                    product.setTrueImageUrl(snapshot.child("product").child("trueImageUrl").getValue().toString());
+                                                    product.setUnit_of_messuremeant(snapshot.child("product").child("unit_of_messuremeant").getValue().toString());
+                                                    product.setEnd_date(snapshot.child("product").child("end_date").getValue().toString());
+                                                    product.setStart_date(snapshot.child("product").child("start_date").getValue().toString());
+                                                    product.setPercentage(snapshot.child("product").child("percentage").getValue().toString());
+                                                    product.setPromotion((boolean) snapshot.child("product").child("promotion").getValue());
+
+                                                    System.out.println("ITEM: 2: " + snapshot.child("product").child("promotion").getValue());
+                                                    //Add product to cartItem
+                                                    item.setProduct(product);
+                                                    if (item != null) {
+                                                        items.add(item);
+                                                    } else {
+                                                        System.out.println("No Item found");
+                                                    }
+                                                } else {
+
+                                                    CartItem item = new CartItem();
+                                                    item.setQuantity(Integer.parseInt(String.valueOf((long) snapshot.child("quantity").getValue())));
+                                                    item.setOwner_id(uid);
+
+                                                    //Create and set product object
+                                                    Product product = new Product();
+                                                    product.setCode(snapshot.child("product").child("code").getValue().toString());
+                                                    product.setConsumables(snapshot.child("product").child("consumables").getValue().toString());
+                                                    product.setDescription(snapshot.child("product").child("description").getValue().toString());
+                                                    product.setPrice(Double.parseDouble(snapshot.child("product").child("price").getValue().toString()));
+                                                    product.setTrueImageUrl(snapshot.child("product").child("trueImageUrl").getValue().toString());
+                                                    product.setUnit_of_messuremeant(snapshot.child("product").child("unit_of_messuremeant").getValue().toString());
+
+                                                    System.out.println("ITEM: " + snapshot.child("product").child("promotion").getValue());
+                                                    //Add product to cartItem
+                                                    item.setProduct(product);
+                                                    if (item != null) {
+                                                        items.add(item);
+                                                    } else {
+                                                        System.out.println("No Item found");
+                                                    }
+
+
+                                                }
+                                            } catch (Exception e) {
+                                                e.getMessage();
+                                            }
+                                        }
+
+                                        adapter = new CartDialogListAdapter(items, getActivity(), dataSnapshot);
+                                        mList.setAdapter(adapter);
+
+                                        final DatabaseReference mCheckDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("carts").child("pending");
+                                        btnCheckOut.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                if (isNetworkAvailable()) {
+                                                    mCheckDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                                            try {
+                                                                if (dataSnapshot.exists()) {
+                                                                    if (amount >= 1000) {
+                                                                        startActivity(new Intent(getActivity(), ConfirmCheckoutActivity.class));
+                                                                    } else {
+                                                                        Snackbar snack = Snackbar.make(view.findViewById(R.id.relative_layout), R.string.checkout_error,
+                                                                                Snackbar.LENGTH_INDEFINITE).setDuration(5000);
+                                                                        snack.getView().setBackgroundColor(ContextCompat.getColor(getActivity(), android.R.color.holo_red_dark));
+                                                                        View view = snack.getView();
+                                                                        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
+                                                                        params.gravity = Gravity.TOP;
+                                                                        view.setLayoutParams(params);
+                                                                        snack.show();
+                                                                    }
+//                                                        dismiss();
+                                                                } else {
+                                                                }
+                                                            } catch (Exception e) {
+                                                                System.out.println("ERROR: " + e.getMessage());
+                                                            }
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(DatabaseError databaseError) {
+
+                                                        }
+                                                    });
+
+                                                } else if (!isNetworkAvailable()) {
+
+                                                    Snackbar snack = Snackbar.make(view.findViewById(R.id.relative_layout), getActivity().getString(R.string.no_connection),
+                                                            Snackbar.LENGTH_INDEFINITE).setDuration(1000);
+                                                    snack.getView().setBackgroundColor(ContextCompat.getColor(getActivity(), android.R.color.holo_red_dark));
+                                                    View view = snack.getView();
+                                                    FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
+                                                    params.gravity = Gravity.TOP;
+                                                    view.setLayoutParams(params);
+                                                    snack.show();
+                                                }
+                                            }
+                                        });
+
+                                        btnClearAll.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+
+                                                AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+                                                dialog.setTitle(R.string.cart_msg_title)
+//                                            .setIcon(R.drawable.)
+                                                        .setMessage(R.string.clear_cart_msg)
+                                                        .setNegativeButton(R.string.i_cancel, new DialogInterface.OnClickListener() {
+                                                            public void onClick(DialogInterface dialoginterface, int i) {
+                                                                dialoginterface.cancel();
+                                                            }
+                                                        })
+                                                        .setPositiveButton(R.string.i_sure, new DialogInterface.OnClickListener() {
+                                                            public void onClick(DialogInterface dialoginterface, int i) {
+                                                                mProgressDialog.setMessage(getString(R.string.clearing_cart));
+                                                                mProgressDialog.show();
+                                                                dataSnapshot.getRef().removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                        if (task.isComplete()) {
+                                                                            if (task.isSuccessful()) {
+                                                                                mProgressDialog.dismiss();
+                                                                                dismiss();
+                                                                            } else {
+                                                                                mProgressDialog.dismiss();
+                                                                            }
+                                                                        } else {
+                                                                            mProgressDialog.dismiss();
+                                                                        }
+                                                                    }
+                                                                });
+                                                            }
+                                                        }).show();
+                                            }
+                                        });
+
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                databaseError.toException().printStackTrace();
+                            }
+                        });
+                    } else {
+                        mLinearLayoutUnverfied.setVisibility(View.VISIBLE);
+                        mRelativeLayoutTopBar.setVisibility(View.GONE);
+                        btnCheckOut.setText("Browse Catalogue");
                         btnCheckOut.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 dismiss();
                             }
                         });
-                    } else {
-                        btnCheckOut.setText("Checkout");
-                        btnClearAll.setVisibility(View.VISIBLE);
-                        mCartItemCount.setVisibility(View.VISIBLE);
-                        btnCheckOut.setEnabled(true);
-                        mImageButtonEmptyCart.setVisibility(View.GONE);
-                        mText_view.setVisibility(View.GONE);
                     }
                 }
 
@@ -152,138 +354,6 @@ public class CartDialogs extends DialogFragment {
                 }
             });
 
-            mDatabase.child("users").child(user.getUid()).child("carts").child("pending").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(final DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.getValue() != null) {
-                        if (dataSnapshot.hasChildren()) {
-                            items.clear();
-                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                //Create cart item and set initial values
-                                try {
-                                    CartItem item = new CartItem();
-                                    item.setQuantity(Integer.parseInt(String.valueOf((long) snapshot.child("quantity").getValue())));
-                                    item.setOwner_id(uid);
-
-                                    //Create and set product object
-                                    Product product = new Product();
-                                    product.setCode(snapshot.child("product").child("code").getValue().toString());
-                                    product.setConsumables(snapshot.child("product").child("consumables").getValue().toString());
-                                    product.setDescription(snapshot.child("product").child("description").getValue().toString());
-                                    product.setPrice(Double.parseDouble(snapshot.child("product").child("price").getValue().toString()));
-                                    product.setTrueImageUrl(snapshot.child("product").child("trueImageUrl").getValue().toString());
-                                    product.setUnit_of_messuremeant(snapshot.child("product").child("unit_of_messuremeant").getValue().toString());
-                                    //Add product to cartItem
-                                    item.setProduct(product);
-                                    if (item != null) {
-                                        items.add(item);
-                                    } else {
-                                        System.out.println("No Item found");
-                                    }
-                                } catch (Exception e) {
-                                    e.getMessage();
-                                }
-                            }
-
-                            adapter = new CartDialogListAdapter(items, getActivity(), dataSnapshot);
-                            mList.setAdapter(adapter);
-
-                            final DatabaseReference mCheckDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("carts").child("pending");
-                            btnCheckOut.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    if (isNetworkAvailable()) {
-                                        mCheckDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                                try {
-                                                    if (dataSnapshot.exists()) {
-                                                        if (amount >= 1000) {
-                                                            startActivity(new Intent(getActivity(), ConfirmCheckoutActivity.class));
-                                                        } else {
-                                                            Snackbar snack = Snackbar.make(view.findViewById(R.id.relative_layout), R.string.checkout_error,
-                                                                    Snackbar.LENGTH_INDEFINITE).setDuration(5000);
-                                                            snack.getView().setBackgroundColor(ContextCompat.getColor(getActivity(), android.R.color.holo_red_dark));
-                                                            View view = snack.getView();
-                                                            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
-                                                            params.gravity = Gravity.TOP;
-                                                            view.setLayoutParams(params);
-                                                            snack.show();
-                                                        }
-//                                                        dismiss();
-                                                    } else {
-                                                    }
-                                                } catch (Exception e) {
-                                                    System.out.println("ERROR: " + e.getMessage());
-                                                }
-                                            }
-
-                                            @Override
-                                            public void onCancelled(DatabaseError databaseError) {
-
-                                            }
-                                        });
-
-                                    } else if (!isNetworkAvailable()) {
-
-                                        Snackbar snack = Snackbar.make(view.findViewById(R.id.relative_layout), getActivity().getString(R.string.no_connection),
-                                                Snackbar.LENGTH_INDEFINITE).setDuration(1000);
-                                        snack.getView().setBackgroundColor(ContextCompat.getColor(getActivity(), android.R.color.holo_red_dark));
-                                        View view = snack.getView();
-                                        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
-                                        params.gravity = Gravity.TOP;
-                                        view.setLayoutParams(params);
-                                        snack.show();
-                                    }
-                                }
-                            });
-
-                            btnClearAll.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-
-                                    AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
-                                    dialog.setTitle(R.string.cart_msg_title)
-//                                            .setIcon(R.drawable.)
-                                            .setMessage(R.string.clear_cart_msg)
-                                            .setNegativeButton(R.string.i_cancel, new DialogInterface.OnClickListener() {
-                                                public void onClick(DialogInterface dialoginterface, int i) {
-                                                    dialoginterface.cancel();
-                                                }
-                                            })
-                                            .setPositiveButton(R.string.i_sure, new DialogInterface.OnClickListener() {
-                                                public void onClick(DialogInterface dialoginterface, int i) {
-                                                    mProgressDialog.setMessage(getString(R.string.clearing_cart));
-                                                    mProgressDialog.show();
-                                                    dataSnapshot.getRef().removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                            if (task.isComplete()) {
-                                                                if (task.isSuccessful()) {
-                                                                    mProgressDialog.dismiss();
-                                                                    dismiss();
-                                                                } else {
-                                                                    mProgressDialog.dismiss();
-                                                                }
-                                                            } else {
-                                                                mProgressDialog.dismiss();
-                                                            }
-                                                        }
-                                                    });
-                                                }
-                                            }).show();
-                                }
-                            });
-
-                        }
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    databaseError.toException().printStackTrace();
-                }
-            });
         }
 
         return view;

@@ -64,7 +64,7 @@ public class ViewProfileActivity extends Activity {
             String uid = user.getUid();
 
 
-            mDatabase.child("users").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            mDatabase.child("users").child(uid).child("profile").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     mOccupation.setText(dataSnapshot.child("occupation").getValue().toString());

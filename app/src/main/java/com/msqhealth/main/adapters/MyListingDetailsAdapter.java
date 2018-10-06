@@ -55,6 +55,7 @@ public class MyListingDetailsAdapter extends RecyclerView.Adapter<MyListingDetai
 
     private final List<Product> mValues;
     private Activity activity;
+    private Context context;
     private DatabaseReference mDatabase;
 
     private PrefManager prefManager;
@@ -83,6 +84,9 @@ public class MyListingDetailsAdapter extends RecyclerView.Adapter<MyListingDetai
         holder.mPricingUnitView.setText(String.valueOf(mValues.get(position).unit_of_messuremeant.toLowerCase()));
         Glide.with(activity).load(mValues.get(position).trueImageUrl).into(holder.mProductImage);
 
+        System.out.println("TRUE OR FALSE: " + mValues.get(position).promotion);
+
+        prefManager = new PrefManager(activity);
 
         DecimalFormat df = new DecimalFormat("##.00");
 
@@ -96,14 +100,15 @@ public class MyListingDetailsAdapter extends RecyclerView.Adapter<MyListingDetai
 
         if (user != null) {
 
-            FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("profile").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     snap = dataSnapshot;
 
-                    System.out.println("SSS: " + snap.getValue());
                     if (dataSnapshot.hasChild("debtorCode")) {
                         holder.btnAddToCart.setText(R.string.add_to_cart);
+                        holder.mPriceView.setVisibility(View.VISIBLE);
+                        holder.mLinearLayoutMainButtons.setVisibility(View.VISIBLE);
 
                         mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("carts").child("pending");
 
@@ -307,11 +312,12 @@ public class MyListingDetailsAdapter extends RecyclerView.Adapter<MyListingDetai
                         holder.mPriceView.setVisibility(View.GONE);
                         holder.btnAddToCart.setText(R.string.view_price);
                         holder.mLinearLayout.setVisibility(View.GONE);
+                        holder.mLinearLayoutMainButtons.setVisibility(View.VISIBLE);
 
                         holder.btnAddToCart.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                loginToViewPrice();
+                                verifyToViewPrice();
                             }
                         });
                     }
@@ -327,6 +333,7 @@ public class MyListingDetailsAdapter extends RecyclerView.Adapter<MyListingDetai
             holder.mPriceView.setVisibility(View.GONE);
             holder.btnAddToCart.setText(R.string.view_price);
             holder.mLinearLayout.setVisibility(View.GONE);
+            holder.mLinearLayoutMainButtons.setVisibility(View.VISIBLE);
 
             holder.btnAddToCart.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -357,6 +364,23 @@ public class MyListingDetailsAdapter extends RecyclerView.Adapter<MyListingDetai
                 dialog.dismiss();
             }
         });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    public void verifyToViewPrice() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setCancelable(true);
+        builder.setTitle(R.string.akacia_medical);
+        builder.setMessage(R.string.to_view_price_verify);
+        builder.setPositiveButton(R.string.okay,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
 
         AlertDialog dialog = builder.create();
         dialog.show();
@@ -395,6 +419,7 @@ public class MyListingDetailsAdapter extends RecyclerView.Adapter<MyListingDetai
         public final ImageButton mDecrementButton;
         public final ImageView mOrangeRibbon;
         public final LinearLayout mLinearLayout;
+        public final RelativeLayout mLinearLayoutMainButtons;
         public Product mItem;
 
         public ViewHolder(View view) {/**/
@@ -416,6 +441,7 @@ public class MyListingDetailsAdapter extends RecyclerView.Adapter<MyListingDetai
             tvStartDate = view.findViewById(R.id.tv_start_date);
             tvEndDate = view.findViewById(R.id.tv_end_date);
             mLinearLayout = view.findViewById(R.id.add_minus_layout);
+            mLinearLayoutMainButtons = view.findViewById(R.id.relative_card);
         }
 
         @Override

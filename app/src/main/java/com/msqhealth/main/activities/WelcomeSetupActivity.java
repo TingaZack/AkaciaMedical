@@ -82,7 +82,7 @@ public class WelcomeSetupActivity extends AppCompatActivity {
 
                 mDatabasePractice = FirebaseDatabase.getInstance().getReference().child("doctors_practice_numbers");
                 mUsersDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getCurrentUser().getUid());
-                final DatabaseReference mUsersData = FirebaseDatabase.getInstance().getReference().child("users");
+                final DatabaseReference mUsersData = FirebaseDatabase.getInstance().getReference().child("users").child("profile");
 
                 checkEmailVerification();
                 checkIfUserExist();

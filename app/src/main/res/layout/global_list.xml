@@ -95,6 +95,52 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/not_verified_linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="16dp"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/not_verified_user_imageview"
+            android:layout_above="@id/promo_textview"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/ic_user_still_verifying"/>
+
+        <TextView
+            android:id="@+id/not_verified_textview_no_user"
+            android:text="@string/account_unverified_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-condensed"
+            android:visibility="visible"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/pnot_verified_textview_no_user_large_text"
+            android:text="@string/still_verifying_promo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/promo_textview"
+            android:fontFamily="sans-serif-condensed"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:visibility="visible"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/promotion_list"
         android:layout_width="match_parent"

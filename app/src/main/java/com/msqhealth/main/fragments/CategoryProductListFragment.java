@@ -78,7 +78,12 @@ public class CategoryProductListFragment extends Activity {
             public void onDataChange(DataSnapshot snapshot) {
                 productList.clear();
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                    Product category = new Product(((String) postSnapshot.child("CODE").getValue()), (String) postSnapshot.child("CONSUMABLES").getValue(), (String) postSnapshot.child("DESCRIPTION").getValue(), (double) postSnapshot.child("PRICING").getValue(), postSnapshot.child("PRICING UNIT").getValue().toString(), (String) postSnapshot.child("True Image").getValue());
+                    Product category = new Product(((String) postSnapshot.child("CODE").getValue()),
+                            (String) postSnapshot.child("CONSUMABLES").getValue(),
+                            (String) postSnapshot.child("DESCRIPTION").getValue(),
+                            (double) postSnapshot.child("PRICING").getValue(),
+                            postSnapshot.child("PRICING UNIT").getValue().toString(),
+                            (String) postSnapshot.child("True Image").getValue());
                     productList.add(category);
                 }
                 pDialog.dismiss();

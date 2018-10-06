@@ -172,6 +172,7 @@
                         android:layout_marginLeft="16dp"
                         android:layout_weight="1"
                         android:text="R 3.62"
+                        android:visibility="gone"
                         android:textAppearance="?android:textAppearanceMedium"
                         android:textStyle="bold" />
 

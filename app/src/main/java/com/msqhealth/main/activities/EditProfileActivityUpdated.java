@@ -59,6 +59,7 @@ public class EditProfileActivityUpdated extends AppCompatActivity {
         System.out.println("PROFILE EDIT ACTIVITY");
 
         mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child("users");
+        mDatabaseUsers.keepSynced(true);
 
         mDisplayPicture = (CircleImageView) findViewById(R.id.display_picture);
 
@@ -84,7 +85,7 @@ public class EditProfileActivityUpdated extends AppCompatActivity {
 
         if (user_id != null) {
 
-            mDatabaseUsers.child(user_id).addValueEventListener(new ValueEventListener() {
+            mDatabaseUsers.child(user_id).child("profile").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     System.out.println("Counting: " + dataSnapshot.getChildrenCount());
@@ -111,7 +112,7 @@ public class EditProfileActivityUpdated extends AppCompatActivity {
                 }
             });
 
-            mDatabaseUsers.child(user_id).addValueEventListener(new ValueEventListener() {
+            mDatabaseUsers.child(user_id).child("profile").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     System.out.println("CITY: " + dataSnapshot.child("location").child("city").getValue());

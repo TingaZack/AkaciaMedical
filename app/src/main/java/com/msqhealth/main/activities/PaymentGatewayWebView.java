@@ -12,11 +12,17 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.chilkatsoft.CkXml;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -196,7 +202,7 @@ public class PaymentGatewayWebView extends AppCompatActivity {
                 final CkXml xml = new CkXml();
 
 
-                FirebaseDatabase.getInstance().getReference("users").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                FirebaseDatabase.getInstance().getReference("users").child(user.getUid()).child("profile").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -238,22 +244,47 @@ public class PaymentGatewayWebView extends AppCompatActivity {
 
                                     if (snapshot.exists()) {
 
-                                        System.out.println("Break Point 2 :  Items in cart : " + dataSnapshot.getChildrenCount());
-                                        CartItem cartItem = new CartItem();
-                                        cartItem.setQuantity(Integer.parseInt(snapshot.child("quantity").getValue().toString()));
-                                        _amount = _amount + ((Double.parseDouble(String.valueOf(snapshot.child("product").child("price").getValue()))) * (Integer.parseInt(snapshot.child("quantity").getValue().toString())));
-                                        Product product = new Product();
-                                        product.setCode((String) snapshot.child("product").child("code").getValue());
-                                        product.setConsumables((String) snapshot.child("product").child("consumables").getValue());
-                                        product.setDescription((String) snapshot.child("product").child("description").getValue());
-                                        product.setPrice(Double.parseDouble(String.valueOf(snapshot.child("product").child("price").getValue())));
-                                        product.setTrueImageUrl((String) snapshot.child("product").child("trueImageUrl").getValue());
-                                        product.setUnit_of_messuremeant((String) snapshot.child("product").child("unit_of_messuremeant").getValue());
-                                        cartItem.setProduct(product);
+                                        if (snapshot.child("product").child("promotion").getValue().equals(true)) {
 
-                                        System.out.println(cartItem.toMap().toString());
+                                            System.out.println("Break Point 2 :  Items in cart : " + dataSnapshot.getChildrenCount());
+                                            CartItem cartItem = new CartItem();
+                                            cartItem.setQuantity(Integer.parseInt(snapshot.child("quantity").getValue().toString()));
+                                            _amount = _amount + ((Double.parseDouble(String.valueOf(snapshot.child("product").child("price").getValue()))) * (Integer.parseInt(snapshot.child("quantity").getValue().toString())));
+                                            Product product = new Product();
+                                            product.setCode(snapshot.child("product").child("code").getValue().toString());
+                                            product.setConsumables(snapshot.child("product").child("consumables").getValue().toString());
+                                            product.setDescription(snapshot.child("product").child("description").getValue().toString());
+                                            product.setPrice(Double.parseDouble(snapshot.child("product").child("price").getValue().toString()));
+                                            product.setTrueImageUrl(snapshot.child("product").child("trueImageUrl").getValue().toString());
+                                            product.setUnit_of_messuremeant(snapshot.child("product").child("unit_of_messuremeant").getValue().toString());
+                                            product.setEnd_date(snapshot.child("product").child("end_date").getValue().toString());
+                                            product.setStart_date(snapshot.child("product").child("start_date").getValue().toString());
+                                            product.setPercentage(snapshot.child("product").child("percentage").getValue().toString());
+                                            product.setPromotion((boolean) snapshot.child("product").child("promotion").getValue());
+                                            cartItem.setProduct(product);
 
-                                        items.add(cartItem.toMap());
+                                            System.out.println(cartItem.toMap().toString());
+
+                                            items.add(cartItem.toMap());
+                                        } else {
+
+                                            System.out.println("Break Point 2 :  Items in cart : " + dataSnapshot.getChildrenCount());
+                                            CartItem cartItem = new CartItem();
+                                            cartItem.setQuantity(Integer.parseInt(snapshot.child("quantity").getValue().toString()));
+                                            _amount = _amount + ((Double.parseDouble(String.valueOf(snapshot.child("product").child("price").getValue()))) * (Integer.parseInt(snapshot.child("quantity").getValue().toString())));
+                                            Product product = new Product();
+                                            product.setCode((String) snapshot.child("product").child("code").getValue());
+                                            product.setConsumables((String) snapshot.child("product").child("consumables").getValue());
+                                            product.setDescription((String) snapshot.child("product").child("description").getValue());
+                                            product.setPrice(Double.parseDouble(String.valueOf(snapshot.child("product").child("price").getValue())));
+                                            product.setTrueImageUrl((String) snapshot.child("product").child("trueImageUrl").getValue());
+                                            product.setUnit_of_messuremeant((String) snapshot.child("product").child("unit_of_messuremeant").getValue());
+                                            cartItem.setProduct(product);
+
+                                            System.out.println(cartItem.toMap().toString());
+
+                                            items.add(cartItem.toMap());
+                                        }
 
                                     }
 
@@ -319,7 +350,7 @@ public class PaymentGatewayWebView extends AppCompatActivity {
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-
+                        Toast.makeText(PaymentGatewayWebView.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -373,13 +404,12 @@ public class PaymentGatewayWebView extends AppCompatActivity {
         public void onPageFinished(WebView view, String url) {
             if (url.startsWith("https://msq-health.firebaseapp.com/success.html")) {
                 pDialog.dismiss();
-                orderCompleted().show();
+                showSuccessDialog();
 
 
             } else if (url.startsWith("https://msq-health.firebaseapp.com/decline.html")) {
-
                 pDialog.dismiss();
-
+                showErrorDialog();
             }
         }
     }
@@ -489,5 +519,67 @@ public class PaymentGatewayWebView extends AppCompatActivity {
         }
 
     }
+
+    public void showSuccessDialog() {
+        final View mView = LayoutInflater.from(PaymentGatewayWebView.this).inflate(R.layout.payment_successful, null);
+
+        final Button mDoneButton = mView.findViewById(R.id.btn_payment);
+        final TextView mPaymentStatusTitleTextView = mView.findViewById(R.id.tv_status_title);
+        final TextView mPaymentStatusMsgTextView = mView.findViewById(R.id.tv_payment_msg);
+        final ImageView mStatusImageView = mView.findViewById(R.id.img_status);
+
+        final android.support.v7.app.AlertDialog.Builder aBuilder = new android.support.v7.app.AlertDialog.Builder(PaymentGatewayWebView.this, R.style.CustomDialog);
+        aBuilder.setView(mView);
+        aBuilder.setCancelable(false);
+
+        mStatusImageView.setImageResource(R.drawable.ic_success);
+        mPaymentStatusTitleTextView.setText(getString(R.string.payment_successful));
+        mPaymentStatusMsgTextView.setText(getString(R.string.payment_sucess_msg));
+
+        final android.support.v7.app.AlertDialog alert = aBuilder.create();
+
+        mDoneButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alert.dismiss();
+                finish();
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            }
+        });
+
+        alert.show();
+    }
+
+    public void showErrorDialog() {
+        final View mView = LayoutInflater.from(PaymentGatewayWebView.this).inflate(R.layout.payment_successful, null);
+
+        final Button mDoneButton = mView.findViewById(R.id.btn_payment);
+        final TextView mPaymentStatusTitleTextView = mView.findViewById(R.id.tv_status_title);
+        final TextView mPaymentStatusMsgTextView = mView.findViewById(R.id.tv_payment_msg);
+        final ImageView mStatusImageView = mView.findViewById(R.id.img_status);
+
+        final android.support.v7.app.AlertDialog.Builder aBuilder = new android.support.v7.app.AlertDialog.Builder(PaymentGatewayWebView.this, R.style.CustomDialog);
+        aBuilder.setView(mView);
+        aBuilder.setCancelable(false);
+
+        mStatusImageView.setImageResource(R.drawable.ic_error);
+        mPaymentStatusTitleTextView.setText(getString(R.string.payment_error));
+        mPaymentStatusMsgTextView.setText(getString(R.string.payment_error_msg));
+
+        final android.support.v7.app.AlertDialog alert = aBuilder.create();
+
+        mDoneButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alert.dismiss();
+                finish();
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+
+            }
+        });
+
+        alert.show();
+    }
+
 
 }

@@ -188,11 +188,11 @@ public class SignUpFragment extends Fragment {
                                                     String telephone = (String) snapshot.child("TELEPHONE").getValue();
 
                                                     pDialog.setMessage("Saving practice information...");
-                                                    mUsersDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").setValue(name);
-                                                    mUsersDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Suburb").setValue(suburb);
-                                                    mUsersDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Telephone").setValue(telephone);
-                                                    mUsersDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Email").setValue(mUserEmail.getText().toString());
-                                                    mUsersDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Practice_Number").setValue(practice_number).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    mUsersDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("profile").child("Name").setValue(name);
+                                                    mUsersDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("profile").child("Suburb").setValue(suburb);
+                                                    mUsersDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("profile").child("Telephone").setValue(telephone);
+                                                    mUsersDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("profile").child("Email").setValue(mUserEmail.getText().toString());
+                                                    mUsersDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("profile").child("Practice_Number").setValue(practice_number).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                         @Override
                                                         public void onComplete(@NonNull Task<Void> task) {
                                                             pDialog.dismiss();

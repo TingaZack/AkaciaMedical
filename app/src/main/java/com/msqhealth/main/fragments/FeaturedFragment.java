@@ -93,7 +93,8 @@ public class FeaturedFragment extends Fragment {
                 public void onDataChange(DataSnapshot snapshot) {
                     featuredItemsList.clear();
                     for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                        FeaturedItem featuredItem = new FeaturedItem(((String) postSnapshot.child("TITLE").getValue()), ((String) postSnapshot.child("IMAGE").getValue()));
+                        FeaturedItem featuredItem = new FeaturedItem(((String) postSnapshot.child("TITLE").getValue()),
+                                ((String) postSnapshot.child("IMAGE").getValue()));
                         featuredItemsList.add(featuredItem);
                         places.add(postSnapshot.child("DESCRIPTION").getValue().toString());
                     }

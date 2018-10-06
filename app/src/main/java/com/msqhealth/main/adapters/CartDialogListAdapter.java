@@ -75,10 +75,12 @@ public class CartDialogListAdapter extends RecyclerView.Adapter<CartDialogListAd
             holder.mCartItemQuantity.setText(String.valueOf(mValues.get(position).getQuantity()));
             holder.mDescTextView.setText(mValues.get(position).getProduct().description.toLowerCase());
             holder.mCodeTextView.setText(mValues.get(position).getProduct().code);
+            System.out.println("CCCODE: " + mValues.get(position).getProduct().consumables);
             holder.mPricingUnitTextView.setText(" Qty: " + String.valueOf(mValues.get(position).getProduct().unit_of_messuremeant.toLowerCase()).replace(",","."));
             final String tot = String.valueOf(decimalDigitsFormat.format(mValues.get(position).getProduct().price * Integer.parseInt(holder.mCartItemQuantity.getText().toString())));
             holder.mCartItemTotal.setText(tot.replace(",", "."));
 
+            System.out.println("FIND: " + mValues.get(position).getProduct().end_date);
 
             mDatabase.child(mValues.get(position).getProduct().getCode()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -207,39 +209,6 @@ public class CartDialogListAdapter extends RecyclerView.Adapter<CartDialogListAd
             holder.mCartItemQuantity.addTextChangedListener(watcher);
         }
     }
-
-//    private void showDialog() {
-//        View mView = LayoutInflater.from(activity).inflate(R.layout.deleted_custom_dialog, null);
-//
-//        TextView successView = mView.findViewById(R.id.tv_success);
-//        android.support.v7.app.AlertDialog.Builder aBuilder = new android.support.v7.app.AlertDialog.Builder(activity, R.style.CustomDialog);
-//        aBuilder.setView(mView);
-//
-//        successView.setText("Successfully Removed!");
-//
-//        final android.support.v7.app.AlertDialog alert = aBuilder.create();
-//        alert.show();
-//
-//        // Hide after some seconds
-//        final Handler handler = new Handler();
-//        final Runnable runnable = new Runnable() {
-//            @Override
-//            public void run() {
-//                if (alert.isShowing()) {
-//                    alert.dismiss();
-//                }
-//            }
-//        };
-//        alert.setOnDismissListener(new DialogInterface.OnDismissListener() {
-//            @Override
-//            public void onDismiss(DialogInterface dialog) {
-//                handler.removeCallbacks(runnable);
-//            }
-//        });
-//
-//        handler.postDelayed(runnable, 1000);
-//
-//    }
 
     public double countCart(TextView textViewPrice) {
         double sum = Double.parseDouble(textViewPrice.getText().toString());
