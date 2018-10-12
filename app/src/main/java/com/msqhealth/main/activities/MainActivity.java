@@ -185,16 +185,6 @@ public class MainActivity extends AppCompatActivity {
             });
             checkIfUserRegistered();
 
-//            SuperActivityToast.create((MainActivity.this), new Style(), Style.TYPE_BUTTON)
-//                    .setButtonText("UNDO")
-//                    .setButtonIconResource(R.drawable.ic_x_button)
-////                    .setOnButtonClickListener("good_tag_name", null, onButtonClickListener)
-//                    .setProgressBarColor(Color.WHITE)
-//                    .setText("Email deleted")
-//                    .setDuration(Style.DURATION_LONG)
-//                    .setFrame(Style.FRAME_LOLLIPOP)
-//                    .setColor(PaletteUtils.getSolidColor(PaletteUtils.MATERIAL_PURPLE))
-//                    .setAnimations(Style.ANIMATIONS_POP).show();
         } else {
             checkUserBrowsingState();
             btnCart.setVisibility(View.GONE);
@@ -205,10 +195,9 @@ public class MainActivity extends AppCompatActivity {
             mLoginRegister.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    prefManager.setToBrowseCatalogue(true);
                     startActivity(new Intent(getApplicationContext(), OnBoardingActivity.class));
                     finish();
-
-                    prefManager.setToBrowseCatalogue(false);
                 }
             });
         }
@@ -287,7 +276,7 @@ public class MainActivity extends AppCompatActivity {
 //        }
         if (id == R.id.action_log_out) {
             FirebaseAuth.getInstance().signOut();
-            prefManager.setToBrowseCatalogue(false);
+            prefManager.setToBrowseCatalogue(true);
             Intent intent = new Intent(MainActivity.this, OnBoardingActivity.class);
             startActivity(intent);
             finish();
@@ -393,7 +382,7 @@ public class MainActivity extends AppCompatActivity {
      * remain here on MainActivity and if it's false, the user will be re-directed to OnBoardingActivity.
      * */
     public void checkUserBrowsingState() {
-        if (!prefManager.isBrowseCatalogue()) {
+        if (prefManager.isBrowseCatalogue()) {
             System.out.println("NOT: " + prefManager.isBrowseCatalogue());
             startActivity(new Intent(getApplicationContext(), OnBoardingActivity.class));
             finish();

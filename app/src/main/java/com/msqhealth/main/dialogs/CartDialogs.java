@@ -249,7 +249,7 @@ public class CartDialogs extends DialogFragment {
                                                         public void onDataChange(DataSnapshot dataSnapshot) {
                                                             try {
                                                                 if (dataSnapshot.exists()) {
-                                                                    if (amount >= 1000) {
+                                                                    if (amount >= 500) {
                                                                         startActivity(new Intent(getActivity(), ConfirmCheckoutActivity.class));
                                                                     } else {
                                                                         Snackbar snack = Snackbar.make(view.findViewById(R.id.relative_layout), R.string.checkout_error,

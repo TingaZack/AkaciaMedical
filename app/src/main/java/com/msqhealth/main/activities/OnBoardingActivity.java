@@ -34,7 +34,7 @@ public class OnBoardingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_on_boarding);
 
         prefManager = new PrefManager(getApplicationContext());
-        if (prefManager.isBrowseCatalogue()) {
+        if (!prefManager.isBrowseCatalogue()) {
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
             finish();
         }
@@ -100,7 +100,7 @@ public class OnBoardingActivity extends AppCompatActivity {
         mBrowse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                prefManager.setToBrowseCatalogue(true);
+                prefManager.setToBrowseCatalogue(false);
                 System.out.println("CATALOGUE: " + prefManager.isBrowseCatalogue());
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 finish();

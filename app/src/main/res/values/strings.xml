@@ -185,6 +185,7 @@
     <string name="send_msg">Send Message</string>
     <string name="email">Email</string>
     <string name="by_signing">By Signing in, you agree to the &#x20;</string>
+    <string name="by_signup">By Registering, you agree to the &#x20;</string>
     <string name="by_checking">By Checking out, you agree to the &#x20;</string>
     <string name="terms_and_conditions">Terms and Conditions.</string>
     <string name="terms_of_payment">Terms of Payment</string>
@@ -195,7 +196,7 @@
     <string name="try_again">Please try again later.</string>
     <string name="please_complete">Akacia Client Registration</string>
     <!--<string name="please_complete">Akacia Client Registration</string>-->
-    <string name="checkout_error">A minimum order of R1000.00 is required to Checkout.</string>
+    <string name="checkout_error">A minimum order of R500.00 is required to Checkout/Place an order.</string>
     <string name="checkout">Checkout</string>
     <string name="learn_more">Learn More</string>
     <string name="practice_number">Practice Number (e.g. 140000890097)</string>
@@ -241,13 +242,13 @@
     <string name="account_unverified_title">Account Unverified</string>
     <string name="guest_user">Guest User</string>
     <string name="clear_cart_msg">Are you sure you want to clear your cart?</string>
-    <string name="clearing_cart">Clearing Cart ...</string>
+    <string name="clearing_cart">Clearing cart ...</string>
     <string name="i_sure">I\'m sure</string>
     <string name="i_cancel">Cancel</string>
     <string name="cart_msg_title">Cart Message</string>
-    <string name="invalid_practice_number">please insert a valid practice number</string>
-    <string name="invalid_phone">please insert a valid phone</string>
-    <string name="address_error">address incomplete ...</string>
+    <string name="invalid_practice_number">Your practice number is too short</string>
+    <string name="invalid_phone">Please insert a valid phone</string>
+    <string name="address_error">Your address is too short</string>
     <string name="valid_names">please insert valid names</string>
     <string name="welcome_messsage">Thank you for choosing Akacia Medical for all your surgical equipment. You will receive an email within the next 24 hours after we have verified your details to allow you to start placing orders.\n\nIn the meantime you may browse our product catalogue until your account is verified.</string>
     <string name="done">Done</string>
@@ -266,6 +267,7 @@
     <string name="payment_error_msg">Something went wrong while trying to process your payment.
         This might be caused by wrong card details or insuffiecient funds. Please try again later. \n\nFor more enquiries please contact Akacia Medical (PTY) Ltd.\nTel: (010) 003 7900</string>
     <string name="payment_error">Payment Unsuccessful</string>
+    <string name="field_empty">field empty</string>
 
     <!--<string name="please_complete">Please complete the below form and we will contact you</string>-->
 

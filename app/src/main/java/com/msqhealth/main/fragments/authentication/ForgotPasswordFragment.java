@@ -114,33 +114,6 @@ public class ForgotPasswordFragment extends Fragment {
 
         mUserEmail.addTextChangedListener(mTextWatcher);
 
-        btnResetPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pDialog.show();
-                mAuth.sendPasswordResetEmail(mUserEmail.getText().toString().trim())
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                pDialog.dismiss();
-                                if (task.isSuccessful()) {
-                                    getFragmentManager().popBackStack();
-                                    Log.d("Email Sent", "Email sent.");
-                                    Toasty.success(getActivity(), getString(R.string.email_sent), Toast.LENGTH_SHORT).show();
-                                } else {
-                                    //Please try again
-//                                    Toasty.success(getActivity(), getString(R.string.try_again), Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toasty.error(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
-        });
-
         checkFieldsForEmptyValues();
 
         return view;
@@ -148,13 +121,40 @@ public class ForgotPasswordFragment extends Fragment {
 
     protected void checkFieldsForEmptyValues() {
         // TODO Auto-generated method stub
-        String text1 = mUserEmail.getText().toString().trim();
 
-        if (TextUtils.isEmpty(text1)) {
-            btnResetPassword.setEnabled(false);
-        } else {
-            btnResetPassword.setEnabled(true);
-        }
+        btnResetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String text1 = mUserEmail.getText().toString().trim();
+
+                if (!TextUtils.isEmpty(text1)) {
+                    pDialog.show();
+                    mAuth.sendPasswordResetEmail(mUserEmail.getText().toString().trim())
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    pDialog.dismiss();
+                                    if (task.isSuccessful()) {
+                                        getFragmentManager().popBackStack();
+                                        Log.d("Email Sent", "Email sent.");
+                                        Toasty.success(getActivity(), getString(R.string.email_sent), Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        //Please try again
+//                                    Toasty.success(getActivity(), getString(R.string.try_again), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toasty.error(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    });
+                } else {
+                    mUserEmail.setError(getString(R.string.field_empty));
+                }
+            }
+        });
+
     }
 
 

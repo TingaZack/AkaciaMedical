@@ -128,37 +128,3 @@
 
     </android.support.design.widget.CoordinatorLayout>
 </RelativeLayout>
-
-    <!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"--><!--xmlns:app="http://schemas.android.com/apk/res-auto"--><!--xmlns:tools="http://schemas.android.com/tools"--><!--android:id="@+id/linear"--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent"--><!--android:orientation="vertical"--><!--tools:context=".activities.MainActivity">-->
-
-    <!--<android.support.v7.widget.Toolbar--><!--android:id="@+id/toolbar_main"--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content"--><!--android:layout_centerInParent="true"--><!--app:layout_scrollFlags="scroll|enterAlways"--><!--android:background="@color/colorPrimary">-->
-
-    <!--<RelativeLayout--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content"--><!--android:gravity="center">-->
-
-    <!--&lt;!&ndash;<ImageView&ndash;&gt;--><!--&lt;!&ndash;android:id="@+id/logo_img"&ndash;&gt;--><!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;--><!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;--><!--&lt;!&ndash;android:src="@mipmap/ic_launcher" />&ndash;&gt;-->
-
-
-    <!--<RelativeLayout--><!--android:id="@+id/cart_layout"--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content"--><!--android:layout_centerInParent="true">-->
-
-    <!--<TextView--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_alignParentLeft="true"--><!--android:layout_centerInParent="true"--><!--android:gravity="center"--><!--android:text="@string/msq_health"--><!--android:textColor="@android:color/white"--><!--android:layout_marginLeft="16dp"--><!--android:textSize="20sp"--><!--android:textStyle="bold" />-->
-
-
-    <!--<Button--><!--android:id="@+id/btn_login_register"--><!--android:text="Login/Register"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_alignParentRight="true"--><!--android:layout_centerInParent="true"--><!--android:layout_gravity="center|right"--><!--android:textColor="@android:color/white"--><!--android:layout_marginRight="16dp"--><!--android:background="@android:color/transparent"--><!--android:src="@drawable/ic_shopping_cart_white"--><!--android:visibility="gone"/>-->
-
-    <!--<ImageButton--><!--android:id="@+id/cart"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_alignParentRight="true"--><!--android:layout_centerInParent="true"--><!--android:layout_gravity="center|right"--><!--android:background="@android:color/transparent"--><!--android:src="@drawable/ic_shopping_cart_white"--><!--android:visibility="gone"/>-->
-
-    <!--<TextView--><!--android:id="@+id/actionbar_notifcation_textview"--><!--android:layout_width="18dp"--><!--android:layout_height="18dp"--><!--android:layout_alignParentRight="true"--><!--android:layout_marginBottom="24dp"--><!--android:background="@drawable/circle_drawable"--><!--android:gravity="center"--><!--android:text="99"--><!--android:textColor="@android:color/white"--><!--android:textSize="12sp"--><!--android:visibility="gone" />--><!--</RelativeLayout>-->
-
-    <!--</RelativeLayout>-->
-
-    <!--</android.support.v7.widget.Toolbar>-->
-
-    <!--<android.support.design.widget.TabLayout--><!--android:id="@+id/tabs"--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content"--><!--android:background="@color/colorPrimary"--><!--app:tabSelectedTextColor="@android:color/white"--><!--app:tabTextColor="@android:color/white" />-->
-
-    <!--<LinearLayout--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent"--><!--android:layout_weight="1"--><!--android:background="@color/white">-->
-
-    <!--<android.support.v4.view.ViewPager--><!--android:id="@+id/container"--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent"--><!--android:background="@color/white"--><!--app:layout_behavior="@string/appbar_scrolling_view_behavior" />-->
-
-    <!--</LinearLayout>-->
-
-    <!--</LinearLayout>-->

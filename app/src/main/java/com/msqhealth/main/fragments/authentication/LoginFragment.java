@@ -48,27 +48,6 @@ public class LoginFragment extends Fragment {
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     private DatabaseReference mDatabase;
-    private TextWatcher mTextWatcher = new TextWatcher() {
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before,
-                                  int count) {
-            // TODO Auto-generated method stub
-
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count,
-                                      int after) {
-            // TODO Auto-generated method stub
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            // TODO Auto-generated method stub
-            checkFieldsForEmptyValues();
-        }
-    };
 
     public LoginFragment() {
         // Required empty public constructor
@@ -103,14 +82,6 @@ public class LoginFragment extends Fragment {
         mUserEmail = view.findViewById(R.id.email);
         mUserPassword = view.findViewById(R.id.password);
 
-        tvTC = view.findViewById(R.id.login_tc);
-        tvTC.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), TermsAndCondtionsActivity.class));
-            }
-        });
-
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         pDialog = new ProgressDialog(getActivity());
@@ -127,36 +98,8 @@ public class LoginFragment extends Fragment {
 
         btnSignIn = view.findViewById(R.id.sign_in);
 
-        btnSignIn.setEnabled(false);
-        mUserEmail.addTextChangedListener(mTextWatcher);
-        mUserPassword.addTextChangedListener(mTextWatcher);
 
-        btnSignIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pDialog.show();
-                mAuth.signInWithEmailAndPassword(mUserEmail.getText().toString().trim(), mUserPassword.getText().toString().trim())
-                        .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                pDialog.dismiss();
-                                if (task.isSuccessful()) {
-                                    getActivity().startActivity(new Intent(getActivity(), MainActivity.class));
-                                    getActivity().finish();
-                                }
-
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        pDialog.dismiss();
-                        Toasty.error(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
-        });
-
-        checkFieldsForEmptyValues();
+        checkFieldsForEmptyValuesAndSubmit();
 
         return view;
     }
@@ -175,18 +118,44 @@ public class LoginFragment extends Fragment {
         }
     }
 
-    protected void checkFieldsForEmptyValues() {
+    protected void checkFieldsForEmptyValuesAndSubmit() {
         // TODO Auto-generated method stub
-        String text1 = mUserEmail.getText().toString().trim();
-        String text2 = mUserPassword.getText().toString().trim();
 
-        if ((TextUtils.isEmpty(text1)) || (TextUtils.isEmpty(text2))) {
-            btnSignIn.setEnabled(false);
-        } else if ((TextUtils.getTrimmedLength(text2) < 6)) {
-            btnSignIn.setEnabled(false);
-        } else {
-            btnSignIn.setEnabled(true);
-        }
+        btnSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String text1 = mUserEmail.getText().toString().trim();
+                String text2 = mUserPassword.getText().toString().trim();
+
+                if (!TextUtils.isEmpty(text1)) {
+                    if (!TextUtils.isEmpty(text2)) {
+                        pDialog.show();
+                        mAuth.signInWithEmailAndPassword(mUserEmail.getText().toString().trim(), mUserPassword.getText().toString().trim())
+                                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                        pDialog.dismiss();
+                                        if (task.isSuccessful()) {
+                                            getActivity().startActivity(new Intent(getActivity(), MainActivity.class));
+                                            getActivity().finish();
+                                        }
+
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                pDialog.dismiss();
+                                Toasty.error(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    } else {
+                        mUserPassword.setError(getString(R.string.field_empty));
+                    }
+                } else {
+                    mUserEmail.setError(getString(R.string.field_empty));
+                }
+
+            }
+        });
     }
-
 }
