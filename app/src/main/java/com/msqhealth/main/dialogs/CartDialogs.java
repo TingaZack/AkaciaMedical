@@ -249,18 +249,18 @@ public class CartDialogs extends DialogFragment {
                                                         public void onDataChange(DataSnapshot dataSnapshot) {
                                                             try {
                                                                 if (dataSnapshot.exists()) {
-                                                                    if (amount >= 500) {
+//                                                                    if (amount >= 500) {
                                                                         startActivity(new Intent(getActivity(), ConfirmCheckoutActivity.class));
-                                                                    } else {
-                                                                        Snackbar snack = Snackbar.make(view.findViewById(R.id.relative_layout), R.string.checkout_error,
-                                                                                Snackbar.LENGTH_INDEFINITE).setDuration(5000);
-                                                                        snack.getView().setBackgroundColor(ContextCompat.getColor(getActivity(), android.R.color.holo_red_dark));
-                                                                        View view = snack.getView();
-                                                                        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
-                                                                        params.gravity = Gravity.TOP;
-                                                                        view.setLayoutParams(params);
-                                                                        snack.show();
-                                                                    }
+//                                                                    } else {
+//                                                                        Snackbar snack = Snackbar.make(view.findViewById(R.id.relative_layout), R.string.checkout_error,
+//                                                                                Snackbar.LENGTH_INDEFINITE).setDuration(5000);
+//                                                                        snack.getView().setBackgroundColor(ContextCompat.getColor(getActivity(), android.R.color.holo_red_dark));
+//                                                                        View view = snack.getView();
+//                                                                        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
+//                                                                        params.gravity = Gravity.TOP;
+//                                                                        view.setLayoutParams(params);
+//                                                                        snack.show();
+//                                                                    }
 //                                                        dismiss();
                                                                 } else {
                                                                 }
